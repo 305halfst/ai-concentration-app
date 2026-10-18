@@ -1,0 +1,7 @@
+sector_group,segment,n_systems,rmax_tflops,system_share_pct,rmax_share_pct
+Public,Research,142,1.12177e+07,28.4,59.88
+Private,Industry,161,4.08045e+06,32.2,21.78
+Public,Academic,131,1.88158e+06,26.2,10.04
+Private,Vendor,23,652359,4.6,3.48
+Other,Others,13,648714,2.6,3.46
+Public,Government,30,251923,6,1.34

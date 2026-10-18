@@ -1,0 +1,21 @@
+owner,country,n_countries,n_datacenters,capital_cost_2025usd_bn,power_mw,h100_equivalents,capex_share_pct
+Google,United States|United Kingdom,2,20,120.428,3179,3.67027e+06,22.98
+Meta,United States,1,17,85.008,2244,2.48954e+06,16.22
+Amazon,United States,1,5,66.028,1743,1.35402e+06,12.6
+Unknown,Malaysia|United States,2,9,62.039,1637.7,1.81076e+06,11.84
+Microsoft,United States,1,7,57.542,1519,1.68509e+06,10.98
+SpaceXAI,United States,1,3,49.372,1303.3,1.39894e+06,9.42
+CoreWeave,United States|Norway,2,9,25.721,679,755955,4.91
+Oracle,United States|Indonesia,2,6,18.676,493,593734,3.56
+Huawei,China,1,2,12.929,341.3,165765,2.47
+VNET,China,1,1,8.372,221,122789,1.6
+Alibaba,China,1,1,6.402,169,31885,1.22
+Nebius,Finland|United States,2,2,4.735,125,105375,0.9
+Core42,United States,1,1,2.197,58,71753,0.42
+AI XPV Platform,United States,1,1,1.591,42,58565,0.3
+Firmus,Australia,1,1,1.553,41,46488,0.3
+Nscale,Portugal|Iceland|Norway,3,3,1.444,38.1,37655,0.28
+Cipher Mining,United States,1,1,0,0,0,0
+G42,United Arab Emirates,1,1,0,0,0,0
+Mistral AI,Sweden,1,1,0,0,0,0
+Softbank,United States,1,2,0,0,0,0

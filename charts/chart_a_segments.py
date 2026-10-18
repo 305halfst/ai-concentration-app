@@ -1,0 +1,92 @@
+"""Section 1 / Chart A - who runs the TOP500, and where our audience sits.
+
+Main view: 100% stacked bars (Part-to-whole). Toggle: paired bars (Magnitude).
+Reads data/processed/fig4_top500_by_segment.csv.
+"""
+
+from __future__ import annotations
+
+import altair as alt
+import pandas as pd
+
+from charts.common import INK, LIGHT_PUBLIC, PUBLIC, SEGMENT_COLOUR, SEGMENT_NAME, SEGMENT_ORDER
+
+FILE = "fig4_top500_by_segment.csv"
+MEASURES = {"system_share_pct": "Share of systems", "rmax_share_pct": "Share of compute (Rmax)"}
+VIEWS = ["Whole list (100% stacked bars)", "Segment by segment (paired bars)"]
+
+
+def _long(df: pd.DataFrame) -> pd.DataFrame:
+    long = df.melt(id_vars=["segment", "sector_group"], value_vars=list(MEASURES), var_name="column", value_name="share")
+    long["measure"] = long["column"].map(MEASURES)
+    long["who"] = long["segment"].map(SEGMENT_NAME)
+    long["rank"] = long["segment"].map(SEGMENT_ORDER.index)
+    return long
+
+
+def build_stacked(df: pd.DataFrame) -> alt.LayerChart:
+    long = _long(df)
+    long["show"] = long.apply(lambda r: f"{r['segment']} {r['share']:.1f}%" if r["share"] >= 15
+                              else (f"{r['share']:.1f}" if r["share"] >= 3.4 else ""), axis=1)
+    names = [SEGMENT_NAME[s] for s in SEGMENT_ORDER]
+    y = alt.Y("measure:N", sort=list(MEASURES.values()), title=None, axis=alt.Axis(labelFontSize=13, labelLimit=220))
+    bars = alt.Chart(long).mark_bar(height=50, stroke="#FFFFFF", strokeWidth=1.5).encode(
+        y=y, x=alt.X("share:Q", stack="normalize", title="Share of the TOP500 list (100%)", axis=alt.Axis(format="%")),
+        order=alt.Order("rank:Q"),
+        color=alt.Color("who:N", title=None, sort=names, scale=alt.Scale(domain=names, range=[SEGMENT_COLOUR[s] for s in SEGMENT_ORDER]),
+                        legend=alt.Legend(columns=3)))
+    text = (alt.Chart(long)
+            .transform_stack(stack="share", groupby=["measure"], sort=[alt.SortField("rank")], as_=["x0", "x1"], offset="normalize")
+            .transform_calculate(mid="(datum.x0 + datum.x1) / 2", tc="datum.rank < 2 ? 'white' : '#15181C'")
+            .mark_text(fontSize=12, fontWeight=600).encode(y=y, x="mid:Q", text="show:N", color=alt.Color("tc:N", scale=None)))
+    public = df[df["sector_group"] == "Public"][list(MEASURES)].sum()
+    edge = pd.DataFrame([{"measure": MEASURES[c], "x": public[c] / 100, "t": f"◀ public sector {public[c]:.1f}%"} for c in MEASURES])
+    tick = alt.Chart(edge).mark_tick(color=INK, thickness=3, size=64).encode(y=y, x="x:Q")
+    note = alt.Chart(edge).mark_text(align="right", dx=-4, dy=-32, fontSize=11, fontWeight=600, color=INK).encode(y=y, x="x:Q", text="t:N")
+    return (bars + text + tick + note).properties(height=270)
+
+
+def build_paired(df: pd.DataFrame) -> alt.LayerChart:
+    long = _long(df)
+    long["label"] = long["share"].map(lambda v: f"{v:.1f}%")
+    order = [SEGMENT_NAME[s] for s in df.sort_values("rmax_share_pct", ascending=False)["segment"]]
+    base = alt.Chart(long).encode(
+        y=alt.Y("who:N", sort=order, title=None, axis=alt.Axis(labelLimit=240)),
+        yOffset=alt.YOffset("measure:N", sort=list(MEASURES.values())),
+        x=alt.X("share:Q", title="% of the TOP500 list", scale=alt.Scale(domain=[0, 70])))
+    bars = base.mark_bar(height=13).encode(color=alt.Color("measure:N", title=None, sort=list(MEASURES.values()),
+                                                           scale=alt.Scale(range=[LIGHT_PUBLIC, PUBLIC])))
+    return (bars + base.mark_text(align="left", dx=4, fontSize=12, color=INK).encode(text="label:N")).properties(height=330)
+
+
+def texts(df: pd.DataFrame) -> dict[str, str]:
+    a = df.set_index("segment")
+    public = df[df["sector_group"] == "Public"][list(MEASURES)].sum()
+    return {
+        "title": "1 · Who our audience is",
+        "lead": (
+            "The funder serves **university researchers**. To see where they stand among the world's largest computers, we start "
+            "with the TOP500, a twice-yearly list of the 500 fastest supercomputers (June 2026 edition). Every system on the list "
+            "is tagged with the kind of organisation that runs it: universities, public research labs, government, industry, "
+            "vendors or others.\n\n"
+            "The chart shows the whole list twice. The top bar counts machines; the bottom bar weighs them by their speed. "
+            "Universities, our audience, are the dark blue block on the left."
+        ),
+        "read": (
+            "**How to read the two bars**\n\n"
+            "- **Share of systems:** how many of the 500 machines each type of organisation runs, divided by 500. Every machine counts once, from the smallest (2.7 PFlop/s) to the largest (2,198 PFlop/s).\n"
+            "- **Share of compute (Rmax):** each group's combined Rmax, the sustained speed a machine reaches on the Linpack (HPL) benchmark, divided by the list total of 18.7 million TFlop/s. Big machines weigh more."
+        ),
+        "after": (
+            f"Universities run **{a.loc['Academic', 'system_share_pct']:.1f}% of the machines but only "
+            f"{a.loc['Academic', 'rmax_share_pct']:.1f}% of the compute**: they own many systems, but small ones. Public research labs "
+            f"go the other way, from {a.loc['Research', 'system_share_pct']:.1f}% of machines to {a.loc['Research', 'rmax_share_pct']:.1f}% "
+            f"of compute. Industry runs the most machines ({a.loc['Industry', 'system_share_pct']:.1f}%) but holds "
+            f"{a.loc['Industry', 'rmax_share_pct']:.1f}% of the compute. Taken together, the public sector holds "
+            f"{public['system_share_pct']:.1f}% of the machines and {public['rmax_share_pct']:.1f}% of the compute."
+        ),
+        "bridge": (
+            "So public compute is not scarce on this list; the gap is between public labs and universities. Why do universities "
+            "hold so much less compute than their number of machines suggests? The answer is the size of the machines."
+        ),
+    }

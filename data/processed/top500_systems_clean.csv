@@ -1,0 +1,501 @@
+rank,name,site,manufacturer,country,install_year,segment,rmax_tflops,rpeak_tflops,power_kw,total_cores,sector_group
+1,LineShine,National Supercomputing Centre in Shenzhen (NSCS),Shenzhen Cloud Computing Center,China,2025,Research,2.1984e+06,2.73582e+06,42220,13789440,Public
+2,El Capitan,DOE/NNSA/LLNL,HPE,United States,2024,Research,1.809e+06,2.8211e+06,29684.6,11340000,Public
+3,Frontier,DOE/SC/Oak Ridge National Laboratory,HPE,United States,2021,Research,1.353e+06,2.05572e+06,24607,9066176,Public
+4,Aurora,DOE/SC/Argonne National Laboratory,Intel,United States,2023,Research,1.012e+06,1.98001e+06,38698.4,9264128,Public
+5,JUPITER Booster,EuroHPC/FZJ,Bull,Germany,2025,Research,1e+06,1.22628e+06,15793.8,4801344,Public
+6,HPC7,Eni S.p.A.,HPE,Italy,2026,Industry,571500,861126,8735,3461472,Private
+7,Eagle,Microsoft Azure,Microsoft Azure,United States,2023,Industry,561200,846835,,2073600,Private
+8,HPC6,Eni S.p.A.,HPE,Italy,2024,Industry,477900,606966,8460.9,3143520,Private
+9,Supercomputer Fugaku,RIKEN Center for Computational Science,Fujitsu,Japan,2020,Research,442010,537212,29899.2,7630848,Public
+10,Alps,Swiss National Supercomputing Centre (CSCS),HPE,Switzerland,2024,Research,434900,574841,7124,2121600,Public
+11,LUMI,EuroHPC/CSC,HPE,Finland,2023,Research,379700,531505,7106.82,2752704,Public
+12,Leonardo,EuroHPC/CINECA,Bull,Italy,2023,Academic,241200,306311,7493.74,1824768,Public
+13,Isambard-AI phase 2,University of Bristol,HPE,United Kingdom,2025,Academic,216500,278577,,1028160,Public
+14,Tuolumne,DOE/NNSA/LLNL,HPE,United States,2024,Research,208100,288881,3386.62,1161216,Public
+15,ISEG2,Nebius,Nebius AI,Netherlands,2025,Others,202400,338490,5300,718848,Other
+16,MareNostrum 5 ACC,EuroHPC/BSC,Bull,Spain,2023,Research,175300,249436,4158.9,663040,Public
+17,Discovery 6,ExxonMobil,HPE,United States,2025,Industry,164200,218439,,806208,Private
+18,Maximus-02,Core42,DELL,United States,2026,Others,156100,343327,,747520,Other
+19,ABCI 3.0,National Institute of Advanced Industrial Science and Technology (AIST),HPE,Japan,2024,Research,145100,181494,3596.1,479232,Public
+20,NIPA(NHN Cloud)-CL-1,NHN Cloud,HPE,South Korea,2026,Vendor,137400,156484,,643072,Private
+21,CHIE-4,SoftBank Corp.,Nvidia,Japan,2025,Industry,135400,151878,,662256,Private
+22,Shaheen III - GPU,King Abdullah University of Science and Technology,HPE,Saudi Arabia,2025,Academic,122800,155206,1980,574464,Public
+23,Eos NVIDIA DGX SuperPOD,NVIDIA Corporation,Nvidia,United States,2023,Vendor,121400,188645,,485888,Private
+24,MAXIMUS-384,Maximus,DELL,United States,2025,Industry,114500,251154,,976896,Private
+25,SSC-24,Samsung Electronics,HPE,South Korea,2024,Industry,106200,151102,,349440,Private
+26,Venado,DOE/NNSA/LANL,HPE,United States,2024,Research,98510,130445,1661.57,481440,Public
+27,Sunway TaihuLight,National Supercomputing Center in Wuxi,NRCPC,China,2016,Research,93014.6,125436,15371,10649600,Public
+28,CHIE-3,SoftBank Corp.,Nvidia,Japan,2024,Industry,91940,138320,,297840,Private
+29,CEA-HE,Commissariat a l'Energie Atomique (CEA),Bull,France,2024,Research,90790,171264,1770,548352,Public
+30,CHIE-2,SoftBank Corp.,Nvidia,Japan,2024,Industry,89780,138320,,297840,Private
+31,DAEDALUS,EuroHPC/GRNET (National Infrastructures for Research and Technology),HPE,Greece,2026,Research,85690,115085,1395,411264,Public
+32,,"Shakti Cloud, Yotta Data Services Private Limited",DELL,India,2025,Others,84310,102816,,294336,Other
+33,Nano 4,National Center for High Performance Computing,ASUSTeK / Taiwan AI Cloud / Taiwan Mobile,Taiwan,2025,Research,81552,117920,2214.11,256960,Public
+34,Perlmutter,DOE/SC/LBNL/NERSC,HPE,United States,2021,Research,79230,112998,2945,888832,Public
+35,Njoerd,Northern Data Group,HPE,United Kingdom,2024,Industry,78200,106278,,273280,Private
+36,Cassava AI Factory,Africa Data Centres – CPT1,HPE,South Africa,2026,Industry,77790,102165,,285696,Private
+37,Harpia,Petróleo Brasileiro S.A,Lenovo,Brazil,2025,Industry,75200,141000,2008,303104,Private
+38,ABCI-Q,National Institute of Advanced Industrial Science and Technology (AIST),Fujitsu,Japan,2025,Research,74580,99348.5,1834,315120,Public
+39,NIPA(),Kakao,"Niagara Computers, Supermicro",South Korea,2026,Industry,69100,78652.6,,36720,Private
+40,NIPA(NHN Cloud)-CL-2,NHN Cloud,HPE,South Korea,2026,Vendor,68420,77936.5,,320280,Private
+41,El Dorado,Sandia National Laboratories,HPE,United States,2024,Research,68020,95290.6,1110.02,383040,Public
+42,Arrhenius GPU,EuroHPC/NAISS (National Academic Infrastructure for Super­computing in Sweden),HPE,Sweden,2026,Research,66820,84015.3,1087.94,310080,Public
+43,Gefion,Danish Centre for AI Innovation,Nvidia,Denmark,2024,Research,66590,100630,1753.2,223088,Public
+44,ASPIRE 2B (GPU Partition),National Supercomputing Centre Singapore,HPE,Singapore,2026,Research,66400,105979,1658.18,239616,Public
+45,Selene,NVIDIA Corporation,Nvidia,United States,2020,Vendor,63460,79215,2646,555520,Private
+46,SuperPOD,Core42,Nvidia,United Arab Emirates,2024,Industry,55810,87272.4,,185712,Private
+47,AI-03,Core42,Supermicro,United Arab Emirates,2025,Industry,54120,99125,,483840,Private
+48,Explorer-WUS3,Microsoft Azure,Microsoft Azure,United States,2023,Vendor,53960,86986.8,,445440,Private
+49,Jean Zay H100,CNRS/IDRIS-GENCI,Bull,France,2024,Academic,52180,71424,,227136,Public
+50,FPT AI Factory Japan,FPT AI Factory Japan,HPE,Japan,2025,Industry,49850,67443,,146304,Private
+51,EYAS,TAHAKOM,DELL,Saudi Arabia,2026,Others,48830,68608,,147456,Other
+52,Miyabi-G,Joint Center for Advanced High Performance Computing,Fujitsu,Japan,2024,Academic,46800,72796.1,983.44,221952,Public
+53,FPT AI Factory Vietnam,FPT AI Factory Vietnam,ASUSTeK,Vietnam,2025,Industry,46650,67443,,142240,Private
+54,ISEG,Nebius,Nebius AI,Netherlands,2023,Others,46540,86792.2,1320,218880,Other
+55,Adastra,Grand Equipement National de Calcul Intensif - Centre Informatique National de l'Enseignement Suprieur (GENCI-CINES),HPE,France,2022,Academic,46100,61607.9,921.48,319072,Public
+56,Ubilink,"Ubilink.AI CO., LTD",ASUSTeK,Taiwan,2024,Vendor,45820,69342,1066.17,143360,Private
+57,Reindeer,Microsoft Azure,Microsoft Azure,United States,2024,Industry,45590,56417.3,,138240,Private
+58,JUWELS Booster Module,Forschungszentrum Juelich (FZJ),Bull,Germany,2020,Research,44120,70980,1764.22,449280,Public
+59,Israel-1,NVIDIA Corporation,DELL,Israel,2023,Industry,41500,52679,,74880,Private
+60,,Viettel AI Platform,ASUSTeK,Vietnam,2026,Industry,40210,56280,,123264,Private
+61,MareNostrum 5 GPP,EuroHPC/BSC,Lenovo,Spain,2023,Research,40101.8,46371.2,5752.9,725760,Public
+62,TSUBAME4.0,"CII, Institute of Science Tokyo",HPE,Japan,2024,Academic,39620,61601.2,815.82,172800,Public
+63,SAKURAONE CYD,SAKURA Internet Inc. / Prunus Solutions Inc.,Supermicro,Japan,2026,Industry,37790,43181.8,,185920,Private
+64,Shaheen III - CPU,King Abdullah University of Science and Technology,HPE,Saudi Arabia,2023,Academic,35658.3,39607.4,5301,877824,Public
+65,HPC5,Eni S.p.A.,DELL,Italy,2020,Industry,35450,51720.8,2252.17,669760,Private
+66,VISION,Texas A&M University,Nvidia,United States,2025,Academic,34820,51162.6,,110960,Public
+67,Sunrise,UKAEA - University of Cambridge,DELL,United Kingdom,2026,Research,34770,46158.3,,156672,Public
+68,Zenith,University of Cambridge,DELL,United Kingdom,2026,Academic,34770,46158.3,,156672,Public
+69,SAKURAONE,SAKURA Internet Inc. / Prunus Solutions Inc.,Supermicro,Japan,2024,Industry,33950,47792.6,,115248,Private
+70,cluster A,SDS AI,Lenovo,Israel,2025,Industry,33670,38874,,162560,Private
+71,Cluster B,SDS AI,DELL,Israel,2025,Industry,33640,38548.9,,158496,Private
+72,Sejong,NAVER Corp,Nvidia,South Korea,2023,Industry,32970,40772.5,,277760,Private
+73,Helma,Universitaet Erlangen - Regionales Rechenzentrum Erlangen,MEGWARE,Germany,2024,Academic,32220,51028.9,651.13,125952,Public
+74,kakaocloud,Kakao Enterprise,Supermicro,South Korea,2024,Industry,32000,37382.6,,253952,Private
+75,MUSICA Phase 1,MUSICA,Lenovo,Austria,2024,Academic,31840,53756.3,,161280,Public
+76,Hunter,HLRS - Höchstleistungsrechenzentrum Stuttgart,HPE,Germany,2024,Research,31680,45137.7,490,181440,Public
+77,Viper-GPU,Max-Planck-Gesellschaft MPI/IPP,Bull,Germany,2025,Research,31096,44164.8,499.98,151200,Public
+78,Voyager-EUS2,Microsoft Azure,Microsoft Azure,United States,2021,Vendor,30050,39531.2,,253440,Private
+79,Crossroads,DOE/NNSA/LANL/SNL,HPE,United States,2023,Research,30034.7,40176.6,6283.91,660800,Public
+80,PITAGORA,CINECA,Lenovo,Italy,2024,Academic,27900,36966.1,,99456,Public
+81,Setonix – GPU,"Pawsey Supercomputing Centre, Kensington, Western Australia",HPE,Australia,2022,Research,27160,34996.2,476.63,181248,Public
+82,Discovery 5,ExxonMobil,HPE,United States,2022,Industry,26130,30990.8,964,232000,Private
+83,Polaris,DOE/SC/Argonne National Laboratory,HPE,United States,2021,Research,25810,34163.2,,256592,Public
+84,SSC-21,Samsung Electronics,HPE,South Korea,2021,Industry,25177,31751.1,,204160,Private
+85,Portage,Hewlett Packard Enterprise,HPE,United States,2024,Vendor,24500,32097.9,369.66,129024,Private
+86,Mary Coombs,Science and Technology Facilities Council,Lenovo,United Kingdom,2025,Research,24410,31181,,99456,Public
+87,rzAdams,DOE/NNSA/LLNL,HPE,United States,2024,Research,24380,32097.9,388.2,129024,Public
+88,Capella,"TU Dresden, ZIH",MEGWARE,Germany,2024,Academic,24060,37665.2,444.79,85248,Public
+89,,Research Institute,HPE,Japan,2026,Research,23780,26571.6,,73728,Public
+90,Frontera,Texas Advanced Computing Center/Univ. of Texas,DELL,United States,2019,Academic,23516.4,38745.9,,448448,Public
+91,Roihu-G,CSC (Center for Scientific Computing),Bull,Finland,2026,Academic,23500,27797.1,381.47,107712,Public
+92,Yep1,Ahrefs US DC,Nvidia,United States,2023,Others,23320,34579.6,,73584,Other
+93,BioHive-2,Recursion,Nvidia,United States,2024,Industry,23320,34219.6,,40320,Private
+94,CEA-HF,Commissariat a l'Energie Atomique (CEA),Bull,France,2021,Research,23237.6,31761.4,4959.47,810240,Public
+95,Sovereign AI Factory,TELUS,HPE,Canada,2025,Others,22740,27440.7,,70560,Other
+96,Dammam-7,Saudi Aramco,HPE,Saudi Arabia,2020,Industry,22400,55423.6,,672520,Private
+97,TAIPEI-1,NVIDIA Corporation,Nvidia,Taiwan,2024,Industry,22300,34533.4,,40960,Private
+98,KDDI GPU Cloud,KDDI CORPORATION,HPE,Japan,2026,Industry,22210,24121.8,,148896,Private
+99,Wisteria/BDEC-01 (Odyssey),"Information Technology Center, The University of Tokyo",Fujitsu,Japan,2021,Academic,22121,25952.3,1468,368640,Public
+100,DeepL Mercury,DeepL SE Super POD Cluster Mercury,Nvidia,Sweden,2023,Industry,21850,33849.3,,40960,Private
+101,Chervonenkis,Yandex,"YANDEX, NVIDIA",Russia,2021,Industry,21530,29415.2,,193440,Private
+102,HPC-AI,Bank of America,HPE,United States,2025,Industry,21460,27876.2,,71680,Private
+103,Teton,Idaho National Laboratory,HPE,United States,2025,Research,20765,28311.5,1564.6,393216,Public
+104,Alem.Cloud,NITEC,HPE,Kazakhstan,2025,Government,20480,25340.1,,66816,Public
+105,Fir (GPU),Simon Fraser University/Digital Research Alliance of Canada,Lenovo,Canada,2025,Research,19960,33315.8,475.73,92160,Public
+106,Supercomputer ROQUO,RIKEN Center for Computational Science,Giga Computing Technology,Japan,2026,Research,19800,22623,,97200,Public
+107,ARCHER2,EPSRC/University of Edinburgh,HPE,United Kingdom,2021,Research,19539,25804,,716800,Public
+108,Titan,SK Telecom,HPE,South Korea,2024,Industry,19530,24947.8,,153760,Private
+109,TII-Oryx-HPC,Tii,Mbuzz/Q-Leap Networks,United Arab Emirates,2025,Research,19480,26571.5,,61600,Public
+110,SuperMUC-NG,Leibniz Rechenzentrum,Lenovo,Germany,2018,Academic,19476.6,26873.9,,305856,Public
+111,Dawn,University of Cambridge,DELL,United Kingdom,2023,Academic,19458.3,53852.2,,156864,Public
+112,Kempner AI Cluster,Harvard University,Lenovo,United States,2026,Academic,19450,28683.7,384.49,61568,Public
+113,SAKURAONE CYC,SAKURA Internet Inc. / Prunus Solutions Inc.,Supermicro,Japan,2025,Industry,19310,29902.4,,64680,Private
+114,Ghawar-1,Saudi Aramco,HPE,Saudi Arabia,2021,Industry,19256,22855.7,,714240,Private
+115,Frontier TDS,DOE/SC/Oak Ridge National Laboratory,HPE,United States,2021,Research,19200,23105.5,308.68,120832,Public
+116,Helios GPU,Cyfronet,HPE,Poland,2023,Academic,19140,30443.6,316.88,89760,Public
+117,Pégaso,Petróleo Brasileiro S.A,Bull,Brazil,2022,Industry,19070,41995.7,1033,233856,Private
+118,Kestrel GPU,National Renewable Energy Laboratory,HPE,United States,2024,Research,18400,34354.8,,83968,Public
+119,DeltaAI,NCSA,HPE,United States,2025,Academic,18080,33606,372.4,124032,Public
+120,Guru,Korea Meteorological Administration,Lenovo,South Korea,2021,Government,18002.8,25495.1,3296,306432,Public
+121,Maru,Korea Meteorological Administration,Lenovo,South Korea,2021,Government,18002.8,25495.1,3296,306432,Public
+122,AI-Farabium,"JSC ""Kazakhtelecom""",Supermicro,Kazakhstan,2025,Industry,17930,26840.3,,57600,Private
+123,PANGEA III,Total Exploration Production,IBM,France,2019,Industry,17860,25025.8,1367,291024,Private
+124,OpenCanvas GPUaaS SP1,NTT DATA Japan Corp.,Nvidia,Japan,2025,Industry,17530,19235.6,,81648,Private
+125,HiPerGator AI,University of Florida,Nvidia,United States,2025,Academic,17490,18998.5,,81648,Public
+126,AOBA-S,"Cyberscience Center, Tohoku University",NEC,Japan,2023,Academic,17221,19818.1,1388.81,64512,Public
+127,SuperMUC-NG Phase 2,Leibniz Rechenzentrum,Lenovo,Germany,2023,Academic,17190.5,27957.4,725.9,149760,Public
+128,TOKI-SORA,Japan Aerospace eXploration Agency,Fujitsu,Japan,2020,Research,16592,19464.2,,276480,Public
+129,Pioneer-WUS2,Microsoft Azure,Microsoft Azure,United States,2021,Others,16590,24557.2,,157440,Other
+130,Pioneer-WEU,Microsoft Azure,Microsoft Azure,Netherlands,2021,Vendor,16590,24557.2,,157440,Private
+131,Pioneer-EUS,Microsoft Azure,Microsoft Azure,United States,2020,Vendor,16590,24557.2,,157440,Private
+132,Pioneer-SCUS,Microsoft Azure,Microsoft Azure,United States,2021,Vendor,16590,24557.2,,157440,Private
+133,Kempner,Harvard University,Lenovo,United States,2024,Academic,16290,20017.2,,59904,Public
+134,Galushkin,Yandex,"YANDEX, NVIDIA",Russia,2021,Industry,16020,20636.1,,134912,Private
+135,Athena,NASA/Ames Research Center/NAS,HPE,United States,2025,Research,15983,20132.7,1291.19,262144,Public
+136,kakaocloud,Kakao Enterprise,eSlim Korea,South Korea,2024,Industry,15940,17815.1,,115072,Private
+137,Plasma Simulator Subsystem B,"Rokkasho Institute for Fusion Energy, National Institutes for Quantum Science and Technology",NEC,Japan,2025,Research,15930,17164,269,70560,Public
+138,PITAGORA CPU,CINECA,Lenovo,Italy,2025,Academic,15271,19818.1,1206.88,258048,Public
+139,Hopper NUS,National University of Singapore,DELL,Singapore,2025,Academic,15050,24985.7,,34592,Public
+140,Virga,Commonwealth Scientific and Industrial Research Organisation (CSIRO),DELL,Australia,2024,Government,14940,18460.8,,60000,Public
+141,Santos Dumont,Laboratório Nacional de Computação Científica,Bull,Brazil,2024,Academic,14290,20256,312.03,68064,Public
+142,davinci-2,Leonardo SpA,HPE,Italy,2025,Others,14210,20636.5,,43776,Other
+143,ASPIRE 2A+,National Supercomputing Centre Singapore,Nvidia,Singapore,2024,Research,14200,21726.7,,46720,Public
+144,Nurion,Korea Institute of Science and Technology Information,HPE,South Korea,2018,Research,13929.3,25705.9,,570020,Public
+145,PERUN,Slovak Academy of Sciences (SAV),Bull,Slovakia,2026,Academic,13900,18000.8,250,62016,Public
+146,THE CRUST 2.5,PTT Exploration and Production Public Company Limited,HPE,Thailand,2024,Industry,13850,21676.8,,47360,Private
+147,Proxima,PCSS Poznan,"HPE, GALAXY",Poland,2024,Academic,13816.7,23316,,58224,Public
+148,Snellius Phase 3 GPU,SURF,Lenovo,Netherlands,2024,Research,13640,21661,295.67,52096,Public
+149,,Deutscher Wetterdienst,NEC,Germany,2025,Research,13584,16429.4,1692.1,54400,Public
+150,TX-GAIN,MIT Lincoln Laboratory Supercomputing Center,HPE,United States,2025,Academic,13390,41820,,99216,Public
+151,,Japan Meteorological Agency,Fujitsu,Japan,2022,Research,13367,15571.4,904.72,221184,Public
+152,,Japan Meteorological Agency,Fujitsu,Japan,2022,Research,13367,15571.4,904.72,221184,Public
+153,Phase 3,MUSICA,Lenovo,Austria,2025,Academic,13270,19789.5,,57600,Public
+154,Olivia (GPU),Sigma2,HPE,Norway,2025,Academic,13200,16803,219,62016,Public
+155,Nano 5,National Center for High Performance Computing,ASUSTeK / ASUS Cloud / Taiwan Web Service Corporation,Taiwan,2025,Research,13060,19010.9,424.6,40880,Public
+156,SAKURAONE CYB,SAKURA Internet Inc. / Prunus Solutions Inc.,Supermicro,Japan,2025,Industry,13050,14805.2,,63744,Private
+157,Moira,Shared Services Canada,Lenovo,Canada,2025,Government,12909.2,14909.4,,232960,Public
+158,Conrad,Shared Services Canada,Lenovo,Canada,2025,Government,12909.2,14909.4,,232960,Public
+159,Redtail,University of Utah,HPE,United States,2026,Academic,12850,13630,307.17,38544,Public
+160,NHN CLOUD GWANGJU AI,NHN CLOUD Corporation,DELL,South Korea,2023,Industry,12840,20582.8,,43776,Private
+161,Lyapunov,Yandex,"NVIDIA, Inspur",Russia,2020,Industry,12810,20029.2,,130944,Private
+162,Lem,Wroclaw Centre for Networking and Supercomputing,DELL,Poland,2023,Academic,12800,20368,,44992,Public
+163,Trillium,"SciNet, University of Toronto, Digital Research Alliance of Canada",Lenovo,Canada,2025,Academic,12549,19169.3,,230400,Public
+164,Kuma,Ecole Polytechnique Federale de Lausanne,Lenovo,Switzerland,2024,Academic,12310,21661.2,291.92,49728,Public
+165,ARF ACC,TRUBA,Lenovo,Turkey,2024,Government,12094.3,18817.7,238.87,26496,Public
+166,Tera-1000-2,Commissariat a l'Energie Atomique (CEA),Bull,France,2017,Research,11965.5,23396.4,3178,561408,Public
+167,Christofari Neo,SberCloud,Nvidia,Russia,2021,Industry,11950,14908.6,,98208,Private
+168,Carpenter,ERDC DSRC,HPE,United States,2023,Research,11616.8,12474.8,1100,276480,Public
+169,Kestrel CPU,National Renewable Energy Laboratory,HPE,United States,2023,Research,11372.2,14313.1,,212992,Public
+170,NeXXt AI Factory,Fastweb S.p.A.,Nvidia,Italy,2024,Others,11300,17015.4,,36208,Other
+171,DeepL Ceres,DeepL Datacenter Sweden,Nvidia,Sweden,2023,Others,11300,16924.7,278,20480,Other
+172,43,Hessian.AI,HPE,Germany,2024,Research,11270,14858,259.2,39712,Public
+173,,Central Weather Administration,Fujitsu,Taiwan,2023,Government,11164,12976.1,673.56,184320,Public
+174,Cycloud ML Platform,"CyberAgent, Inc.",Nvidia,Japan,2025,Industry,10820,16967.2,,37376,Private
+175,Torch,New York University,HPE,United States,2025,Academic,10790,12253.2,210.53,33152,Public
+176,Opera Iceland KEF-1 SuperPOD,Opera KEF-1,Nvidia,Iceland,2024,Industry,10530,17015.4,,36208,Private
+177,MeluXina - Accelerator Module,LuxProvide,Bull,Luxembourg,2021,Research,10520,15288,390.25,99200,Public
+178,Honhai Super AI Computing Center 2,HHSAICC1,Nvidia,Taiwan,2025,Industry,10460,12034.2,,52992,Private
+179,KT DGX SuperPOD,Korea Telecom,Nvidia,South Korea,2022,Industry,10380,14416,,98208,Private
+180,Derecho CPU partition,National Center for Atmospheric Research (NCAR),HPE,United States,2023,Research,10324,12403.5,,316416,Public
+181,Blueback CPU,Navy DSRC,HPE,United States,2024,Government,10295.2,11088.7,,245760,Public
+182,PERUN,Technical University of Kosice,HPE,Slovakia,2025,Academic,10210,11431.2,199.85,30784,Public
+183,Levante,DKRZ - Deutsches Klimarechenzentrum,Bull,Germany,2022,Research,10111,13798.4,,352000,Public
+184,ASPIRE 2B (CPU Partition),National Supercomputing Centre Singapore,HPE,Singapore,2026,Research,10092,12252.4,945.92,147456,Public
+185,GMO GPU Cloud,GMO GPU Cloud,DELL,Japan,2024,Industry,10050,17357.8,186.78,35328,Private
+186,SNL CTS-2 Hops,Sandia National Laboratories,DELL,United States,2024,Research,10030,17585.2,,40960,Public
+187,Cactus,GDIT/NOAA/WCOSS,HPE,United States,2021,Government,10013,11796.5,,327680,Public
+188,Dogwood,GDIT/NOAA/WCOSS,HPE,United States,2020,Government,10013,11796.5,,327680,Public
+189,Earth Simulator -SX-Aurora TSUBASA,Japan Agency for Marine-Earth Science and Technology,NEC,Japan,2021,Research,9990.7,13448,1390.95,43776,Public
+190,Amazon EC2 Instance Cluster us-east-1a,Descartes Labs,Amazon Web Services,United States,2019,Industry,9950.26,15106.5,,172692,Private
+191,Dardel GPU,KTH - Royal Institute of Technology,HPE,Sweden,2022,Academic,9895,10936.3,167.71,56640,Public
+192,ROMEO-2025,ROMEO HPC Center - Champagne-Ardenne,Bull,France,2024,Academic,9863,16322.6,160.16,47328,Public
+193,Roihu-C,CSC (Center for Scientific Computing),Bull,Finland,2026,Academic,9693.1,12856.3,705.45,186624,Public
+194,NVIDIA Cambridge-1 DGX SuperPOD,NVIDIA Corporation,Nvidia,United States,2021,Vendor,9682,12047,,79360,Private
+195,SNL CTS-2 Stout,Sandia National Laboratories,DELL,United States,2023,Research,9533.44,10888.2,1491.14,170128,Public
+196,SNL/NNSA CTS-2 Amber,Sandia National Laboratories,DELL,United States,2022,Research,9508.36,10838,,169344,Public
+197,Trillium-GPU,"SciNet, University of Toronto, Digital Research Alliance of Canada",Lenovo,Canada,2025,Academic,9494,16522.4,,37440,Public
+198,,Research Institute,HPE,Japan,2022,Research,9459,9669.3,,72384,Public
+199,DGX SuperPOD,NVIDIA Corporation,Nvidia,United States,2020,Vendor,9444,11209.1,,127488,Private
+200,JURECA Data Centric Module,Forschungszentrum Juelich (FZJ),Bull,Germany,2021,Research,9330,14508,384.1,105840,Public
+201,Gadi,National Computational Infrastructure (NCI Australia),Fujitsu / Lenovo,Australia,2020,Academic,9264.31,15142.2,,204032,Public
+202,,Deutscher Wetterdienst,NEC,Germany,2025,Research,9204.2,12223.3,1164.41,41920,Public
+203,Goethe-NHR,Universitaet Frankfurt,MEGWARE / Supermicro,Germany,2023,Academic,9087,19344.2,195.24,96768,Public
+204,Aitken,NASA/Ames Research Center/NAS,HPE,United States,2022,Research,9070,12493.1,2010.1,293936,Public
+205,Taiwania 2,National Center for High Performance Computing,Quanta Computer / Taiwan Fixed Network / ASUS Cloud,Taiwan,2018,Research,9000,15208.2,797.54,170352,Public
+206,Dragão,Petróleo Brasileiro S.A,Bull,Brazil,2021,Industry,8983,14006.5,943.12,188224,Private
+207,Tillicum,University of Washington,DELL,United States,2025,Academic,8848,12872.6,144,26880,Public
+208,Nanyang Titan,Nanyang Technological University,DELL,Singapore,2026,Academic,8797,13435.3,,29200,Public
+209,Nibi - CPU,SharcNet,HYPERTEC,Canada,2025,Academic,8624.8,10321.9,,134400,Public
+210,Raven-GPU,Max-Planck-Gesellschaft MPI/IPP,Lenovo,Germany,2021,Research,8620,16031.5,377,96768,Public
+211,AIRAWAT - PSAI,Center for Development of Advanced Computing (C-DAC),Netweb Technologies,India,2023,Research,8500,13169.9,,81344,Public
+212,,BETTY-HOLBERTON,Nvidia,United States,2025,Academic,8490,9458.92,,40176,Public
+213,Tuwaiq-1,Saudi Aramco,DELL,Saudi Arabia,2024,Industry,8487,14173.4,,61568,Private
+214,Otus (CPU only),Universitaet Paderborn - PC2,Lenovo,Germany,2025,Academic,8424.2,11437.7,,137472,Public
+215,C24,Skoda Auto a.s.,HPE,Czechia,2023,Industry,8401.78,8870.95,,196608,Private
+216,SNL/NNSA CTS-2 Nitro,Sandia National Laboratories,DELL,United States,2025,Research,8362.46,9504.77,,148512,Public
+217,AiMOS,Rensselaer Polytechnic Institute Center for Computational Innovations (CCI),IBM,United States,2019,Academic,8339,11032,512.08,130000,Public
+218,Lockhart TDS 56,AMD QTS Data Center,HPE,United States,2021,Vendor,8332,10752,,52864,Private
+219,Arka,Indian Institute of Tropical Meteorology,Bull,India,2024,Research,8281.88,10609,2016.9,290016,Public
+220,CATT,ERDC DSRC,HPE,United States,2024,Research,8269.43,8870.95,,196608,Public
+221,Taranis,Meteo France,Bull,France,2020,Research,8191.03,10321.9,1672,294912,Public
+222,sofia,Vrije Universiteit Brussel,NEC,Belgium,2025,Academic,8191,12168.1,164.66,27456,Public
+223,LANTA,NSTDA Supercomputer Center (ThaiSC),HPE,Thailand,2022,Research,8146,13773.1,310.46,87296,Public
+224,Roxy,Government,HPE,United States,2020,Government,8124.48,13977.6,,174720,Public
+225,HoreKa-Green,Karlsruher Institut für Technologie (KIT),Lenovo,Germany,2021,Academic,8025.6,15006.8,358.79,90932,Public
+226,Narwhal,Navy DSRC,HPE,United States,2020,Government,8023.6,11501.6,,276480,Public
+227,Nibi - GPU,SharcNet,HYPERTEC,Canada,2025,Academic,7985,15360,,6144,Public
+228,42,Hessian.AI,HPE,Germany,2023,Research,7938,8829.5,352.8,64512,Public
+229,Minerva,Icahn School of Medicine at Mount Sinai,Lenovo,United States,2024,Academic,7909,9989.17,170.91,28080,Public
+230,Leonardo-CPU,EuroHPC/CINECA,Bull,Italy,2023,Academic,7841.57,9433.09,1118.37,172032,Public
+231,Underhill,Shared Services Canada,Lenovo,Canada,2022,Government,7764.57,10916.4,1294.72,148320,Public
+232,Robert,Shared Services Canada,Lenovo,Canada,2022,Government,7764.57,10916.4,1294.72,148320,Public
+233,Belenos,Meteo France,Bull,France,2020,Research,7683.36,10469.4,1655,294912,Public
+234,alpha ONE,Aleph Alpha,HPE,Germany,2022,Others,7625,7864.83,,57344,Other
+235,The F.I.N,Beyond.pl,Nvidia,Poland,2025,Industry,7568,9364.08,,38880,Private
+236,PupMaya,Government,HPE,United States,2019,Government,7483.73,12902.4,,169920,Public
+237,,Elice Inc.,DELL,South Korea,2026,Industry,7469,9105.79,,38880,Private
+238,Isambard-AI phase 1,University of Bristol,HPE,United Kingdom,2024,Academic,7417,9285.9,117.08,34272,Public
+239,Nscale Svartisen,Nscale Glomfjord DC,Nscale,Norway,2024,Industry,7400.7,12380.1,,66528,Private
+240,Gautschi AI,Purdue University,DELL,United States,2024,Academic,7261,10856.2,168,23360,Public
+241,Artemis,Group 42,Nvidia,United Arab Emirates,2019,Industry,7257,9492.16,673,107568,Private
+242,LLNL/NNSA CTS-2 Bengal,Lawrence Livermore National Laboratory,DELL,United States,2023,Research,7196.63,8085.5,,107520,Public
+243,SNL CTS-2 Mead,Sandia National Laboratories,DELL,United States,2025,Research,7056.58,7913.47,,123648,Public
+244,LLNL CTS-2 Dane,Lawrence Livermore National Laboratory,DELL,United States,2023,Research,7041,7913,,123648,Public
+245,PARAM Rudra-104,Centre for Development of Advanced Computing (C-DAC),C-DAC,India,2026,Government,7027,10345.9,,79200,Public
+246,JOLIOT-CURIE ROME,CEA/TGCC-GENCI,Bull,France,2019,Research,6988.04,12039.4,1436,197120,Public
+247,Rorqual (GPU),Calcul Québec/Compute Canada,DELL,Canada,2025,Academic,6972,19788.4,228.42,47952,Public
+248,Gaia,Petróleo Brasileiro S.A,DELL,Brazil,2023,Industry,6968,13728,574,84480,Private
+249,"Karolina, GPU partition","IT4Innovations National Supercomputing Center, VSB-Technical University of Ostrava",HPE,Czechia,2021,Academic,6752,9080.18,310.99,71424,Public
+250,Levante GPU extension,DKRZ - Deutsches Klimarechenzentrum,Bull,Germany,2025,Research,6747,8339.14,109.78,35904,Public
+251,Camphor 3,"Academic Center for Computing and Media Studies (ACCMS),  Kyoto University",NEC / DELL,Japan,2023,Academic,6708.13,7626.75,1026.64,125440,Public
+252,HPCF-AD,ECMWF,Bull,Italy,2022,Research,6671.94,8847.36,1200,245760,Public
+253,HPCF-AC,ECMWF,Bull,Italy,2022,Research,6671.94,8847.36,1200,245760,Public
+254,HPCF-AB,ECMWF,Bull,Italy,2022,Research,6671.94,8847.36,1200,245760,Public
+255,HPCF-AA,ECMWF,Bull,Italy,2022,Research,6671.94,8847.36,1200,245760,Public
+256,Christofari,SberCloud,Nvidia,Russia,2019,Industry,6669,8789.76,,99600,Private
+257,MareNostrum,Barcelona Supercomputing Center,Lenovo,Spain,2017,Academic,6470.8,10296.1,1632,153216,Public
+258,SPR-HBM,BP,Lenovo,United States,2023,Industry,6463.85,7293.08,1062,119952,Private
+259,Berzelius3,National Supercomputer Centre (NSC),Bull,Sweden,2025,Academic,6423,8678.91,126.16,18688,Public
+260,ONYX,ERDC DSRC,HPE,United States,2017,Research,6316.03,7455.92,,211816,Public
+261,LUMI-C,EuroHPC/CSC,HPE,Finland,2021,Research,6299.79,7626.75,1215.53,194560,Public
+262,Genkai Node Group A,"Research Institute for Information Technology, Kyushu University",Fujitsu,Japan,2024,Academic,6219.9,7471.1,967.43,122880,Public
+263,DAIDC,Government,HPE,South Korea,2023,Government,6183,7413.22,,54720,Public
+264,JUWELS Module 1,Forschungszentrum Juelich (FZJ),Bull,Germany,2018,Research,6177.73,9891.07,1361,114480,Public
+265,,Japan Atomic Energy Agency(JAEA)/ National Institutes for Quantum and Radiological Science and Technology(QST),HPE,Japan,2020,Research,6162,8439.62,,100096,Public
+266,Honhai Super AI Computing Center 1,HHSAICC1,ASUSTeK / ASUS Cloud / Taiwan Web Service Corporation,Taiwan,2024,Industry,6123,8576,,18688,Private
+267,SQUID - CPU Nodes,Osaka University,NEC,Japan,2021,Academic,6105.1,8871.94,1222.2,115520,Public
+268,Lise,HLRN at ZIB/Konrad Zuse-Zentrum Berlin,Bull,Germany,2019,Academic,6048.26,8930.92,,121920,Public
+269,Blueback GPU,Navy DSRC,HPE,United States,2024,Government,6044,8024.47,,32256,Public
+270,DAIS,Max-Planck-Gesellschaft MPI/IPP,Lenovo,Germany,2025,Research,6031,9219.6,,19584,Public
+271,Helma CPU,Universitaet Erlangen - Regionales Rechenzentrum Erlangen,MEGWARE,Germany,2026,Academic,6030.9,8294.4,,119808,Public
+272,Kraken-Fregata,"Gdansk University of Technology, CI Task","HPE, GALAXY",Poland,2024,Academic,5985,10018.3,,21904,Public
+273,Emmy+,HLRN+ at GWDG/University of Göttingen,Bull,Germany,2020,Academic,5948.8,8911.26,,120296,Public
+274,Arunika,National Centre for Medium Range Weather Forecasting,Bull,India,2024,Research,5937.17,7404.75,1235.8,203040,Public
+275,Narval (GPU),Calcul Québec/Compute Canada,DELL,Canada,2021,Academic,5886,12165.4,311.14,76320,Public
+276,Sawtooth,Idaho National Laboratory,HPE,United States,2019,Research,5780.62,9220.61,1432,99792,Public
+277,LLNL/NNSA CTS-2 Lynx,Lawrence Livermore National Laboratory,DELL,United States,2026,Research,5650.7,6451.2,986.45,100800,Public
+278,Sirius,"Center for Computational Sciences, University of Tsukuba",NEC,Japan,2026,Academic,5630,5951.16,113.59,24192,Public
+279,,Central Weather Administration,Fujitsu,Taiwan,2023,Government,5600.6,6488.06,350.47,92160,Public
+280,UltraViolet,NYU Langone Health,DELL,United States,2024,Academic,5558,8744.86,,18688,Public
+281,Grete,NHR@Göttingen,MEGWARE,Germany,2022,Academic,5458,7904.92,205.62,49600,Public
+282,Plasma Simulator Subsystem A,"Rokkasho Institute for Fusion Energy, National Institutes for Quantum Science and Technology",NEC,Japan,2025,Research,5450.93,5898.24,,92160,Public
+283,Electra,NASA/Ames Research Center/NAS,HPE,United States,2018,Research,5444.64,8316.52,1685.73,124416,Public
+284,CRESCO8,ENEA,Lenovo,Italy,2025,Research,5426.59,5914.62,805,97280,Public
+285,SELENA,EDF,Bull,France,2025,Industry,5420.1,5501.18,1155.92,107904,Private
+286,Raven,Max-Planck-Gesellschaft MPI/IPP,Lenovo,Germany,2021,Research,5415.98,8803.12,,114624,Public
+287,Snellius Phase 2 CPU,SURF,Lenovo,Netherlands,2023,Research,5404.2,5713.92,799,150912,Public
+288,rzVernal,DOE/NNSA/LLNL,HPE,United States,2022,Research,5401,6917.82,,35872,Public
+289,Clementina XXI,Servicio Meteorológico Nacional,Lenovo,Argentina,2023,Research,5390.15,12582.9,,43008,Public
+290,MAHTI,CSC (Center for Scientific Computing),Bull,Finland,2020,Academic,5388.52,7060.68,1070,169728,Public
+291,WindRiver CTS-2,Idaho National Laboratory,DELL,United States,2025,Research,5332.72,6042.62,893.4,94416,Public
+292,NA5,Software Company,Lenovo,United States,2023,Industry,5313.16,10542,,268928,Private
+293,NA5A,Software Company,Lenovo,United States,2023,Industry,5313.16,10542,,268928,Private
+294,Berzelius,National Supercomputer Centre (NSC),Bull,Sweden,2021,Academic,5253,9636.48,,59520,Public
+295,CLAIX-2023 (GPU segment),Universitaet Aachen/RWTH - IT Center,NEC,Germany,2024,Academic,5238,9634.78,154.95,28704,Public
+296,"DiRAC, Tursa",University of Edinburgh,Bull,United Kingdom,2021,Academic,5228,8580,243.95,55552,Public
+297,SDSC Cosmos,UCSD/San Diego Supercomputer Center,HPE,United States,2025,Academic,5181,10414.5,99,42336,Public
+298,Nano4-b,National Center for High Performance Computing,ASUSTeK / Taiwan AI Cloud / Taiwan Mobile,Taiwan,2025,Research,5165,5615.4,164.16,26496,Public
+299,TX-GAIA (Green AI Accelerator),MIT Lincoln Laboratory Supercomputing Center,HPE,United States,2019,Academic,5161,6981.48,1436,88400,Public
+300,Rorqual (CPU),Calcul Québec/Compute Canada,DELL,Canada,2025,Academic,5142.7,5849,,131712,Public
+301,Dhabi Supercomputer,Technology Innovation Institute (TII),HPE,United Arab Emirates,2023,Research,5094,5841.02,138.94,39680,Public
+302,Tigris,Rochester Institute of Technology,Supermicro,United States,2026,Academic,5079,9267.2,132.87,31296,Public
+303,Topaze-gpu,Commissariat a l'Energie Atomique (CEA)/CCRT,Bull,France,2021,Research,5065,6226.32,,42000,Public
+304,Dardel CPU,KTH - Royal Institute of Technology,HPE,Sweden,2021,Academic,5055.33,5640.19,,156672,Public
+305,Athena,Cyfronet,Format,Poland,2021,Academic,5051,7709.18,,47616,Public
+306,Cardinal GPU Partition,Ohio Supercomputer Center,DELL,United States,2024,Academic,5038,7579.39,82.6,18960,Public
+307,,CUBOX,HPE,South Korea,2023,Research,4957,8136.48,,17520,Public
+308,BioHive-1,Recursion,Nvidia,United States,2021,Industry,4902,5709.44,,39680,Private
+309,Fran,Army Research Laboratory DoD Supercomputing Resource Center (ARL DSRC),HPE,United States,2025,Government,4871.2,6843.8,,151680,Public
+310,Joule 3.0,DOE/National Energy Technology Laboratory,Koi Computers,United States,2024,Research,4855.9,6107.13,,107648,Public
+311,Betzy,UNINETT Sigma2 AS,Bull,Norway,2020,Academic,4724.79,6193.15,,172032,Public
+312,Otus (GPU only),Universitaet Paderborn - PC2,Lenovo,Germany,2025,Academic,4659,7451.65,,19440,Public
+313,Derecho GPU partition,National Center for Atmospheric Research (NCAR),HPE,United States,2023,Research,4582,5044.54,169.03,39680,Public
+314,Tioga,DOE/NNSA/LLNL,HPE,United States,2022,Research,4548.21,5825.54,,30208,Public
+315,Peano,The Italian Institute of Artificial Intelligence (AI4I),HPE,Italy,2026,Research,4526,7609.7,,23776,Public
+316,Discoverer,Consortium Petascale Supercomputer Bulgaria,Bull,Bulgaria,2021,Academic,4518.87,5942,,144384,Public
+317,Jean Zay,CNRS/IDRIS-GENCI,HPE,France,2019,Academic,4478,7345.56,,93960,Public
+318,PARAM Rudra-103,Centre for Development of Advanced Computing (C-DAC),C-DAC,India,2026,Government,4475.32,7549.75,,98304,Public
+319,Space HPC,European Space Agency (ESRIN),HPE,Italy,2025,Research,4468,5422.5,105.97,16368,Public
+320,digital.uz,Ministry of Digital Technologies of the Republic of Uzbekistan,Nvidia,Uzbekistan,2026,Government,4448,5180.21,,20736,Public
+321,Wisteria/BDEC-01 (Aquarius),"Information Technology Center, The University of Tokyo",Fujitsu,Japan,2021,Academic,4425,7268.83,183.93,42120,Public
+322,Unaizah-4,Saudi Aramco,DELL,Saudi Arabia,2024,Industry,4424,10949.4,,23680,Private
+323,Grand Chariot 2,"Information Initiative Center, Hokkaido University",Fujitsu,Japan,2025,Academic,4381,6546.05,,14208,Public
+324,Atlas,Petróleo Brasileiro S.A,Bull,Brazil,2020,Industry,4376,8848.49,546.58,91936,Private
+325,Pegasus,"Center for Computational Sciences, University of Tsukuba",NEC,Japan,2023,Academic,4342,8133.84,130.41,27000,Public
+326,Advanced Computing System(PreE),Sugon,Sugon,China,2018,Vendor,4325,6134.17,380,163840,Private
+327,CRONOS,EDF,Bull,France,2020,Industry,4299.33,7136.87,1225.53,81600,Private
+328,Viper-CPU,Max-Planck-Gesellschaft MPI/IPP,Bull,Germany,2025,Research,4292.8,4799.69,784,97920,Public
+329,SNL/NNSA CTS-1 Manzano,Sandia National Laboratories,Penguin Computing,United States,2020,Research,4281,6628.15,960,71424,Public
+330,Olivia (CPU),Sigma2,HPE,Norway,2025,Academic,4250.4,4954.52,,64512,Public
+331,Cannon2-H200,Harvard University,Lenovo,United States,2025,Academic,4238,6595.2,91.61,15360,Public
+332,NA7A,Software Company,Lenovo,United States,2023,Industry,4229.11,8148.58,,207872,Private
+333,NA7,Software Company,Lenovo,United States,2023,Industry,4229.11,8148.58,,207872,Private
+334,NA2C,Software Company,Lenovo,United States,2022,Industry,4228.14,9313.08,,111936,Private
+335,NA2B,Software Company,Lenovo,United States,2022,Industry,4228.14,9313.08,,111936,Private
+336,NA2,Software Company,Lenovo,United States,2023,Industry,4228.14,9313.08,,111936,Private
+337,Berzelius2,National Supercomputer Centre (NSC),Bull,Sweden,2023,Academic,4214,5139.45,,33728,Public
+338,Noctua 2,Universitaet Paderborn - PC2,Bull,Germany,2022,Academic,4190.9,5298.59,868.74,135168,Public
+339,NA6B,Software Company,Lenovo,United States,2023,Industry,4155.8,9297.1,,111744,Private
+340,NA6A,Software Company,Lenovo,United States,2023,Industry,4155.8,9297.1,,111744,Private
+341,NA6,Software Company,Lenovo,United States,2023,Industry,4155.8,9297.1,,111744,Private
+342,,Research Institute,HPE,Japan,2019,Research,4128,5783.81,,70416,Public
+343,Cirrus,University of Edinburgh,HPE,United Kingdom,2025,Academic,4124.4,4967.42,319,70560,Public
+344,Alpha,Flatiron Institute - Simons Foundation,Lenovo,United States,2024,Academic,4099,4987.7,,7488,Public
+345,Raphael,Flatiron Institute - Simons Foundation,Lenovo,United States,2024,Academic,4090,5004.29,89.71,14976,Public
+346,JOLIOT-CURIE SKL,CEA/TGCC-GENCI,Bull,France,2017,Research,4065.55,6635.52,917,79488,Public
+347,NA12A,Software Company,Lenovo,United States,2023,Industry,4052.16,7355.8,,187648,Private
+348,NA12,Software Company,Lenovo,United States,2023,Industry,4052.16,7355.8,,187648,Private
+349,Warhawk,Air Force Research Laboratory,HPE,United States,2021,Government,4033.5,5404.67,,129920,Public
+350,Alex,Universitaet Erlangen - Regionales Rechenzentrum Erlangen,MEGWARE,Germany,2021,Academic,4030,6083.65,178.97,37696,Public
+351,Helios CPU,Cyfronet,HPE,Poland,2023,Academic,4020.27,4418.15,598.92,98304,Public
+352,Deucalion,FCT,Fujitsu,Portugal,2023,Research,4016.9,5013.5,371.72,78336,Public
+353,Raider,Air Force Research Laboratory,Penguin Computing,United States,2022,Government,4015.56,8664.78,,206304,Public
+354,DGX Saturn V,NVIDIA Corporation,Nvidia,United States,2018,Vendor,3998,7414.78,,87040,Private
+355,NA9B,Software Company,Lenovo,United States,2023,Industry,3960.21,7857.56,,200448,Private
+356,NA9A,Software Company,Lenovo,United States,2023,Industry,3960.21,7857.56,,200448,Private
+357,NA9,Software Company,Lenovo,United States,2023,Industry,3960.21,7857.56,,200448,Private
+358,NA9Z,Software Company,Lenovo,United States,2023,Industry,3960.21,7857.56,,200448,Private
+359,NA1,Software Company,Lenovo,United States,2023,Industry,3920.56,7496.29,,191232,Private
+360,Nautilus,Navy DSRC,Penguin Computing,United States,2022,Government,3897.5,8155,,191680,Public
+361,Spartan GPU Partitions,The University of Melbourne,DELL,Australia,2022,Academic,3863,4506.88,,50752,Public
+362,Gemini,Petróleo Brasileiro S.A,DELL,Brazil,2023,Industry,3861,6864,287,42240,Private
+363,SSC-24 Energy Module,Samsung Electronics,HPE,South Korea,2024,Industry,3824,4843.01,68.98,11200,Private
+364,VEGA HPC CPU,IZUM,Bull,Slovenia,2021,Research,3822,5367,,122880,Public
+365,Delta,NCSA,HPE,United States,2022,Academic,3812,8050.88,,49600,Public
+366,hotlum,Hewlett Packard Enterprise,HPE,France,2022,Vendor,3807.96,4576.05,,116736,Private
+367,,SAKURA Internet Inc. / Prunus Solutions Inc.,HPE,Japan,2019,Industry,3712,5365.09,,65208,Private
+368,Orion,Mississippi State University,DELL,United States,2019,Academic,3665.72,5419.01,,70560,Public
+369,IARA,SiDi,Nvidia,Brazil,2021,Research,3657,4130.4,,24800,Public
+370,,Shanghai Jiao Tong University,Lenovo,China,2021,Academic,3656.78,4941.41,,59392,Public
+371,Grete Phase 3,NHR@Göttingen,MEGWARE,Germany,2024,Academic,3647,6861.28,79.62,15600,Public
+372,NA10B,Software Company,Lenovo,United States,2023,Industry,3641.57,7225.34,,184320,Private
+373,NA10A,Software Company,Lenovo,United States,2023,Industry,3641.57,7225.34,,184320,Private
+374,NA10,Software Company,Lenovo,United States,2023,Industry,3641.57,7225.34,,184320,Private
+375,Joule 2.0,DOE/National Energy Technology Laboratory,HPE,United States,2018,Research,3608.62,5750.78,,86400,Public
+376,Snellius Phase 1 GPU,SURF,Lenovo,Netherlands,2022,Research,3603,6014.13,205.35,12960,Public
+377,Niagara,SciNet/University of Toronto/Compute Canada,Lenovo,Canada,2017,Research,3599.66,6253.06,919.42,80640,Public
+378,Fritz,Universitaet Erlangen - Regionales Rechenzentrum Erlangen,MEGWARE,Germany,2021,Academic,3578.03,5452.18,671.97,71424,Public
+379,Anvil,Purdue University,DELL,United States,2022,Academic,3563.1,4997.53,792,127488,Public
+380,NOBZ1,Software Company MBZ,Lenovo,Brazil,2022,Industry,3545.65,6967.3,,80640,Private
+381,AIC1,Software Company MIR,Lenovo,Ireland,2022,Industry,3545.65,6967.3,,80640,Private
+382,B1A,Software Company MUS,Lenovo,United States,2021,Industry,3545.65,6967.3,,80640,Private
+383,Geely Wise Star-Dubhe,Geely Auto Group,Lenovo,China,2023,Industry,3536.02,4063.23,,40960,Private
+384,Altair,PCSS Poznan,Huawei,Poland,2020,Academic,3533.61,5879.81,829,63360,Public
+385,Forerunner 1,National Center for High Performance Computing,ASUSTeK / ASUS Cloud / Taiwan Web Service Corporation,Taiwan,2023,Research,3532.92,3999.74,614.87,62496,Public
+386,Unizah-II,Saudi Aramco,HPE,Saudi Arabia,2020,Industry,3487.91,6844.8,,85560,Private
+387,Ohtaka,"The Institute for Solid State Physics, The University of Tokyo",DELL,Japan,2020,Research,3486.1,6881.28,,215040,Public
+388,BA1A,Service Provider B,Lenovo,China,2022,Industry,3476.28,6815.74,,81920,Private
+389,CARO,German Aerospace Center,NEC,Germany,2021,Research,3458.3,5586.94,,174592,Public
+390,davinci-1,Leonardo SpA,Bull,Italy,2020,Others,3449,6412.03,,38400,Other
+391,Tenaya,DOE/NNSA/LLNL,HPE,United States,2022,Research,3411.16,4369.15,,22656,Public
+392,SEAS H100,Harvard University,Lenovo,United States,2024,Academic,3375,4378.75,80.55,13104,Public
+393,Cedar (GPU),Simon Fraser University/Compute Canada,DELL,Canada,2020,Academic,3371,5834.4,310,67584,Public
+394,Molecular Simulator,Institute for Molecular Science,HPE,Japan,2023,Research,3340.29,4174.64,,106496,Public
+395,ASPIRE 2A (GPU Partition),National Supercomputing Centre Singapore,HPE,Singapore,2022,Research,3328,6483.88,,43648,Public
+396,NA4,Software Company,Lenovo,United States,2023,Industry,3320.05,7092.63,,85248,Private
+397,NA4A,Software Company,Lenovo,United States,2023,Industry,3320.05,7092.63,,85248,Private
+398,SEIRAN,"AI Technology Center, Tokyo University of Technology",Nvidia,Japan,2025,Academic,3315,3663.92,,15552,Public
+399,,Facebook,Self-made,United States,2017,Industry,3307,4896.51,349.5,60512,Private
+400,Topaze-cpu,Commissariat a l'Energie Atomique (CEA)/CCRT,Bull,France,2021,Research,3261.02,4335.21,,110592,Public
+401,Damson,AWE,Bull,United Kingdom,2017,Research,3243.41,3791.58,1134,113832,Public
+402,LLNL/NNSA CTS-1 MAGMA,Lawrence Livermore National Laboratory,Penguin Computing,United States,2019,Research,3241.24,4592.64,887,62400,Public
+403,NA13A,Software Company,Lenovo,United States,2023,Industry,3201.53,6121.47,,156160,Private
+404,NA13,Software Company,Lenovo,United States,2023,Industry,3201.53,6121.47,,156160,Private
+405,"Big Red 200, GPU Partition",Indiana University,HPE,United States,2021,Academic,3194,4006.14,,31744,Public
+406,Dream-AI,GIST SCENT,Inspur,South Korea,2022,Academic,3179,6418.18,,36960,Public
+407,UAlbany AI Supercomputer,University at Albany,Nvidia,United States,2024,Academic,3172,3854.59,,23808,Public
+408,Fênix,Petróleo Brasileiro S.A,Bull,Brazil,2019,Industry,3161,5371.78,389.76,60480,Private
+409,Toubkal,Mohammed VI Polytechnic University - African Supercomputing Centre,DELL,Morocco,2020,Academic,3158.11,5014.73,754.92,71232,Public
+410,,Software Company MUS,Lenovo,United States,2021,Industry,3151.69,6193.15,,71680,Private
+411,B5A,Software Company MUS,Lenovo,United States,2021,Industry,3151.69,6193.15,,71680,Private
+412,AID1,Software Company MIR,Lenovo,Ireland,2022,Industry,3151.68,6193.15,,71680,Private
+413,NOJP1,Software Company MJP,Lenovo,Japan,2022,Industry,3151.68,6193.15,,71680,Private
+414,NONY1,Software Company MNY,Lenovo,Norway,2022,Industry,3151.68,6193.15,,71680,Private
+415,NO6,Software Company MUS,Lenovo,United States,2022,Industry,3151.68,6193.15,,71680,Private
+416,Lichtenberg II (Phase 1),Technische Universitaet Darmstadt,MEGWARE,Germany,2020,Academic,3148.38,4352.41,690,59136,Public
+417,LiDO4-GPU Partition,TU  Dortmund,NEC/Lenovo,Germany,2026,Academic,3145,4556,59.8,1088,Public
+418,Vader,Hewlett Packard Enterprise,HPE,United States,2025,Vendor,3142,3484.53,53.94,8960,Private
+419,CLAIX-2023 (CPU segment),Universitaet Aachen/RWTH - IT Center,NEC,Germany,2024,Academic,3133.42,3812.66,676.45,57408,Public
+420,B2G,Software Company MNED,Lenovo,Netherlands,2022,Industry,3131.25,6193.15,,92160,Private
+421,A1C,Software Company MSG,Lenovo,Singapore,2021,Industry,3131.25,6193.15,,92160,Private
+422,A5A,Software Company MUS,Lenovo,United States,2021,Industry,3131.25,6193.15,,92160,Private
+423,A1A,Software Company MUS,Lenovo,United States,2021,Industry,3131.25,6193.15,,92160,Private
+424,A1A,Software Company MUS,Lenovo,United States,2021,Industry,3131.25,6193.15,,92160,Private
+425,NO4,Software Company MUS,Lenovo,United States,2022,Industry,3131.25,6193.15,,92160,Private
+426,NA8B,Software Company,Lenovo,United States,2023,Industry,3127.57,6996.79,,84096,Private
+427,NA8A,Software Company,Lenovo,United States,2023,Industry,3127.57,6996.79,,84096,Private
+428,NA8,Software Company,Lenovo,United States,2023,Industry,3127.57,6996.79,,84096,Private
+429,NA8,Software Company,Lenovo,United States,2023,Industry,3127.57,6996.79,,84096,Private
+430,NA8Z,Software Company,Lenovo,United States,2024,Industry,3127.57,6996.79,,84096,Private
+431,HoreKa-Teal,Karlsruher Institut für Technologie (KIT),Lenovo,Germany,2023,Academic,3123,5962,49.6,13616,Public
+432,LLNL CTS-2 Matrix,Lawrence Livermore National Laboratory,DELL,United States,2025,Research,3114,3503.36,84.3,12800,Public
+433,IronMan,Dell Technologies HPC & AI Innovation Lab,DELL,United States,2024,Vendor,3109,5271.04,,20096,Private
+434,Komondor,Governmental Information-Technology Development Agency (KIFÜ),HPE,Hungary,2022,Academic,3105,4508.49,110.24,27776,Public
+435,,ASEAN-Korea HPC Facility in Indonesia,Lenovo,Indonesia,2026,Research,3101,4288,,9472,Public
+436,Lichtenberg II (Phase 2),Technische Universitaet Darmstadt,Lenovo,Germany,2023,Academic,3098.52,4025.55,,59904,Public
+437,VEGA HPC GPU,IZUM,Bull,Slovenia,2021,Research,3096,4680,,33600,Public
+438,,Service Provider T,Lenovo,China,2019,Industry,3088.64,6080,,76000,Private
+439,Alps,Swiss National Supercomputing Centre (CSCS),HPE,Switzerland,2020,Research,3088.6,4608,637.95,128000,Public
+440,Medusa,Dell Technologies HPC & AI Innovation Lab,DELL,United States,2024,Vendor,3083,4333.85,,9216,Private
+441,Hera,NOAA Environmental Security Computer Center,HPE,United States,2019,Research,3080.85,4884.48,,63840,Public
+442,Numerical Materials Simulator,National Institute for Materials Science,DELL,Japan,2026,Research,3075.28,3112.96,,51200,Public
+443,Jean Zay,CNRS/IDRIS-GENCI,HPE,France,2019,Academic,3054.35,4867.2,,61120,Public
+444,Barnard,"TU Dresden, ZIH",Bull,Germany,2023,Academic,3047.36,4046.85,535.7,65520,Public
+445,KAIROS,CALMIP / University of Toulouse - CNRS,Bull,France,2025,Academic,3046,3421.18,46.18,13056,Public
+446,Palmetto2,Clemson University,DELL,United States,2022,Academic,3011,4580.12,,52080,Public
+447,ARF,TRUBA,Lenovo,Turkey,2023,Government,3003.29,3555.33,,55552,Public
+448,NO3,Software Company MUS,Lenovo,United States,2022,Industry,3000.78,5935.1,,88320,Private
+449,,Service Provider T,Lenovo,China,2019,Industry,2994.04,5888,,73600,Private
+450,,Manufacturing Industry (A),xFusion,Norway,2025,Industry,2993.95,4423.68,,51200,Private
+451,AMD Ouranos,Atos,Bull,France,2024,Vendor,2988,3974.8,48.14,16632,Private
+452,HHH1,Service Provider T,Lenovo,China,2021,Industry,2975.29,6451.2,,80640,Private
+453,III1,Service Provider T,Lenovo,China,2021,Industry,2975.08,6374.4,,79680,Private
+454,Tetralith,National Supercomputer Centre (NSC),ClusterVision / Hammer,Sweden,2018,Academic,2969.19,4335.21,,64512,Public
+455,,Volkswagen AG at Green Mountain A/S,NEC,Norway,2022,Industry,2955,4456.86,,53568,Private
+456,JJJ1,Service Provider T,Lenovo,China,2021,Industry,2933.42,6297.6,,78720,Private
+457,,Service Provider T,Lenovo,China,2019,Industry,2931.84,5760,,72000,Private
+458,A9A,Software Company MUS,Lenovo,United States,2021,Industry,2922.5,5780.28,,86016,Private
+459,A6A,Software Company MUS,Lenovo,United States,2021,Industry,2922.5,5780.28,,86016,Private
+460,Jean,Army Research Laboratory DoD Supercomputing Resource Center (ARL DSRC),Liqid,United States,2020,Government,2917.56,4069.79,,55296,Public
+461,Castner,Hewlett Packard Enterprise,HPE,United States,2025,Vendor,2917,3537.48,,13056,Private
+462,Terabit HPC Bubble,INFN-CNAF,Lenovo,Italy,2025,Research,2911,5360,,14400,Public
+463,KKK1,Service Provider T,Lenovo,China,2021,Industry,2910.09,6220.8,,77760,Private
+464,,Central South University,Inspur,China,2020,Academic,2889.41,4709.38,,49056,Public
+465,LLL1,Service Provider T,Lenovo,China,2021,Industry,2882.76,6144,,76800,Private
+466,Henri,Flatiron Institute,Lenovo,United States,2022,Research,2882,3579.13,44.07,8288,Public
+467,,Service Provider K,Lenovo,China,2021,Industry,2873.41,6289.92,,93600,Private
+468,A8A,Software Company MUS,Lenovo,United States,2021,Industry,2870.31,5677.06,,84480,Private
+469,A8A,Software Company MUS,Lenovo,United States,2021,Industry,2870.31,5677.06,,84480,Private
+470,A3A,Software Company MUS,Lenovo,United States,2021,Industry,2870.31,5677.06,,84480,Private
+471,A14A,Software Company MUS,Lenovo,United States,2022,Industry,2870.31,5677.06,,84480,Private
+472,A14A,Software Company MUS,Lenovo,United States,2022,Industry,2870.31,5677.06,,84480,Private
+473,,Financial Services P,Lenovo,China,2020,Industry,2867.64,6327.55,,94160,Private
+474,MMM1,Service Provider T,Lenovo,China,2021,Industry,2857.04,6067.2,,75840,Private
+475,"Karolina, CPU partition","IT4Innovations National Supercomputing Center, VSB-Technical University of Ostrava",HPE,Czechia,2021,Academic,2837.4,3833.86,502.7,92160,Public
+476,NNN1,Service Provider T,Lenovo,China,2021,Industry,2834.05,5990.4,,74880,Private
+477,Freeman,ERDC DSRC,HPE,United States,2020,Research,2829,3670.43,,79104,Public
+478,,"Tohoku University, Institute of Fluid Science",HPE,Japan,2024,Academic,2817.75,3182.59,,49728,Public
+479,OOO1,Service Provider T,Lenovo,China,2021,Industry,2804.41,5913.6,,73920,Private
+480,,Service Provider T,Lenovo,China,2019,Industry,2779.84,5440,,68000,Private
+481,Lucia,Cenaero,HPE,Belgium,2022,Industry,2776,3966.56,103.84,23200,Private
+482,,Volkswagen AG at Green Mountain A/S,NEC,Norway,2023,Industry,2775.4,3475.97,,59520,Private
+483,,Service Provider T,Lenovo,China,2021,Industry,2774.23,5836.8,,72960,Private
+484,Spartan3,Atos,Bull,France,2021,Vendor,2751,3612.67,,92160,Private
+485,ZZ2,Service Provider T,Lenovo,China,2020,Industry,2749.28,5376,,67200,Private
+486,,Service Provider T,Lenovo,China,2019,Industry,2746.3,5312,,66400,Private
+487,,Government,Lenovo,China,2019,Government,2744.84,5354.88,,59976,Public
+488,,Service Provider T,Lenovo,China,2021,Industry,2742.91,5760,,72000,Private
+489,VSC-4,Vienna Scientific Cluster,Lenovo,Austria,2019,Academic,2726.08,3761.66,,37920,Public
+490,SNL/NNSA CTS-1 Attaway,Sandia National Laboratories,Penguin Computing,United States,2019,Research,2724.52,3894.91,750,52920,Public
+491,ZZ3,Service Provider T,Lenovo,China,2020,Industry,2721.33,5312,,66400,Private
+492,,Service Provider T,Lenovo,China,2021,Industry,2710.88,5683.2,,71040,Private
+493,Arka AI/ML,Indian Institute of Tropical Meteorology,Bull,India,2024,Research,2703,3746.85,,8176,Public
+494,ZZ4,Service Provider T,Lenovo,China,2020,Industry,2691.69,5248,,65600,Private
+495,,Service Provider T,Lenovo,China,2021,Industry,2677.05,5606.4,,70080,Private
+496,Banting,Shared Services Canada,HPE,Canada,2019,Government,2676.74,4085.76,,53200,Public
+497,Hypercluster,Microsoft Research,Nvidia,United States,2019,Research,2666,4219.09,,47808,Public
+498,A14A,Software Company MCA,Lenovo,Canada,2022,Industry,2661.56,5264.18,,78336,Private
+499,NO2,Software Company MUS,Lenovo,United States,2022,Industry,2661.56,5264.18,,78336,Private
+500,ZZ5,Service Provider T,Lenovo,China,2020,Industry,2661.46,5184,,64800,Private
