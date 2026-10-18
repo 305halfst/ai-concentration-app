@@ -29,11 +29,11 @@ def build_stacked(df: pd.DataFrame) -> alt.LayerChart:
     long["show"] = long.apply(lambda r: f"{r['segment']} {r['share']:.1f}%" if r["share"] >= 15
                               else (f"{r['share']:.1f}" if r["share"] >= 3.4 else ""), axis=1)
     names = [SEGMENT_NAME[s] for s in SEGMENT_ORDER]
-    y = alt.Y("measure:N", sort=list(MEASURES.values()), title=None, axis=alt.Axis(labelFontSize=13, labelLimit=220))
+    y = alt.Y("measure:N", sort=list(MEASURES.values()), title="Measure", axis=alt.Axis(labelFontSize=13, labelLimit=220))
     bars = alt.Chart(long).mark_bar(height=50, stroke="#FFFFFF", strokeWidth=1.5).encode(
         y=y, x=alt.X("share:Q", stack="normalize", title="Share of the TOP500 list (100%)", axis=alt.Axis(format="%")),
         order=alt.Order("rank:Q"),
-        color=alt.Color("who:N", title=None, sort=names, scale=alt.Scale(domain=names, range=[SEGMENT_COLOUR[s] for s in SEGMENT_ORDER]),
+        color=alt.Color("who:N", title="Type of organisation", sort=names, scale=alt.Scale(domain=names, range=[SEGMENT_COLOUR[s] for s in SEGMENT_ORDER]),
                         legend=alt.Legend(columns=3)))
     text = (alt.Chart(long)
             .transform_stack(stack="share", groupby=["measure"], sort=[alt.SortField("rank")], as_=["x0", "x1"], offset="normalize")
@@ -51,10 +51,10 @@ def build_paired(df: pd.DataFrame) -> alt.LayerChart:
     long["label"] = long["share"].map(lambda v: f"{v:.1f}%")
     order = [SEGMENT_NAME[s] for s in df.sort_values("rmax_share_pct", ascending=False)["segment"]]
     base = alt.Chart(long).encode(
-        y=alt.Y("who:N", sort=order, title=None, axis=alt.Axis(labelLimit=240)),
+        y=alt.Y("who:N", sort=order, title="Type of organisation", axis=alt.Axis(labelLimit=240)),
         yOffset=alt.YOffset("measure:N", sort=list(MEASURES.values())),
-        x=alt.X("share:Q", title="% of the TOP500 list", scale=alt.Scale(domain=[0, 70])))
-    bars = base.mark_bar(height=13).encode(color=alt.Color("measure:N", title=None, sort=list(MEASURES.values()),
+        x=alt.X("share:Q", title="Share of the TOP500 list (%)", scale=alt.Scale(domain=[0, 70])))
+    bars = base.mark_bar(height=13).encode(color=alt.Color("measure:N", title="Measure", sort=list(MEASURES.values()),
                                                            scale=alt.Scale(range=[LIGHT_PUBLIC, PUBLIC])))
     return (bars + base.mark_text(align="left", dx=4, fontSize=12, color=INK).encode(text="label:N")).properties(height=330)
 
@@ -64,6 +64,8 @@ def texts(df: pd.DataFrame) -> dict[str, str]:
     public = df[df["sector_group"] == "Public"][list(MEASURES)].sum()
     return {
         "title": "1 · Who our audience is",
+        "caption": ("Chart A. How the 500 systems on the TOP500 list (June 2026) split by type of organisation: by number of "
+                    "machines (top bar) and by combined Rmax (bottom bar). Units: % of the whole list."),
         "lead": (
             "The funder serves **university researchers**. To see where they stand among the world's largest computers, we start "
             "with the TOP500, a twice-yearly list of the 500 fastest supercomputers (June 2026 edition). Every system on the list "
@@ -75,7 +77,11 @@ def texts(df: pd.DataFrame) -> dict[str, str]:
         "read": (
             "**How to read the two bars**\n\n"
             "- **Share of systems:** how many of the 500 machines each type of organisation runs, divided by 500. Every machine counts once, from the smallest (2.7 PFlop/s) to the largest (2,198 PFlop/s).\n"
-            "- **Share of compute (Rmax):** each group's combined Rmax, the sustained speed a machine reaches on the Linpack (HPL) benchmark, divided by the list total of 18.7 million TFlop/s. Big machines weigh more."
+            "- **Share of compute (Rmax):** each group's combined Rmax, the sustained speed a machine reaches on the Linpack (HPL) benchmark, divided by the list total of 18.7 million TFlop/s. Big machines weigh more.\n\n"
+            + "Blocks too thin to label inside the bars: "
+            + "; ".join(f"{SEGMENT_NAME[r.segment]} {getattr(r, c):.1f}% of {'systems' if c == 'system_share_pct' else 'compute'}"
+                        for c in MEASURES for r in df.itertuples() if getattr(r, c) < 3.4)
+            + ". Every value is also printed in the paired-bars view."
         ),
         "after": (
             f"Universities run **{a.loc['Academic', 'system_share_pct']:.1f}% of the machines but only "

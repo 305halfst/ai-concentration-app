@@ -41,10 +41,11 @@ def load(name: str) -> pd.DataFrame:
     return read(name)
 
 
-def chart_card(letter: str, family: str, draw) -> None:
-    """Bordered card holding one member's chart: eyebrow, controls and chart are drawn by `draw`."""
+def chart_card(letter: str, family: str, caption: str, draw) -> None:
+    """Bordered card holding one member's chart: eyebrow, caption stating what it shows, then controls and chart."""
     with st.container(border=True, key=f"chart_{letter.lower()}"):
         st.markdown(f'<p class="eyebrow">Chart {letter} · {family} · owner: {OWNERS[letter]}</p>', unsafe_allow_html=True)
+        md(f"**{caption}**")
         draw()
 
 
@@ -67,6 +68,10 @@ segments, owners, systems = load(A.FILE), load(B.FILE), load(C.FILE)
 st.markdown('<p class="eyebrow">36104 · A3 · data narrative</p>', unsafe_allow_html=True)
 st.title(page.TITLE)
 md(page.INTRO)
+for column, (label, value, note) in zip(st.columns(3), page.headline(segments, owners)):
+    column.metric(label, value)
+    column.caption(note.replace("$", "\\$"))
+st.caption(page.REFRESH)
 with st.container(border=True):
     st.markdown("**On this page**  \n" + "  \n".join(f"[{name}](#{anchor})" for anchor, name in page.CONTENTS))
 st.markdown(f'<div class="answer">{page.ANSWER.replace("**Short answer:**", "<b>Short answer:</b>")}</div>', unsafe_allow_html=True)
@@ -85,7 +90,7 @@ def draw_a() -> None:
     st.download_button("Download chart A data (CSV)", segments.to_csv(index=False), "chart_a_top500_by_segment.csv", key="a_download")
 
 
-chart_card("A", "Part-to-whole · 100% stacked bars", draw_a)
+chart_card("A", "Part-to-whole · 100% stacked bars", ta["caption"], draw_a)
 md(ta["after"])
 bridge(ta["bridge"])
 
@@ -105,7 +110,7 @@ def draw_c() -> None:
     st.download_button("Download chart C data (CSV)", rows.to_csv(index=False), "chart_c_top500_systems.csv", key="c_download")
 
 
-chart_card("C", "Distribution · machines by size band", draw_c)
+chart_card("C", "Distribution · machines by size band", tc["caption"], draw_c)
 md(tc["after"])
 bridge(tc["bridge"])
 
@@ -127,7 +132,7 @@ def draw_d() -> None:
                        "chart_d_rmax_by_country.csv", key="d_download")
 
 
-chart_card("D", "Spatial · choropleth", draw_d)
+chart_card("D", "Spatial · choropleth", td["caption"], draw_d)
 md(D.texts(systems, st.session_state.get("d_group", D.GROUPS[0]))["after"])
 bridge(td["bridge"])
 
@@ -150,7 +155,7 @@ def draw_b() -> None:
     st.download_button("Download chart B data (CSV)", owners.to_csv(index=False), "chart_b_datacenters_by_owner.csv", key="b_download")
 
 
-chart_card("B", "Ranking · sorted horizontal bars", draw_b)
+chart_card("B", "Ranking · sorted horizontal bars", tb["caption"], draw_b)
 md(B.texts(owners, st.session_state.get("b_top_n", 10), st.session_state.get("b_country", "Australia"))["after"])
 bridge(tb["bridge"])
 
@@ -159,5 +164,7 @@ st.header("4 · What the data cannot show", anchor="section-4")
 md(page.LIMITS)
 
 st.header("Sources", anchor="sources")
-st.dataframe(pd.DataFrame(page.SOURCES, columns=page.SOURCE_COLUMNS), hide_index=True, width="stretch")
+for app_file, holds, raw, publisher, licence, md5 in page.SOURCES:
+    md(f"- **{app_file}** ({holds}). Raw file: `data/sources/{raw}` · {publisher} · Licence: {licence} · MD5 `{md5}`")
 st.caption(page.SOURCE_NOTE)
+st.markdown(f"**{page.REFRESH_SHORT}**")

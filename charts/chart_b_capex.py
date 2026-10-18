@@ -42,10 +42,11 @@ def build(df: pd.DataFrame, top_n: int, focus: str) -> alt.LayerChart:
                             + " · " + shown["country"].str.replace("|", ", ", regex=False))
     groups = [f"Has a site in {focus}", "Five largest named owners", "Other owners", "Owner not identified"]
     base = alt.Chart(shown).encode(
-        y=alt.Y("owner_label:N", sort=list(shown["owner_label"]), title=None, axis=alt.Axis(labelLimit=320)),
+        y=alt.Y("owner_label:N", sort=list(shown["owner_label"]), title="Owner (#rank · countries)",
+                axis=alt.Axis(labelLimit=320, titleAngle=0, titleAlign="right", titleBaseline="bottom", titleX=-6, titleY=-6)),
         x=alt.X("capital_cost_2025usd_bn:Q", title="Capital cost (billions of 2025 US dollars)", scale=alt.Scale(domain=[0, 135])))
     bars = base.mark_bar(height=16).encode(
-        color=alt.Color("group:N", title=None, scale=alt.Scale(domain=groups, range=[TEAL, PRIVATE, "#E8B98A", OTHER])))
+        color=alt.Color("group:N", title="Owner group", scale=alt.Scale(domain=groups, range=[TEAL, PRIVATE, "#E8B98A", OTHER])))
     labels = base.mark_text(align="left", dx=4, fontSize=12, color=INK).encode(text="label:N")
     return (bars + labels).properties(height=max(160, 26 * len(shown)))
 
@@ -64,6 +65,8 @@ def texts(df: pd.DataFrame, top_n: int, focus: str) -> dict[str, str]:
                   if len(rows) else f"No owner with a listed cost has a site in {focus}.")
     return {
         "title": "3 · Who is paying for frontier AI data centres",
+        "caption": ("Chart B. Estimated capital cost of the AI data centres in Epoch AI's October 2026 update, summed by owner. "
+                    "Units: billions of 2025 US dollars."),
         "lead": (
             f"Epoch AI tracks the largest data centres built for AI, with each site's owner, location and estimated capital cost. "
             f"Its October 2026 update covers {int(df['n_datacenters'].sum())} sites with a combined cost of **${total:.1f}B** "
@@ -78,8 +81,9 @@ def texts(df: pd.DataFrame, top_n: int, focus: str) -> dict[str, str]:
         ),
         "after": (
             f"Google tops the ranking at **${google:.1f}B**. The five largest named owners (Google, Meta, Amazon, Microsoft and "
-            f"SpaceXAI) hold **{big_five / total * 100:.1f}%** of all spending, and almost all of their sites are in the United States. "
-            f"No university or public research body appears among the owners. {focus_line}"
+            f"SpaceXAI) hold **{big_five / total * 100:.1f}%** of all spending. All five list sites in the United States; only "
+            f"Google also lists one other country (the United Kingdom). "
+            f"No university or public research body appears among the named owners. {focus_line}"
         ),
         "bridge": (
             "Read together, the charts say that measured supercomputing is still largely public, but it sits in a few national-lab "

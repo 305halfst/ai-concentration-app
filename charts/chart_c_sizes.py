@@ -38,7 +38,7 @@ def build(df: pd.DataFrame, segments: list[str]) -> alt.LayerChart:
     base = alt.Chart(counts).encode(
         x=alt.X("band:N", sort=BAND_NAMES, title="Machine size (Rmax, PFlop/s)",
                 axis=alt.Axis(orient="top", labelAngle=0, labelLimit=170)),
-        y=alt.Y("row:N", sort=rows, title=None, axis=alt.Axis(labelLimit=320)))
+        y=alt.Y("row:N", sort=rows, title="Type of organisation", axis=alt.Axis(labelLimit=320, titlePadding=18)))
     cells = base.mark_rect(stroke="#FFFFFF", strokeWidth=2).encode(
         color=alt.Color("machines:Q", scale=alt.Scale(scheme="blues", domainMin=0), legend=None))
     text = base.mark_text(fontSize=14, fontWeight=600).encode(
@@ -52,6 +52,8 @@ def texts(df: pd.DataFrame, segments: list[str]) -> dict[str, str]:
     uni_total = c.loc["Academic"].sum()
     return {
         "title": "Why universities hold so little of the compute",
+        "caption": ("Chart C. Number of TOP500 machines (June 2026 list) in each size band, by type of organisation. "
+                    "Size is Rmax in PFlop/s; each cell is a count of machines."),
         "lead": (
             "Chart A showed universities running a quarter of the machines but holding a tenth of the compute. The reason is "
             "machine size. The table sorts all 500 systems into five size bands by Rmax and counts how many each kind of "

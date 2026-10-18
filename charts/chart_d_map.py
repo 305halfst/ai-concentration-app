@@ -35,7 +35,7 @@ def build_map(table: pd.DataFrame, shapes: alt.Data) -> alt.Chart:
             .transform_lookup(lookup="properties.name", from_=alt.LookupData(table, key="map_name", fields=["bin"]))
             .transform_calculate(bin=f"datum.bin ? datum.bin : '{NO_DATA}'")
             .transform_filter("datum.properties.name != 'Antarctica'")
-            .encode(color=alt.Color("bin:N", title="Share of Rmax", sort=domain,
+            .encode(color=alt.Color("bin:N", title="Share of Rmax (%)", sort=domain,
                                     scale=alt.Scale(domain=domain, range=BLUES + ["#FFFFFF"]),
                                     legend=alt.Legend(orient="bottom-left", direction="vertical", fillColor="#FFFFFF", padding=8,
                                                       strokeColor=INK, symbolType="square", symbolStrokeColor="#6B737B",
@@ -45,8 +45,8 @@ def build_map(table: pd.DataFrame, shapes: alt.Data) -> alt.Chart:
 
 def build_bar(table: pd.DataFrame) -> alt.LayerChart:
     top = table.head(10).assign(label=lambda f: f["share_pct"].map(lambda v: f"{v:.1f}%"))
-    base = alt.Chart(top).encode(y=alt.Y("country:N", sort=list(top["country"]), title=None),
-                                 x=alt.X("share_pct:Q", title="% of Rmax", scale=alt.Scale(domain=[0, max(45, top["share_pct"].max() * 1.15)])))
+    base = alt.Chart(top).encode(y=alt.Y("country:N", sort=list(top["country"]), title="Country"),
+                                 x=alt.X("share_pct:Q", title="Share of the selected systems' Rmax (%)", scale=alt.Scale(domain=[0, max(45, top["share_pct"].max() * 1.15)])))
     return (base.mark_bar(height=14, color=PUBLIC) + base.mark_text(align="left", dx=4, fontSize=12, color=INK).encode(text="label:N")
             ).properties(height=280)
 
@@ -59,6 +59,8 @@ def texts(df: pd.DataFrame, group: str) -> dict[str, str]:
     top3 = ", ".join(lead3[:-1]) + " and " + lead3[-1]
     return {
         "title": "2 · Where the compute sits",
+        "caption": ("Chart D. Share of the combined Rmax of TOP500 systems (June 2026 list) located in each country, for the "
+                    "selected systems; the bar lists the ten largest shares. Units: % of the selected systems' Rmax."),
         "lead": (
             "The map shades each country by its share of the TOP500's combined Rmax; white countries have no system on the list. "
             "The bar below it labels the ten largest shares, because small countries such as Singapore are too small to see on a "

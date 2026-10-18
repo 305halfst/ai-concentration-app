@@ -18,15 +18,36 @@ CONTENTS = [
 ]
 
 ANSWER = (
-    "**Short answer:** building frontier-scale AI data centres is already a big-tech game. Public supercomputing is not, but it "
-    "was not built for AI training, and universities hold only a small part of it. For the funder, the question is less whether "
-    "public compute exists than whether academics can reach compute that fits AI work."
+    "**Short answer:** building frontier-scale AI data centres is already a big-tech game: five companies account for most of "
+    "the spending, and no university or public research body appears among the named owners. Measured supercomputing is not: the public sector "
+    "holds most of the TOP500's compute. But the TOP500 measures Linpack speed, not AI training, and universities hold only a "
+    "small part of it. For the funder, the question is less whether public compute exists than whether academics can reach it."
 )
+
+REFRESH = ("Data: TOP500 list, June 2026 · Epoch AI data centres, October 2026 update · "
+           "last data refresh 11/10/2026 (both raw files downloaded that day). Sources are listed at the end of the page.")
+
+
+def headline(segments, owners) -> list[tuple[str, str, str]]:
+    """Three facts about the whole of both datasets, shown on the opening screen."""
+    a = segments.set_index("segment")
+    public = segments[segments["sector_group"] == "Public"]["rmax_share_pct"].sum()
+    total = owners["capital_cost_2025usd_bn"].sum()
+    big5 = owners[owners["owner"].isin(["Google", "Meta", "Amazon", "Microsoft", "SpaceXAI"])]["capital_cost_2025usd_bn"].sum()
+    return [
+        ("Public sector's share of TOP500 compute", f"{public:.1f}%",
+         "Universities, research labs and government; % of the list's combined Rmax, June 2026"),
+        ("Universities' share of TOP500 compute", f"{a.loc['Academic', 'rmax_share_pct']:.1f}%",
+         f"versus {a.loc['Academic', 'system_share_pct']:.1f}% of the 500 machines, June 2026"),
+        ("Five owners' share of AI data-centre spending", f"{big5 / total * 100:.1f}%",
+         f"of ${total:.1f}B (2025 US dollars) across {int(owners['n_datacenters'].sum())} sites, Epoch AI, October 2026"),
+    ]
+
 
 LIMITS = (
     "- **TOP500 measures Linpack (HPL) performance, not AI-training capacity.** A high TOP500 position does not mean a facility can train frontier models.\n"
     "- **China has under-reported to TOP500 since 2023**, so non-Western public compute is undercounted.\n"
-    "- **Epoch covers only 93 data centres.** Owner means operator, not model developer (Anthropic trains on Amazon and SpaceXAI sites), and 9 sites (11.8% of capex) have no known owner.\n"
+    "- **Epoch covers only 93 data centres.** Owner means the operator of a site, not the developer whose models are trained there, and 9 sites (11.8% of capex) have no known owner.\n"
     "- **Both datasets are snapshots** (TOP500 June 2026, Epoch October 2026), not trends."
 )
 
@@ -38,6 +59,7 @@ SOURCES = [
     ["datacenters_by_owner_country.csv", "20 rows, one per data-centre owner", "epoch/data_centers.csv",
      "Epoch AI, ‘Data on AI data centers’ (Oct 2026)", "CC BY 4.0", "ea246ddea0bf7f561f99c1639662be23"],
 ]
+REFRESH_SHORT = "Last data refresh: 11/10/2026 (TOP500 June 2026 list; Epoch AI October 2026 update)."
 SOURCE_COLUMNS = ["App file (data/processed/)", "What it holds", "Raw file (data/sources/)", "Publisher", "Licence", "Raw MD5"]
 SOURCE_NOTE = (
     "Both raw files were downloaded on 11/10/2026 and left unedited. `python data/build_processed.py` checks both MD5s and "

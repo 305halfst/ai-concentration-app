@@ -1,0 +1,14 @@
+# AI provenance matrix
+
+One row per substantive AI use. Every member owns at least one row. Each verification names a check that could have
+failed, and the outcome says what happened.
+
+| Artefact | Who | Tool | What was asked | What came back | How it was verified (a check that could have failed) | Outcome |
+|---|---|---|---|---|---|---|
+| `data/build_processed.py` + `data/processed/` | Kimkim | Claude | Clean the raw TOP500 and Epoch files into the tables the app reads | Cleaning script, processed CSVs and data dictionary section | Recomputed 59.88% (TOP500 Research share of Rmax) and $524.0B (Epoch total capital cost) in Excel from the raw files; the script asserts the source MD5s and primary-key uniqueness | Matched; kept. One bug found and fixed (the country lookup used a de-duplicated list) |
+| `app.py` + `charts/` (page structure, charts A–D) | Kimkim | Claude | Build the Streamlit narrative from the three processed files, in the Session 2 page order, with no hover | App code, chart modules and an HTML preview | <Name the check you ran yourself, e.g. "Opened fig4_top500_by_segment.csv and summed rmax_share_pct for the Public rows: 71.26, which the app shows as 71.3%"; "Cleared the Segments filter and confirmed a message, not an error, appeared"> | <Matched / changed: e.g. "C changed from a strip plot to a size-band heatmap after review"> |
+| <artefact> | <Member B> | <tool> | <what was asked> | <what came back> | <a check that could have failed> | <outcome> |
+| <artefact> | <Member C> | <tool> | <what was asked> | <what came back> | <a check that could have failed> | <outcome> |
+| <artefact> | <Member D> | <tool> | <what was asked> | <what came back> | <a check that could have failed> | <outcome> |
+
+Add a row for any other tool the group used (for example, the dataset search in Part 1).
