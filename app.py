@@ -26,7 +26,7 @@ OWNERS = {"A": "Member A", "B": "Member B", "C": "Member C", "D": "Member D"}
 st.set_page_config(page_title="Is frontier AI big tech only?", page_icon=":bar_chart:", layout="centered")
 st.markdown(
     """<style>
-    .block-container {max-width: 980px; padding-top: 2rem;}
+    .block-container {max-width: 980px; padding-top: 4rem;}
     .eyebrow {font: 500 12px/1.2 'IBM Plex Mono', monospace; letter-spacing: .06em; text-transform: uppercase; color: #1F4E8C; margin: 0;}
     .answer {border-left: 4px solid #1F4E8C; background: #FFFFFF; padding: 12px 18px; border-radius: 6px;}
     .readbox {background: #F3F4F5; border-radius: 8px; padding: 10px 16px; font-size: 14px;}
