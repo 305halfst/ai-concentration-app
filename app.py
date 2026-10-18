@@ -64,14 +64,10 @@ segments, owners, systems = load(A.FILE), load(B.FILE), load(C.FILE)
 # ---------------------------------------------------------------- opening
 st.markdown('<p class="eyebrow">36104 · A3 · data narrative</p>', unsafe_allow_html=True)
 st.title(page.TITLE)
-md(page.INTRO)
-for column, (label, value, note) in zip(st.columns(3), page.headline(segments, owners)):
-    column.metric(label, value)
-    column.caption(note.replace("$", "\\$"))
-st.caption(page.REFRESH)
 with st.container(border=True):
     st.markdown("**On this page**  \n" + "  \n".join(f"[{name}](#{anchor})" for anchor, name in page.CONTENTS))
-st.markdown(f'<div class="answer">{page.ANSWER.replace("**Short answer:**", "<b>Short answer:</b>")}</div>', unsafe_allow_html=True)
+with st.container(border=True, key="answer"):
+    md(page.answer(segments, systems, owners))
 
 # ---------------------------------------------------------------- section 1: A then C
 ta = A.texts(segments, systems)

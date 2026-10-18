@@ -50,8 +50,8 @@ python3 -m venv .venv
 
 | Path | Purpose |
 |---|---|
-| `app.py` | The page, in the course-session order: purpose, headline facts, "On this page", short answer, sections 1–4, sources |
-| `charts/page.py` | Title, introduction, headline facts, contents, short answer, limitations, sources |
+| `app.py` | The page, in the course-session order: "On this page", short answer, sections 1–4, sources |
+| `charts/page.py` | Title, contents, short answer, limitations, sources |
 | `charts/chart_a_segments.py` | **A** (section 1) · 100% stacked bars, share of systems vs share of compute (Rmax) by segment; toggle to paired bars |
 | `charts/chart_c_sizes.py` | **C** (section 1) · heatmap of machines per size band by segment; *Segments* filter; an empty selection shows a message |
 | `charts/chart_d_map.py` | **D** (section 2) · choropleth of Rmax share by country, plus a labelled top-10 bar; *Systems included* toggle |
