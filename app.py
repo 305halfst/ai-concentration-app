@@ -20,9 +20,6 @@ from charts import chart_d_map as D
 from charts import page
 from charts.common import SEGMENT_NAME, SEGMENT_ORDER, WORLD_URL, read, style
 
-# Fill in the member who owns each chart (shown above the chart).
-OWNERS = {"A": "Member A", "B": "Member B", "C": "Member C", "D": "Member D"}
-
 st.set_page_config(page_title="Is frontier AI big tech only?", page_icon=":bar_chart:", layout="centered")
 st.markdown(
     """<style>
@@ -44,7 +41,7 @@ def load(name: str) -> pd.DataFrame:
 def chart_card(letter: str, family: str, caption: str, draw) -> None:
     """Bordered card holding one member's chart: eyebrow, caption stating what it shows, then controls and chart."""
     with st.container(border=True, key=f"chart_{letter.lower()}"):
-        st.markdown(f'<p class="eyebrow">Chart {letter} · {family} · owner: {OWNERS[letter]}</p>', unsafe_allow_html=True)
+        st.markdown(f'<p class="eyebrow">Chart {letter} · {family}</p>', unsafe_allow_html=True)
         md(f"**{caption}**")
         draw()
 
@@ -77,7 +74,7 @@ with st.container(border=True):
 st.markdown(f'<div class="answer">{page.ANSWER.replace("**Short answer:**", "<b>Short answer:</b>")}</div>', unsafe_allow_html=True)
 
 # ---------------------------------------------------------------- section 1: A then C
-ta = A.texts(segments)
+ta = A.texts(segments, systems)
 st.header(ta["title"], anchor="section-1")
 md(ta["lead"])
 

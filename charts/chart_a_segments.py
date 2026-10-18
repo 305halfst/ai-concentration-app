@@ -59,20 +59,49 @@ def build_paired(df: pd.DataFrame) -> alt.LayerChart:
     return (bars + base.mark_text(align="left", dx=4, fontSize=12, color=INK).encode(text="label:N")).properties(height=330)
 
 
-def texts(df: pd.DataFrame) -> dict[str, str]:
+WHY = [
+    ("Academic", "Universities (our audience)",
+     "academic researchers and PhD students, the people the funder would serve directly."),
+    ("Research", "Public research labs",
+     "national labs and research-computing centres that already run shared machines, so the likely host or partner for any shared compute."),
+    ("Government", "Government",
+     "agencies that run systems for their own work and set research-funding policy."),
+    ("Industry", "Industry",
+     "companies running their own machines; a funder could rent capacity from them instead of building it."),
+    ("Vendor", "Vendors",
+     "the companies that build supercomputers, and so the suppliers of any machine the funder buys."),
+    ("Others", "Others",
+     "systems that fit none of these groups, shown for completeness."),
+]
+
+
+def texts(df: pd.DataFrame, systems: pd.DataFrame | None = None) -> dict[str, str]:
     a = df.set_index("segment")
     public = df[df["sector_group"] == "Public"][list(MEASURES)].sum()
+    largest = systems.groupby("segment")["rmax_tflops"].max() / 1000 if systems is not None else None
+
+    def holds(seg: str) -> str:
+        seg = "Vendor" if seg == "Vendors" else seg
+        r = a.loc[seg]
+        out = (f"They run {int(r['n_systems'])} machines ({r['system_share_pct']:.1f}% of the list) holding "
+               f"{r['rmax_share_pct']:.1f}% of its compute")
+        return out + (f"; their largest runs at {largest[seg]:,.0f} PFlop/s." if largest is not None else ".")
+
     return {
-        "title": "1 · Who our audience is",
+        "title": "1 · Who our audience could be, and how they relate",
         "caption": ("Chart A. How the 500 systems on the TOP500 list (June 2026) split by type of organisation: by number of "
                     "machines (top bar) and by combined Rmax (bottom bar). Units: % of the whole list."),
         "lead": (
-            "The funder serves **university researchers**. To see where they stand among the world's largest computers, we start "
-            "with the TOP500, a twice-yearly list of the 500 fastest supercomputers (June 2026 edition). Every system on the list "
-            "is tagged with the kind of organisation that runs it: universities, public research labs, government, industry, "
-            "vendors or others.\n\n"
-            "The chart shows the whole list twice. The top bar counts machines; the bottom bar weighs them by their speed. "
-            "Universities, our audience, are the dark blue block on the left."
+            "Who would care whether shared compute gets funded, and what do they already hold? The TOP500 (June 2026 "
+            "edition), a twice-yearly list of the 500 fastest supercomputers, tags every system with the kind of organisation "
+            "that runs it. Those six groups are the possible audiences for this page. For each one: why it may be interested, "
+            "and what it holds on the list.\n\n"
+            + "\n".join(f"- **{label}:** {why} {holds(seg)}" for seg, label, why in WHY) + "\n\n"
+            "These figures show what each group already holds. Neither dataset measures how much compute any group needs; "
+            "section 4 comes back to this.\n\n"
+            "Chart A shows how the groups relate. The top bar counts machines; the bottom bar weighs them by their speed. "
+            "Universities, research labs and government together make up the public sector (blues); industry and vendors "
+            "are the private sector (oranges)."
         ),
         "read": (
             "**How to read the two bars**\n\n"

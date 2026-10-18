@@ -14,9 +14,13 @@ are produced only by `data/build_processed.py`; the transforms are documented in
 
 ## AI
 
-<Edit to match what the group actually did.> We used generative AI tools during this project. Each substantive use
-is recorded in `PROVENANCE.md`, with what was asked, what came back and the check we ran on it. Claude was used to
-write the data-cleaning script and the Streamlit app code; <other tools and members>. We did not accept any AI output
-without checking it: numbers shown in the app were recomputed from the source files, and the app was run and tested
-by the group. The question, persona, choice of datasets, chart choices and final wording are the group's own, and the
-group is responsible for every claim in the app.
+We used generative AI tools during this project. Every substantive use is recorded in `PROVENANCE.md`, one row per
+use, with what was asked, what came back and the check we ran on it; each member owns at least one row.
+
+- **Claude (Anthropic)** was used to write the data-cleaning script `data/build_processed.py` and the Streamlit app
+  code (`app.py`, `charts/`). Other tools used by members are listed in their rows of `PROVENANCE.md`.
+- No AI output was accepted unchecked. The cleaning script refuses to run if a raw file's MD5 changes; the headline
+  numbers (59.88%, 71.3%, $524.0B, $120.4B) were recomputed from the source and processed files; and the app was run
+  and tested by the group, including the empty-filter state.
+- The question, persona, choice of datasets, chart choices and final wording were decided by the group, and the group
+  is responsible for every claim in the app.

@@ -10,7 +10,7 @@ INTRO = (
 )
 
 CONTENTS = [
-    ("section-1", "1 · Who our audience is"),
+    ("section-1", "1 · Who our audience could be, and how they relate"),
     ("section-2", "2 · Where the compute sits"),
     ("section-3", "3 · Who is paying for frontier AI data centres"),
     ("section-4", "4 · What the data cannot show"),
@@ -48,6 +48,7 @@ LIMITS = (
     "- **TOP500 measures Linpack (HPL) performance, not AI-training capacity.** A high TOP500 position does not mean a facility can train frontier models.\n"
     "- **China has under-reported to TOP500 since 2023**, so non-Western public compute is undercounted.\n"
     "- **Epoch covers only 93 data centres.** Owner means the operator of a site, not the developer whose models are trained there, and 9 sites (11.8% of capex) have no known owner.\n"
+    "- **Neither dataset measures how much compute any group needs.** They show what each group holds (TOP500) or has spent (Epoch), not its demand.\n"
     "- **Both datasets are snapshots** (TOP500 June 2026, Epoch October 2026), not trends."
 )
 

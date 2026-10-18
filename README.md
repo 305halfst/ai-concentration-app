@@ -2,8 +2,9 @@
 
 36104 Data Visualisation and Narratives · Assignment 3 · Group 8 · Streamlit data narrative.
 
-- **Deployed app:** <add the Streamlit URL>
-- **Assessed version:** <add the commit hash or release tag>
+- **Repository:** https://github.com/305halfst/ai-concentration-app
+- **Deployed app:** https://ai-concentration.streamlit.app
+- **Assessed version:** release tag `a3-final` (the commit hash is also given in the submission PDF)
 
 ## Question
 
@@ -66,8 +67,7 @@ python3 -m venv .venv
 
 Regenerate the processed files with `python data/build_processed.py`.
 
-Each chart lives in its own file, so each member's commits touch only their chart. Member names are in `OWNERS` at the
-top of `app.py`.
+Each chart lives in its own file.
 
 ## Design rules
 
