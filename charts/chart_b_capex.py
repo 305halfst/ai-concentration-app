@@ -86,8 +86,7 @@ def texts(df: pd.DataFrame, top_n: int, focus: str) -> dict[str, str]:
             f"No university or public research body appears among the named owners. {focus_line}"
         ),
         "bridge": (
-            "Read together, the charts say that measured supercomputing is still largely public, but it sits in a few national-lab "
-            "giants; frontier AI spending is private and US-centred; and universities hold a small share of either. The last "
-            "section lists what these datasets cannot tell us."
+            "The ranking shows who has spent most. The next dashboard compares that investment with listed power capacity and "
+            "estimated H100-equivalent scale, before the final section lists what the datasets cannot tell us."
         ),
     }
