@@ -19,7 +19,8 @@ The evidence contrasts the TOP500 supercomputer list with Epoch AI's database of
    *Walk-through:* section 1. Chart A has a measure toggle; Chart C filters organisation segments.
 2. **As a** research funding officer, **I want** to see which countries hold public and private supercomputing capacity,
    **so that** I can compare Australia with overseas capacity.
-   *Walk-through:* section 2. Chart D switches between all, public and private systems.
+   *Walk-through:* section 2. Chart D switches between all, public and private systems; the "Compare a country" selector
+   (default Australia) states its rank and share, outlines it on the map and adds it to the bar.
 3. **As a** research funding officer, **I want** to see who is paying for the largest AI data centres and whether any have
    a site in Australia, **so that** I can assess whether capacity might be leased rather than built publicly.
    *Walk-through:* section 3. Chart B provides a top-N slider and country highlight selector.
@@ -44,9 +45,20 @@ python3 -m venv .venv
 |---|---|---|
 | A | Part-to-whole / magnitude | 100% stacked or paired bars comparing TOP500 systems and Rmax shares by organisation segment. |
 | C | Distribution | Heatmap of TOP500 machine counts by size band and organisation; segment filter. |
-| D | Spatial / ranking | Choropleth and labelled top-10 bar chart of national Rmax shares; system-group selector. |
+| D | Spatial / ranking | Choropleth, labelled top-10 bar chart and full country table of national Rmax shares; system-group selector and compared-country selector. |
 | B | Ranking | Sorted bars of AI data-centre capital cost by owner; top-N slider and country highlight. |
 | E | Relationship | Bubble scatterplot relating owner capital cost, listed power capacity and estimated H100 equivalents; country and owner filters. |
+
+## Chart D design decision and contribution
+
+Chart D, **Where the compute sits**, is Purvesh Ribadiya's dashboard contribution. A choropleth was kept for the spatial
+overview, rather than a proportional-symbol (bubble) map, because bubbles for Germany, Italy, Switzerland, France and the
+United Kingdom overlap in Europe and hide each other. A map alone cannot carry exact values, and the persona's own country
+is easy to miss: Australia ranks 28 of 47 countries with 0.3% of TOP500 Rmax, below the labelled top ten. Chart D therefore
+adds a "Compare a country" selector (default Australia) that states the country's rank, systems, Rmax and share, outlines it
+on the map and always adds it to the bar, plus a table of every country so no value needs hovering. Singapore has no shape at
+the 1:110m map scale, so the table is the only place its value appears. When the compared country has no system in the
+selection (for example Australia with private systems only), a message replaces its line.
 
 ## Chart E design decision and contribution
 

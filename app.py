@@ -123,12 +123,26 @@ md(td["lead"])
 
 
 def draw_d() -> None:
-    chosen = st.radio("Systems included", D.GROUPS, horizontal=True, key="d_group")
+    left, right = st.columns([3, 2])
+    chosen = left.radio("Systems included", D.GROUPS, horizontal=True, key="d_group")
+    options = D.countries(systems)
+    focus = right.selectbox("Compare a country", options, index=options.index(D.DEFAULT_FOCUS), key="d_focus")
     table = D.by_country(systems, chosen)
-    st.altair_chart(style(D.build_map(table, alt.topo_feature(WORLD_URL, "countries"))), theme=None, width="stretch")
-    st.markdown("**Top 10 countries by share of Rmax** (labelled, because small countries are hard to see on the map)")
-    st.altair_chart(style(D.build_bar(table)), theme=None, width="stretch")
+    line = D.focus_line(table, focus, chosen)
+    if line:
+        md(line)
+    else:
+        st.info(f"{focus} has no system in the {chosen.lower()} selection, so it is not on the map or the bar. "
+                "Choose another country or switch to all systems.")
+    st.altair_chart(style(D.build_map(table, alt.topo_feature(WORLD_URL, "countries"), focus)), theme=None, width="stretch")
+    st.markdown("**Top 10 countries by share of Rmax, plus the compared country** (labelled, because small countries are hard to see on the map)")
+    st.altair_chart(style(D.build_bar(table, focus)), theme=None, width="stretch")
     read_box(D.texts(systems, chosen)["read"])
+    st.markdown(f"**All {len(table)} countries with a system in the selection**")
+    st.dataframe(D.country_table(table), hide_index=True, width="stretch", height=280, column_config={
+        "Combined Rmax (TFlop/s)": st.column_config.NumberColumn(format="localized"),
+        "Share of Rmax (%)": st.column_config.NumberColumn(format="%.2f"),
+    })
     source_caption("Source: TOP500 List, June 2026; processed file `top500_systems_clean.csv`. Last documented refresh: 11 October 2026.")
     st.download_button("Download chart D data (CSV)", table.drop(columns=["map_name"]).to_csv(index=False),
                        "chart_d_rmax_by_country.csv", key="d_download")
