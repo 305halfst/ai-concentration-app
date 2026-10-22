@@ -24,3 +24,17 @@ use, with what was asked, what came back and the check we ran on it; each member
   and tested by the group, including the empty-filter state.
 - The question, persona, choice of datasets, chart choices and final wording were decided by the group, and the group
   is responsible for every claim in the app.
+
+### Additional AI Tool Usage
+
+**Huajin Wen**
+
+* DeepSeek: Assisted with finding information, identifying relevant datasets, and summarising research.
+* Claude Code: Assisted with project design, planning, and code implementation.
+* Gemini: Provided feedback and suggestions.
+* DeepSeek and Claude Code: Assisted with validation and submission checks.
+
+**Yifan Wu**
+
+* GitHub Copilot: Assisted with understanding project requirements, reviewing dashboard improvements, and troubleshooting.
+* GitHub Copilot: Assisted with dashboard implementation, Streamlit app improvements, and debugging.
