@@ -128,6 +128,19 @@ def draw_d() -> None:
     st.altair_chart(style(D.build_map(table, alt.topo_feature(WORLD_URL, "countries"))), theme=None, width="stretch")
     st.markdown("**Top 10 countries by share of Rmax** (labelled, because small countries are hard to see on the map)")
     st.altair_chart(style(D.build_bar(table)), theme=None, width="stretch")
+    st.markdown("**All country values**")
+    country_table = table.rename(columns={
+        "country": "Country", "systems": "TOP500 systems", "rmax_tflops": "Combined Rmax (TFlop/s)",
+        "share_pct": "Share of selected Rmax (%)",
+    })[["Country", "TOP500 systems", "Combined Rmax (TFlop/s)", "Share of selected Rmax (%)"]]
+    st.dataframe(
+        country_table.style.format({
+            "Combined Rmax (TFlop/s)": "{:,.0f}",
+            "Share of selected Rmax (%)": "{:.1f}",
+        }),
+        hide_index=True,
+        width="stretch",
+    )
     read_box(D.texts(systems, chosen)["read"])
     source_caption("Source: TOP500 List, June 2026; processed file `top500_systems_clean.csv`. Last documented refresh: 11 October 2026.")
     st.download_button("Download chart D data (CSV)", table.drop(columns=["map_name"]).to_csv(index=False),

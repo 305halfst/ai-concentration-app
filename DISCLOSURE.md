@@ -2,15 +2,19 @@
 
 ## Data
 
-The app uses two public datasets, both downloaded on 11/10/2026 and kept unedited in `data/sources/`:
+The app uses two public datasets. The data dictionary records the source URLs, fields, units, keys, time coverage and
+transforms. The TOP500 source below is the exact committed June 2026 XLSX. Epoch's publisher now serves a later CSV
+release, so the committed Epoch file is a source sample retrieved on 24/10/2026 rather than a false claim that it is the
+app's earlier 11/10/2026 snapshot:
 
 - **TOP500.org, TOP500 List June 2026** (`data/sources/top500/TOP500_202606.xlsx`, MD5 `26d72ecb9eb8fcdcefb0df3a1b215f79`).
   No licence grant; © 1993–2026 TOP500.org, cited with attribution.
-- **Epoch AI, ‘Data on AI data centers’, October 2026 update** (`data/sources/epoch/data_centers.csv`,
-  MD5 `ea246ddea0bf7f561f99c1639662be23`). CC BY 4.0. Published online at epoch.ai.
+- **Epoch AI, ‘Data on AI data centers’** (`data/sources/epoch/data_centers.csv`,
+  MD5 `1cf2924b3775c599761b397edb0a2b17`, retrieved 24/10/2026). CC BY 4.0. Published online at epoch.ai.
 
 Map shapes come from Natural Earth 1:110m via world-atlas 2.0.2 (ISC licence). The three files in `data/processed/`
-are produced only by `data/build_processed.py`; the transforms are documented in `data/data_dictionary_en.md`.
+are documented in `data/data_dictionary_en.md`. The original 11/10/2026 Epoch snapshot and build script are not in this
+checkout, so they must be restored before claiming the processed Epoch aggregation is fully reproducible.
 
 ## AI
 
