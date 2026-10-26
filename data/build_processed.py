@@ -1,8 +1,8 @@
-"""Rebuild the files the app reads (data/processed/) from the three raw files in data/sources/.
+"""Rebuild the files the app reads (data/processed/) from the four raw files in data/sources/.
 
 Run from the repository root:   python data/build_processed.py
 Needs: pandas, openpyxl.  Deterministic: the same sources give byte-identical outputs.
-The script stops if either raw file's MD5 differs from the snapshot the app was built on.
+The script stops if any raw file's MD5 differs from the snapshot the app was built on.
 """
 from pathlib import Path
 import hashlib
@@ -20,6 +20,8 @@ EXPECTED_MD5 = {
     "epoch/data_centers.csv": "ea246ddea0bf7f561f99c1639662be23",      # Epoch AI data centres, downloaded 11/10/2026
     # Our World in Data, from Epoch AI's notable AI systems, downloaded 11/10/2026
     "owid/affiliation-researchers-building-artificial-intelligence-systems-all.csv": "9c5bdd24852b8a3d9b06c17e7f61df98",
+    # World Bank GDP (current US$) for Australia via FRED, observations 2021-2025, retrieved 26/10/2026 (see worldbank/README.md)
+    "worldbank/MKTGDPAUA646NWDB.csv": "40729543b2a721515a3df7e20fb41f7b",
 }
 LAST_COMPLETE_YEAR = 2025   # OWID marks 2026 as incomplete
 
@@ -129,6 +131,14 @@ def build_datacenters_by_country() -> None:
          "equivalents (blank = 0), and each country's share of the total.")
 
 
+def build_gdp() -> None:
+    raw = pd.read_csv(SRC / "worldbank/MKTGDPAUA646NWDB.csv")
+    out = pd.DataFrame({"country": "Australia", "year": raw["observation_date"].str[:4].astype(int),
+                        "gdp_usd_bn": (raw["MKTGDPAUA646NWDB"] / 1e9).round(2)})
+    save(out, "au_gdp.csv", "worldbank/MKTGDPAUA646NWDB.csv",
+         "Year from observation_date; GDP in current US$ divided by 1e9 and rounded to 2 decimals (US$ billions).")
+
+
 def write_manifest() -> None:
     man = pd.DataFrame(MANIFEST, columns=["processed_file", "rows", "source_files", "transform"])
     man["md5"] = man["processed_file"].map(lambda f: md5(OUT / f))
@@ -142,4 +152,5 @@ if __name__ == "__main__":
     build_datacenters()
     build_datacenters_by_country()
     build_ai_systems()
+    build_gdp()
     write_manifest()

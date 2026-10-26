@@ -57,6 +57,11 @@ def html(df: pd.DataFrame, libs: str = "cdn") -> str:
     }
     scripts = "\n".join(f'<script src="{u}"></script>' for u in CDN) if libs == "cdn" else f"<script>{libs}</script>"
     page = TEMPLATE.read_text()
+    fallback = (f'<h2>{text["title"]}</h2><p class="read">The animated chart needs JavaScript libraries that did not load. '
+                f'In {f["first"]}, universities built {f["uni_first"]:.0f}% of the {f["n_first"]} notable AI systems; in '
+                f'{f["last"]}, {f["uni_last"]:.1f}% of {f["n_last"]}, and industry {f["ind_last"]:.1f}%. Industry overtook '
+                f'universities in {f["cross"]}.</p><p class="src">{text["source"]}</p>')
+    page = page.replace("<!--FALLBACK-->", fallback)
     return (page.replace("<!--LIBS-->", scripts).replace("/*DATA*/", json.dumps(rows))
             .replace("/*TEXT*/", json.dumps(text, ensure_ascii=False)))
 

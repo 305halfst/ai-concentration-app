@@ -103,7 +103,7 @@ with st.container(border=True, key="answer"):
     left.metric(label, value, delta=note, delta_color="normal")
     left.caption("Epoch AI notable AI systems via Our World in Data")
     with right:
-        st.html(HV.chip_owners(owners))
+        st.html(HV.chip_owners(owners, fig["n_estimated"]))
     st.html(HV.zero_owners(owners))
 tp = P.texts(ai_systems, (fig["t_first"], fig["t_last"]))
 
@@ -323,10 +323,10 @@ st.header("5 · What it would take, and our ask", anchor="section-5")
 
 
 def draw_k() -> None:
-    target = st.slider("Australian Government goal: public share of the world's tracked AI chips (%)", 0.5, 10.0, 1.0, 0.5,
+    target = st.slider("Scenario goal for the Australian Government: public share of the world's tracked AI chips (%)", 0.5, 10.0, 1.0, 0.5,
                        key="k_target")
     k = page.calculator(fig, target)
-    st.html(HV.scenario(target, k["chips"], k["cost_bn"], k["times_au"], fig["au_h100_n"], k["gdp_pct"], page.AU_GDP_USD_BN))
+    st.html(HV.scenario(target, k["chips"], k["cost_bn"], k["times_au"], fig["au_h100_n"], k["gdp_pct"], fig["gdp_bn"], fig["gdp_year"]))
     total = fig["h100_total"] + k["chips"]
     big = fig["big5_h100"] / 100 * fig["h100_total"]
     rows = pd.DataFrame([("New public capacity", k["chips"]), ("Five largest named owners", big),
@@ -361,5 +361,5 @@ md(page.limits(ai_systems, owners))
 st.header("Sources", anchor="sources")
 for app_file, holds, raw, publisher, licence, md5 in page.SOURCES:
     md(f"- **{app_file}** ({holds}). Raw file: `data/sources/{raw}` · {publisher} · Licence: {licence} · MD5 `{md5}`")
-st.caption(page.SOURCE_NOTE)
+st.caption(page.SOURCE_NOTE.replace("$", "\\$"))
 st.markdown(f"**{page.REFRESH_SHORT}**")

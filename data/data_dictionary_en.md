@@ -13,10 +13,13 @@ as 11 October 2026.
 | TOP500 List, June 2026 | `sources/top500/TOP500_202606.xlsx` | `https://www.top500.org/lists/top500/2026/06/` | Copyright TOP500.org; no licence grant stated, used with attribution | June 2026 | `rank` |
 | Our World in Data, from Epoch AI notable AI systems | `sources/owid/affiliation-researchers-building-artificial-intelligence-systems-all.csv` | `https://ourworldindata.org/grapher/affiliation-researchers-building-artificial-intelligence-systems-all` | CC BY 4.0 | 1950–2025 used (2026 incomplete), downloaded 11/10/2026; MD5 `9c5bdd24852b8a3d9b06c17e7f61df98` | `Entity` + `Year` |
 | Epoch AI, Data on AI Data Centers | `sources/epoch/data_centers.csv` | `https://epoch.ai/data/data-centers-documentation/downloads` | CC BY 4.0 | October 2026 update, downloaded 11/10/2026; MD5 `ea246ddea0bf7f561f99c1639662be23`; 93 rows | `Name` |
+| World Bank, GDP (current US$) for Australia, `NY.GDP.MKTP.CD`, via FRED series `MKTGDPAUA646NWDB` | `sources/worldbank/MKTGDPAUA646NWDB.csv` | `https://fred.stlouisfed.org/series/MKTGDPAUA646NWDB` | CC BY 4.0 (World Bank) | 2021–2025 annual observations, FRED last updated 7 July 2026, copied from the series page 26/10/2026 (see `sources/worldbank/README.md`); MD5 `40729543b2a721515a3df7e20fb41f7b` | `observation_date` |
 
-All three raw files were downloaded on 11/10/2026 and are committed unedited.
+The TOP500, Epoch and OWID files were downloaded on 11/10/2026; the World Bank GDP observations were copied from FRED
+on 26/10/2026 (the CSV download was blocked in our build environment). All four are committed unedited.
 `data/build_processed.py` checks their MD5s (TOP500 `26d72ecb9eb8fcdcefb0df3a1b215f79`,
-Epoch `ea246ddea0bf7f561f99c1639662be23`, OWID `9c5bdd24852b8a3d9b06c17e7f61df98`) before writing anything.  Epoch's website
+Epoch `ea246ddea0bf7f561f99c1639662be23`, OWID `9c5bdd24852b8a3d9b06c17e7f61df98`, World Bank
+`40729543b2a721515a3df7e20fb41f7b`) before writing anything.  Epoch's website
 now serves a later release, so a fresh download will not match and must not replace
 the committed file.
 
@@ -119,12 +122,25 @@ the committed file.
 | `h100_equivalents` | sum of current estimated H100 equivalents; count of chips |
 | `h100_share_pct` | country's share of all estimated H100 equivalents; percent |
 
+### `processed/au_gdp.csv`
+
+- **Source:** `sources/worldbank/MKTGDPAUA646NWDB.csv` (as above). **Grain / primary key:** one row per `year` (5 rows).
+  **Time coverage:** 2021–2025. **Latest observation:** 2025, US$1,798.52 billion.
+- **Transform:** year taken from `observation_date`; GDP in current US$ divided by 1e9 and rounded to 2 decimals.
+  Used only by Calculator K (share of GDP, latest year).
+
+| Column | Meaning and unit |
+|---|---|
+| `country` | Australia |
+| `year` | calendar year; integer primary key |
+| `gdp_usd_bn` | GDP at purchaser's prices; billions of current US dollars |
+
 ## Values computed in the app (no extra processed file)
 
 - **Chart T:** years 2010–2025 only; "Other" and "Not specified" are drawn together as "Other / not specified".
 - **Calculator K:** chips needed = target / (100 − target) × total current H100 equivalents (other owners held
-  fixed); rough cost = chips × (total estimated capital cost ÷ total H100 equivalents), about $36,400 per chip; copies of Firmus = chips ÷ 46,488; share of GDP = rough cost ÷ Australia's 2025 GDP
-  (US$1,798.52B, World Bank NY.GDP.MKTP.CD via FRED MKTGDPAUA646NWDB, retrieved 26/10/2026; a constant in `charts/page.py`).
+  fixed); rough cost = chips × (total estimated capital cost ÷ total H100 equivalents), about $36,400 per chip; copies of Firmus = chips ÷ 46,488 (Firmus is the only Australian site Epoch tracks); share of GDP = rough cost ÷
+  the latest `gdp_usd_bn` in `au_gdp.csv` (2025, US$1,798.52B). Check at 1%: 5.293 ÷ 1,798.52 = 0.29%.
 
 - **Chart F, owner groups (Epoch bar):** shares of `h100_equivalents` in `datacenters_by_owner_country.csv`.
   *Five largest named owners* = Google, Meta, Amazon, Microsoft, SpaceXAI (the top five named owners by estimated
@@ -134,13 +150,14 @@ the committed file.
 - **Chart F, sector groups (TOP500 bar):** sums of `rmax_share_pct` by `sector_group` in `fig4_top500_by_segment.csv`.
 - **Sites without a current estimate:** in `sources/epoch/data_centers.csv`, 20 of the 93 sites have a current H100
   equivalent of 0 or blank (and therefore no cost or power estimate). Every Epoch share and the $524.0B total cover the
-  73 sites with estimates. Check: `(df["Current H100 equivalents"].fillna(0) == 0).sum()` → 20.
+  73 sites with estimates. Check: `(df["Current H100 equivalents"].fillna(0) == 0).sum()` → 20. The app reads these counts from
+  `datacenters_by_country.csv` (`n_datacenters` sum 93 − `n_estimated` sum 73).
 - **Australia's TOP500 systems:** rows of `top500_systems_clean.csv` with `country == "Australia"` (4 systems).
 
 ## Rebuild
 
 Run `python data/build_processed.py` from the repository root (needs pandas and
-openpyxl).  It stops on an MD5 mismatch, then writes the five processed files
+openpyxl).  It stops on an MD5 mismatch, then writes the six processed files
 and `processed/MANIFEST.csv` (rows, source, transform and MD5 of each output).
 On the committed sources it reproduces the committed processed files byte for
 byte.

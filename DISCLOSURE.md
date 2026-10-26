@@ -2,7 +2,7 @@
 
 ## Data
 
-The app uses three public datasets, all downloaded on 11/10/2026 and kept unedited in `data/sources/`:
+The app uses four public datasets, kept unedited in `data/sources/`:
 
 - **TOP500.org, TOP500 List June 2026** (`data/sources/top500/TOP500_202606.xlsx`, MD5 `26d72ecb9eb8fcdcefb0df3a1b215f79`).
   No licence grant; © 1993–2026 TOP500.org, cited with attribution.
@@ -10,9 +10,15 @@ The app uses three public datasets, all downloaded on 11/10/2026 and kept unedit
   MD5 `ea246ddea0bf7f561f99c1639662be23`). CC BY 4.0. Published online at epoch.ai.
 - **Our World in Data, from Epoch AI's notable AI systems** (`data/sources/owid/affiliation-researchers-building-artificial-intelligence-systems-all.csv`,
   MD5 `9c5bdd24852b8a3d9b06c17e7f61df98`). CC BY 4.0. Citation: Epoch AI (2026), with major processing by Our World in Data.
+- **World Bank, GDP (current US$) for Australia, NY.GDP.MKTP.CD, via FRED series MKTGDPAUA646NWDB**
+  (`data/sources/worldbank/MKTGDPAUA646NWDB.csv`, MD5 `40729543b2a721515a3df7e20fb41f7b`). CC BY 4.0. The 2021–2025
+  observations were copied from the FRED series page on 26/10/2026 because the CSV download was blocked in our build
+  environment; used only for the calculator's share of GDP.
 
-Map shapes come from Natural Earth 1:110m via world-atlas 2.0.2 (ISC licence). The five files in `data/processed/`
-are produced only by `data/build_processed.py`, which checks all three MD5s; the transforms are documented in
+The first three were downloaded on 11/10/2026.
+
+Map shapes come from Natural Earth 1:110m via world-atlas 2.0.2 (ISC licence). The six files in `data/processed/`
+are produced only by `data/build_processed.py`, which checks all four MD5s; the transforms are documented in
 `data/data_dictionary_en.md` and `data/processed/MANIFEST.csv`. Epoch's website now serves a later release of its CSV,
 so the committed 11/10/2026 file, not a fresh download, is the source for the app's figures.
 

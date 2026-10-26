@@ -50,16 +50,18 @@ python3 -m venv .venv
 
 | Chart | Visual vocabulary | Purpose and interaction |
 |---|---|---|
+| Opening | Big number + part-to-whole | 1.9% universities' share with change since 2010; chip-ownership bars per company (73.6% five companies); 19 named-owner tiles beside a highlighted 0 for universities and public labs. Company names are plain text, not logos. |
+| P | Part-to-whole | Pictogram, 1 square = 1 notable AI system, 2010 (10 systems) vs 2025 (106), coloured by builder sector. |
 | T | Change over time | Animated 100% stacked area (React + D3 inside Streamlit): share of notable AI systems by sector, 2010–2025; Play button and year slider; every value for the selected year is printed. |
 | W | Part-to-whole | Unit chart, 100 squares: owners of the estimated AI chips in Epoch's data centres. |
 | B | Ranking | AI data-centre owners by estimated capital cost; top-N slider and country highlight. |
-| E | Relationship | Owner capital cost vs power, bubble = estimated AI chips; country and owner filters. |
+| E | Relationship | Owner capital cost vs estimated AI chips (H100 equivalents), bubble = number of sites; country and owner filters. |
 | F | Part-to-whole | Two 100% bars: public share of TOP500 Rmax vs of estimated AI chips. |
 | A | Part-to-whole / magnitude | TOP500 share of systems and of Rmax by organisation type; measure toggle. |
 | C | Distribution | TOP500 machines by size band and organisation; segment filter. |
 | D | Spatial | TOP500 Rmax by country; all / public / private toggle. |
 | M | Spatial | Estimated AI chips by country (Epoch). |
-| K | Calculator | Chips and rough cost for a chosen public share; target slider. |
+| K | Calculator | Scenario card: if the Australian Government set a public-share goal (slider), the chips, rough cost, copies of Firmus (icons) and share of Australia's GDP it would take; bar of who would own the chips afterwards. |
 
 ## Chart E design decision and contribution
 
@@ -82,25 +84,26 @@ data centres. Both axes use log scales so small owners do not pile up at the ori
 | `charts/chart_t_time.py`, `charts/js/chart_t_template.html` | Chart T: React + D3 animated time chart; numbers computed in Python, libraries loaded from cdnjs at exact versions. |
 | `charts/chart_w_waffle.py`, `charts/chart_f_two_worlds.py`, `charts/chart_m_ai_map.py` | Charts W, F and M. |
 | `charts/chart_e_scale.py` | Chart E: AI data-centre scale versus investment bubble scatterplot. |
+| `charts/chart_p_pictogram.py`, `charts/hero_visuals.py` | Chart P; opening chip-ownership and 0-of-19 graphics and the Calculator K scenario card (HTML + inline SVG, no external images). |
 | `charts/common.py` | Processed-data reader, palette and shared Altair styling. |
-| `data/sources/` | The three raw files, unedited (all downloaded 11/10/2026): `top500/TOP500_202606.xlsx`, `epoch/data_centers.csv`, `owid/affiliation-researchers-building-artificial-intelligence-systems-all.csv` (+ its metadata). |
-| `data/build_processed.py` | Checks both raw files' MD5s and regenerates every file in `data/processed/`. |
-| `data/processed/` | The five CSV files used by the app, plus `MANIFEST.csv` (rows, source, transform and MD5 per file). |
+| `data/sources/` | The four raw files, unedited: `top500/TOP500_202606.xlsx`, `epoch/data_centers.csv`, `owid/affiliation-researchers-building-artificial-intelligence-systems-all.csv` (+ its metadata), all downloaded 11/10/2026; `worldbank/MKTGDPAUA646NWDB.csv` (+ README), copied from FRED 26/10/2026. |
+| `data/build_processed.py` | Checks all four raw files' MD5s and regenerates every file in `data/processed/`. |
+| `data/processed/` | The six CSV files used by the app, plus `MANIFEST.csv` (rows, source, transform and MD5 per file). |
 | `data/data_dictionary_en.md` | Data dictionary: source, URL, licence, columns and units, primary key, time coverage, latest observation, transform. |
 | `PROVENANCE.md`, `DISCLOSURE.md` | AI provenance matrix; data and AI disclosure statement. |
 | `requirements.txt` | Python package versions. |
 
 ## Data and regeneration
 
-The app reads only the five files in `data/processed/`. They are regenerated from the three raw files in `data/sources/`
+The app reads only the six files in `data/processed/`. They are regenerated from the four raw files in `data/sources/`
 with:
 
 ```bash
 python data/build_processed.py
 ```
 
-The script stops if any raw file's MD5 differs from the 11/10/2026 snapshot (TOP500 `26d72ecb9eb8fcdcefb0df3a1b215f79`,
-Epoch `ea246ddea0bf7f561f99c1639662be23`, OWID `9c5bdd24852b8a3d9b06c17e7f61df98`), then writes the five CSVs and `MANIFEST.csv`. Running it reproduces the committed
+The script stops if any raw file's MD5 differs from the committed snapshot (TOP500 `26d72ecb9eb8fcdcefb0df3a1b215f79`,
+Epoch `ea246ddea0bf7f561f99c1639662be23`, OWID `9c5bdd24852b8a3d9b06c17e7f61df98`, World Bank `40729543b2a721515a3df7e20fb41f7b`), then writes the six CSVs and `MANIFEST.csv`. Running it reproduces the committed
 processed files byte for byte.
 
 ## Design rules

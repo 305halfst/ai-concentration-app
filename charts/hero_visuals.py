@@ -85,7 +85,7 @@ def chip_shares(owners: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(rows, columns=["name", "share", "colour", "big"])
 
 
-def chip_owners(owners: pd.DataFrame) -> str:
+def chip_owners(owners: pd.DataFrame, n_estimated: int) -> str:
     data = chip_shares(owners)
     top = data["share"].max()
     big = data.loc[data["big"], "share"].sum()
@@ -99,7 +99,7 @@ def chip_owners(owners: pd.DataFrame) -> str:
         f'{CSS}<div class="hv"><p class="hv-label">Who owns the tracked AI chips (estimated H100 equivalents, '
         f'Epoch AI data centres, October 2026)</p><div class="hv-chip"><div style="text-align:center">{_chip_img()}<div class="hv-big">{big:.1f}%</div><div style="font-size:13px;color:#555D65">owned by five companies</div></div><div>'
         f"{bars}<div class=\"hv-sum\">100% = {owners['h100_equivalents'].sum():,.0f} estimated H100 equivalents "
-        f"in the {int(owners['n_datacenters'].sum()) - 20} of {int(owners['n_datacenters'].sum())} tracked sites with an estimate</div></div></div></div>"
+        f"in the {n_estimated} of {int(owners['n_datacenters'].sum())} tracked sites with an estimate</div></div></div></div>"
     )
 
 
@@ -158,22 +158,22 @@ def _mini_chip(fill: str) -> str:
 MINI_PUBLIC = _mini_chip(PUBLIC)
 
 
-def scenario(target: float, chips: float, cost_bn: float, times_au: float, au_chips: float, gdp_pct: float, gdp_bn: float) -> str:
+def scenario(target: float, chips: float, cost_bn: float, times_au: float, au_chips: float, gdp_pct: float, gdp_bn: float, gdp_year: int) -> str:
     """Plain-language card for Calculator K. Element ids let the static HTML export update it with JavaScript."""
     icons = "".join(f'<img src="data:image/svg+xml;base64,{MINI_PUBLIC}" width="20" height="20" alt="">'
                     for _ in range(max(1, round(times_au))))
     return (
-        f'{SCENARIO_CSS}<div class="sc"><div class="sc-who">{_gov_icon()}<div><b>Australian Government</b>'
-        f'<small>scenario for the decision-maker; not a government policy or figure</small></div></div>'
+        f'{SCENARIO_CSS}<div class="sc"><div class="sc-who">{_gov_icon()}<div><b>Scenario: if the Australian Government set a goal</b>'
+        f'<small>the reader sets the goal with the slider; not a government policy, target or figure</small></div></div>'
         f'<p class="sc-goal">Goal: public institutions own <em id="sc-pct">{target:.1f}%</em> of the world\'s tracked AI chips.</p>'
         f'<p class="sc-need">That would take</p><div class="sc-grid">'
         f'<div><span>New AI chips to build (H100 equivalents)</span><b id="sc-chips">{chips:,.0f}</b></div>'
         f'<div><span>Rough cost (2025 US$)</span><b id="sc-cost">${cost_bn:,.1f}B</b></div>'
-        f'<div><span>Copies of Australia\'s largest AI site today (Firmus, {au_chips:,.0f} chips)</span>'
+        f'<div><span>Copies of the only Australian AI site Epoch tracks (Firmus, {au_chips:,.0f} chips)</span>'
         f'<b><span id="sc-times" style="display:inline;font-size:30px;color:#15181C">{times_au:,.0f}</span> ×</b></div></div>'
         f'<div class="sc-icons" id="sc-icons" title="Each icon = one Firmus-sized site">{icons}</div>'
         f'<p style="font-size:12px;color:#555D65;margin:4px 0 0">Each blue chip icon = one site the size of Firmus.</p>'
         f'<div class="sc-gdp"><span>Share of Australia\'s GDP</span><b id="sc-gdp">{gdp_pct:.2f}%</b>'
-        f'<small>one-off cost ÷ Australia\'s 2025 GDP of US${gdp_bn:,.0f}B (World Bank). For scale only: the build '
+        f'<small>one-off cost ÷ Australia\'s {gdp_year} GDP of US${gdp_bn:,.0f}B (World Bank, current US$). For scale only: the build '
         f'would be spread over several years.</small></div></div>'
     )

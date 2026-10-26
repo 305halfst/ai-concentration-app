@@ -24,6 +24,10 @@ def figures(segments, systems, owners, ai_systems) -> dict:
     """Every number used in the opening, conclusion and recommendation, computed from data/processed/."""
     from charts.chart_d_map import by_country
     from charts.chart_t_time import facts
+    from charts.common import read
+
+    gdp = read("au_gdp.csv").sort_values("year").iloc[-1]
+    sites = read("datacenters_by_country.csv")
 
     h100 = owners["h100_equivalents"].sum()
     countries = by_country(systems, "All systems").set_index("country")["share_pct"]
@@ -43,6 +47,10 @@ def figures(segments, systems, owners, ai_systems) -> dict:
         "au_h100": australia["h100_equivalents"].sum() / h100 * 100,
         "h100_total": h100,
         "cost_per_h100": owners["capital_cost_2025usd_bn"].sum() * 1e9 / h100,
+        "gdp_bn": float(gdp["gdp_usd_bn"]),
+        "gdp_year": int(gdp["year"]),
+        "n_sites": int(sites["n_datacenters"].sum()),
+        "n_estimated": int(sites["n_estimated"].sum()),
     }
 
 
@@ -68,30 +76,27 @@ def answer(f: dict) -> str:
     return (
         "### Yes. Frontier AI is becoming big tech's game.\n"
         f"The one piece of evidence against it, that public institutions run {f['public_rmax']:.1f}% of TOP500 "
-        "supercomputing, measures Linpack speed, not AI training (section 3)."
+        "supercomputing, measures general supercomputers' Linpack speed, not the AI-specific data centres where frontier "
+        "models are trained (section 3)."
     )
 
 
 AUDIENCE = ("**For:** an Australian Government officer deciding whether to fund shared AI computing for universities.")
 
 
-# Australia's GDP, 2025, current US$: World Bank series NY.GDP.MKTP.CD (via FRED MKTGDPAUA646NWDB), retrieved 26/10/2026.
-AU_GDP_USD_BN = 1798.52
-
-
 def calculator(f: dict, target_pct: float) -> dict:
     """Chips a new public owner would need for `target_pct` of the tracked total, if other owners did not grow."""
     need = target_pct / (100 - target_pct) * f["h100_total"]
     return {"chips": need, "cost_bn": need * f["cost_per_h100"] / 1e9, "times_au": need / f["au_h100_n"],
-            "gdp_pct": need * f["cost_per_h100"] / 1e9 / AU_GDP_USD_BN * 100}
+            "gdp_pct": need * f["cost_per_h100"] / 1e9 / f["gdp_bn"] * 100}
 
 
 def conclusion(f: dict) -> str:
     return (
         f"- Universities went from **{f['t_uni_first']:.0f}%** to **{f['t_uni_last']:.1f}%** of notable AI systems "
         f"({f['t_first']}–{f['t_last']}).\n"
-        f"- Five companies own **{f['big5_h100']:.1f}%** of the AI chips; no named owner is a university or public lab.\n"
-        f"- Australia: **{f['au_top500']:.1f}%** of TOP500 compute, **{f['au_h100']:.1f}%** of the AI chips."
+        f"- Five companies own **{f['big5_h100']:.1f}%** of the tracked AI chips; no named owner is a university or public lab.\n"
+        f"- Australia: **{f['au_top500']:.1f}%** of TOP500 compute, **{f['au_h100']:.1f}%** of the tracked AI chips."
     )
 
 
@@ -110,11 +115,14 @@ def recommendation(f: dict) -> str:
 def limits(ai_systems, owners) -> str:
     years = ai_systems[ai_systems["year"] >= 2010].groupby("year")["total_year"].first()
     unknown = owners.loc[owners["owner"] == "Unknown"]
+    from charts.common import read
+    sites = read("datacenters_by_country.csv")
+    n_sites, n_est = int(sites["n_datacenters"].sum()), int(sites["n_estimated"].sum())
     return (
         "- **TOP500 measures Linpack speed, not AI training,** and only lists machines whose owners submit a result.\n"
         f"- **Notable AI systems are counted, not weighted:** {years.min()}–{years.max()} a year, so single systems move "
         "a share; recent years may be revised as Epoch adds systems.\n"
-        f"- **Epoch tracks large AI data centres only.** 20 of {int(owners['n_datacenters'].sum())} sites have no current "
+        f"- **Epoch tracks large AI data centres only.** {n_sites - n_est} of {n_sites} sites have no current "
         f"estimate; {int(unknown['n_datacenters'].sum())} sites ({unknown['capex_share_pct'].sum():.1f}% of estimated cost) "
         "have no known owner; owner means operator, not the model developer.\n"
         "- **Epoch estimates cost from power,** so cost and power are not independent.\n"
@@ -133,15 +141,18 @@ SOURCES = [
      "Epoch AI, Data on AI data centers (October 2026 update)", "CC BY 4.0", "ea246ddea0bf7f561f99c1639662be23"],
     ["datacenters_by_country.csv", "12 rows, one per site country", "epoch/data_centers.csv",
      "Epoch AI, Data on AI data centers (October 2026 update)", "CC BY 4.0", "ea246ddea0bf7f561f99c1639662be23"],
+    ["au_gdp.csv", "5 rows, Australia's GDP 2021–2025 (US$ bn); used only for the calculator's share of GDP",
+     "worldbank/MKTGDPAUA646NWDB.csv", "World Bank, GDP (current US$) NY.GDP.MKTP.CD, via FRED series MKTGDPAUA646NWDB "
+     "(retrieved 26/10/2026)", "CC BY 4.0", "40729543b2a721515a3df7e20fb41f7b"],
     ["ai_systems_by_sector.csv", "305 rows, sector x year, 1950–2025", "owid/affiliation-researchers-building-artificial-intelligence-systems-all.csv",
      "Our World in Data, from Epoch AI notable AI systems (2026)", "CC BY 4.0", "9c5bdd24852b8a3d9b06c17e7f61df98"],
 ]
 
-REFRESH_SHORT = "Last data refresh: 11/10/2026 (TOP500 June 2026 list; Epoch AI October 2026 update; Our World in Data notable AI systems)."
+REFRESH_SHORT = ("Last data refresh: 11/10/2026 (TOP500 June 2026 list; Epoch AI October 2026 update; Our World in Data "
+                 "notable AI systems); 26/10/2026 (World Bank GDP for Australia, calculator only).")
 SOURCE_NOTE = (
-    "All three raw files were downloaded on 11/10/2026 and kept unedited in `data/sources/`. `python data/build_processed.py` "
+    "The TOP500, Epoch AI and Our World in Data files were downloaded on 11/10/2026 and the World Bank GDP observations "
+    "were copied from FRED on 26/10/2026; all four are kept unedited in `data/sources/`. `python data/build_processed.py` "
     "checks their MD5s and regenerates every processed file the app reads. Map shapes: Natural Earth 1:110m via "
-    "world-atlas 2.0.2 (ISC licence). Calculator share of GDP: Australia's 2025 GDP, US$1,798.52B, World Bank "
-    "GDP (current US$) NY.GDP.MKTP.CD via FRED series MKTGDPAUA646NWDB (CC BY 4.0), retrieved 26/10/2026; one published value "
-    "kept as a constant in `charts/page.py`."
+    "world-atlas 2.0.2 (ISC licence)."
 )

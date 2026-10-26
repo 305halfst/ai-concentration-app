@@ -68,6 +68,8 @@ def texts(segments: pd.DataFrame, owners: pd.DataFrame) -> dict[str, str]:
     data = shares(segments, owners).set_index(["bar", "group"])["share"]
     named = int((owners["owner"] != "Unknown").sum())
     sites = int(owners["n_datacenters"].sum())
+    from charts.common import read
+    estimated = int(read("datacenters_by_country.csv")["n_estimated"].sum())
     return {
         "caption": ("Chart F. Who owns each kind of computing. Top bar: share of the combined Rmax of the TOP500 list "
                     "(June 2026). Bottom bar: share of current estimated H100 equivalents in the AI data centres Epoch AI "
@@ -76,7 +78,7 @@ def texts(segments: pd.DataFrame, owners: pd.DataFrame) -> dict[str, str]:
                  f"**{data[(BARS[0], GROUPS[0])]:.1f}%**. In AI data centres it holds **0%** of the chips with a named owner: "
                  f"none of the {named} named owners is a university or public research body (our classification by owner name). Grey in the bottom "
                  f"bar is sites whose owner Epoch does not identify; grey in the top bar is TOP500's 'Others' group "
-                 f"({data[(BARS[0], GROUPS[3])]:.1f}%, too thin to label). Of the {sites} sites Epoch tracks, 20 have no current "
+                 f"({data[(BARS[0], GROUPS[3])]:.1f}%, too thin to label). Of the {sites} sites Epoch tracks, {sites - estimated} have no current "
                  f"estimate yet (counted in the raw file; see the data dictionary), so the bottom bar covers the "
-                 f"{sites - 20} that do."),
+                 f"{estimated} that do."),
     }
