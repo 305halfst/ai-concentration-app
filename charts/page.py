@@ -9,7 +9,8 @@ CONTENTS = [
     ("section-3", "3 · Public institutions won the last race, not this one"),
     ("section-4", "4 · Universities and Australia barely register"),
     ("section-5", "5 · What it would take, and our ask"),
-    ("limits", "What the data cannot show · Sources"),
+    ("limits", "What the data cannot show"),
+    ("summary", "In summary · Sources"),
 ]
 
 BIG_FIVE = ["Google", "Meta", "Amazon", "Microsoft", "SpaceXAI"]
@@ -124,24 +125,54 @@ def recommendation(f: dict) -> str:
     )
 
 
-def limits(ai_systems, owners) -> str:
+def limits(ai_systems, owners, f: dict) -> str:
     years = ai_systems[ai_systems["year"] >= 2010].groupby("year")["total_year"].first()
     unknown = owners.loc[owners["owner"] == "Unknown"]
-    from charts.common import read
-    sites = read("datacenters_by_country.csv")
-    n_sites, n_est = int(sites["n_datacenters"].sum()), int(sites["n_estimated"].sum())
+    n_sites, n_est = f["n_sites"], f["n_estimated"]
     return (
-        "- **TOP500 measures Linpack speed, not AI training,** and only lists machines whose owners submit a result.\n"
-        f"- **Notable AI systems are counted, not weighted:** {years.min()}–{years.max()} a year, so single systems move "
-        "a share; recent years may be revised as Epoch adds systems.\n"
-        f"- **Epoch tracks large AI data centres only.** {n_sites - n_est} of {n_sites} sites have no current "
-        f"estimate; {int(unknown['n_datacenters'].sum())} sites ({unknown['capex_share_pct'].sum():.1f}% of estimated cost) "
-        "have no known owner; owner means operator, not the model developer.\n"
-        "- **Epoch estimates cost from power,** so cost and power are not independent.\n"
-        "- **No dataset measures demand** or who may use a machine, and TOP500 and Epoch are snapshots.\n"
-        "- **The calculator is an order of magnitude:** it holds other owners fixed, builds the new capacity as sites the size of "
-        "Firmus at Epoch's estimated cost for that site, and compares a one-off build cost with one year's GDP (2025) and federal spending (2025-26); the "
-        "**recommendation is ours.**"
+        "**What each dataset measures**\n\n"
+        "- **TOP500 measures Linpack speed, not AI training,** and lists only machines whose owners submit a result. It "
+        f"is the one dataset where the public sector leads ({f['public_rmax']:.1f}% of compute), so our Yes rests on the "
+        "AI-specific data, not on TOP500.\n"
+        f"- **Notable AI systems are counted, not weighted:** {years.min()}–{years.max()} a year, so a few systems move a "
+        "share; the sector is that of the researchers' organisations, and recent years may be revised.\n"
+        f"- **Epoch tracks only very large AI data centres.** The 0 universities among the owners is about scale: no "
+        "university or public lab runs a site that large, which does not mean universities have no AI computing. "
+        f"{n_sites - n_est} of {n_sites} sites have no current estimate; {int(unknown['n_datacenters'].sum())} sites "
+        f"({unknown['capex_share_pct'].sum():.1f}% of estimated cost) have no known owner; owner means operator, not the "
+        "model developer; and Epoch estimates cost from power, so the two are not independent.\n\n"
+        "**What no dataset shows**\n\n"
+        "- **Demand and access:** how much compute Australian researchers need, or can already rent or borrow from "
+        "overseas and from companies.\n"
+        "- **Trends in ownership of AI data centres:** TOP500 and Epoch are snapshots (June and October 2026).\n"
+        "- **University budgets:** the sources give no separate federal higher-education figure, so the calculator compares "
+        "the cost with GDP and total federal spending only.\n\n"
+        "**How far the calculator goes**\n\n"
+        "- **An order of magnitude, not a budget:** other owners are held at today's size; new capacity "
+        f"is costed at Epoch's capital-cost estimate for Firmus (${f['firmus_cost_bn']:.2f}B per site), without running, "
+        "power or staff costs.\n"
+        f"- **One-off cost against one year:** GDP is calendar {f['gdp_year']} and federal spending is {f['fed_year']}; "
+        "a build spread over several years would take a smaller share each year.\n"
+        "- **The recommendation is ours,** not a finding of the data."
+    )
+
+
+def summary(f: dict) -> str:
+    one, five = calculator(f, 1.0), calculator(f, 5.0)
+    return (
+        "### Yes: cutting-edge AI is becoming something only big tech can do.\n"
+        f"- **The builders changed.** Universities built **{f['t_uni_first']:.0f}%** of notable AI systems in "
+        f"{f['t_first']} and **{f['t_uni_last']:.1f}%** in {f['t_last']}; industry has led since {f['t_cross']}.\n"
+        f"- **The infrastructure is owned by companies.** Five of them hold **{f['big5_h100']:.1f}%** of the tracked AI "
+        f"chips, and none of the {f['named']} named owners is a university or public lab.\n"
+        f"- **Public strength is in the old race.** Public institutions run **{f['public_rmax']:.1f}%** of TOP500 "
+        f"supercomputing, but universities hold {f['uni_rmax']:.1f}% of it and Australia {f['au_top500']:.1f}%.\n"
+        f"- **Catching up is a national decision, and an affordable one.** A **1%** public share means about "
+        f"**{one['sites']:.0f}** Firmus-sized sites, **${one['cost_bn']:.1f}B** or **{one['fed_pct']:.1f}%** of one "
+        f"year's federal spending; **5%** means **{five['sites']:.0f}** sites and **{five['fed_pct']:.1f}%**.\n\n"
+        "**For the decision:** without public investment, Australian university researchers will depend on capacity that "
+        "a handful of companies own. Funding shared GPU capacity, starting from public facilities such as "
+        "Setonix (Pawsey), is the lever the government controls. *This is our reading of the data and our recommendation.*"
     )
 
 

@@ -322,13 +322,15 @@ def draw_k() -> None:
 chart_card("K", "Calculator · what it would take", "Calculator K. What a chosen public share of today's tracked AI "
            "chips would take, in Firmus-sized university sites, and its cost against Australia's GDP and federal spending. Units: H100 equivalents; billions "
            "of 2025 US dollars; % of one year.", draw_k)
-md(page.conclusion(fig))
 with st.container(border=True, key="recommendation_box"):
     md(page.recommendation(fig))
 
 # ---------------------------------------------------------------- limits and sources
 st.header("What the data cannot show", anchor="limits")
-md(page.limits(ai_systems, owners))
+md(page.limits(ai_systems, owners, fig))
+st.header("In summary", anchor="summary")
+with st.container(border=True, key="summary_box"):
+    md(page.summary(fig))
 st.header("Sources", anchor="sources")
 for app_file, holds, raw, publisher, licence, md5 in page.SOURCES:
     md(f"- **{app_file}** ({holds}). Raw file: `data/sources/{raw}` · {publisher} · Licence: {licence} · MD5 `{md5}`")
