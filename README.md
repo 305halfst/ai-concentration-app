@@ -31,7 +31,7 @@ frontier AI runs on (Epoch AI's database of large AI data centres), what the pub
 2. **As a** research-infrastructure policy officer, **I want** to compare how much compute universities, public labs and
    Australia hold, **so that** I know what public capacity already exists.
    *Walk-through:* section 4: Chart A (measure toggle), Chart C (segment filter; an empty selection shows a message),
-   Chart D (all / public / private systems) and Chart M.
+   Chart D (all / public / private systems).
 3. **As a** research-infrastructure policy officer, **I want** to see what a meaningful public share would cost and a
    clear recommendation with its limits, **so that** I can decide whether to fund shared GPU capacity for universities.
    *Walk-through:* section 5: Calculator K (target-share slider), conclusion and recommendation; then "What the data cannot show".
@@ -60,7 +60,6 @@ python3 -m venv .venv
 | A | Part-to-whole / magnitude | TOP500 share of systems and of Rmax by organisation type; measure toggle. |
 | C | Distribution | TOP500 machines by size band and organisation; segment filter. |
 | D | Spatial | TOP500 Rmax by country; all / public / private toggle. |
-| M | Spatial | Estimated AI chips by country (Epoch). |
 | K | Calculator | Scenario card: if the Australian Government set a public-share goal (slider), the chips, rough cost, copies of Firmus (icons) and share of Australia's GDP it would take; bar of who would own the chips afterwards. |
 
 ## Chart E design decision and contribution
@@ -82,7 +81,7 @@ data centres. Both axes use log scales so small owners do not pile up at the ori
 | `charts/chart_d_map.py` | Chart D: TOP500 Rmax share by country. |
 | `charts/chart_b_capex.py` | Chart B: AI data-centre capital-cost ranking by owner. |
 | `charts/chart_t_time.py`, `charts/js/chart_t_template.html` | Chart T: React + D3 animated time chart; numbers computed in Python, libraries loaded from cdnjs at exact versions. |
-| `charts/chart_w_waffle.py`, `charts/chart_f_two_worlds.py`, `charts/chart_m_ai_map.py` | Charts W, F and M. |
+| `charts/chart_w_waffle.py`, `charts/chart_f_two_worlds.py` | Charts W and F. |
 | `charts/chart_e_scale.py` | Chart E: AI data-centre scale versus investment bubble scatterplot. |
 | `charts/chart_p_pictogram.py`, `charts/hero_visuals.py` | Chart P; opening chip-ownership and 0-of-19 graphics and the Calculator K scenario card (HTML + inline SVG, no external images). |
 | `charts/common.py` | Processed-data reader, palette and shared Altair styling. |

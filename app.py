@@ -21,7 +21,6 @@ from charts import chart_c_sizes as C
 from charts import chart_d_map as D
 from charts import chart_e_scale as E
 from charts import chart_f_two_worlds as F
-from charts import chart_m_ai_map as M
 from charts import chart_p_pictogram as P
 from charts import chart_t_time as T
 from charts import chart_w_waffle as W
@@ -76,7 +75,7 @@ def source_caption(text: str) -> None:
 
 
 segments, owners, systems = load(A.FILE), load(B.FILE), load(C.FILE)
-ai_systems, ai_countries = load(T.FILE), load(M.FILE)
+ai_systems = load(T.FILE)
 fig = page.figures(segments, systems, owners, ai_systems)
 SRC_TOP500 = "Source: TOP500 List, June 2026"
 SRC_EPOCH = "Source: Epoch AI, Data on AI data centers, October 2026 update"
@@ -303,19 +302,8 @@ def draw_d() -> None:
 
 
 chart_card("D", "Spatial · choropleth", td["caption"], draw_d)
-tm = M.texts(ai_countries)
-
-
-def draw_m() -> None:
-    st.altair_chart(style(M.build(ai_countries, alt.topo_feature(WORLD_URL, "countries"))), theme=None, width="stretch")
-    read_box(tm["read"])
-    source_caption(SRC_EPOCH + "; processed file `datacenters_by_country.csv`. Last data refresh: 11/10/2026.")
-    st.download_button("Download chart M data (CSV)", ai_countries.to_csv(index=False), "chart_m_ai_chips_by_country.csv", key="m_download")
-
-
-chart_card("M", "Spatial · choropleth", tm["caption"], draw_m)
-finding(f"Australia: <b>{fig['au_top500']:.1f}%</b> of TOP500 compute (June 2026) and <b>{tm['au']:.1f}%</b> of the AI "
-        f"chips Epoch tracks (October 2026). The United States: {tm['us']:.1f}% of those chips.")
+finding(f"Australia: <b>{fig['au_top500']:.1f}%</b> of TOP500 compute (June 2026) and <b>{fig['au_h100']:.1f}%</b> of the "
+        "AI chips Epoch tracks (October 2026).")
 
 # ---------------------------------------------------------------- 5 · what it would take, and the ask
 st.header("5 · What it would take, and our ask", anchor="section-5")
