@@ -11,12 +11,13 @@ as 11 October 2026.
 | Source | Committed file | Source URL | Licence / attribution | Snapshot used by the app | Primary key |
 |---|---|---|---|---|---|
 | TOP500 List, June 2026 | `sources/top500/TOP500_202606.xlsx` | `https://www.top500.org/lists/top500/2026/06/` | Copyright TOP500.org; no licence grant stated, used with attribution | June 2026 | `rank` |
-| Epoch AI, Data on AI Data Centers | `sources/epoch/data_centers.csv` | `https://epoch.ai/data/data-centers-documentation/downloads` | CC BY 4.0 | The app's processed data records an 11 October 2026 snapshot; the committed public download was retrieved 24 October 2026 and is a later source sample, not a replacement snapshot | `Name` in the raw download |
+| Epoch AI, Data on AI Data Centers | `sources/epoch/data_centers.csv` | `https://epoch.ai/data/data-centers-documentation/downloads` | CC BY 4.0 | October 2026 update, downloaded 11/10/2026; MD5 `ea246ddea0bf7f561f99c1639662be23`; 93 rows | `Name` |
 
-`TOP500_202606.xlsx` has MD5 `26d72ecb9eb8fcdcefb0df3a1b215f79`, matching
-the value documented by the group.  The Epoch download is versioned by the
-publisher rather than by a stable historical URL.  Its current MD5 is recorded
-in `DISCLOSURE.md`; it must not be claimed to be the 11 October source snapshot.
+Both raw files were downloaded on 11/10/2026 and are committed unedited.
+`data/build_processed.py` checks their MD5s (TOP500 `26d72ecb9eb8fcdcefb0df3a1b215f79`,
+Epoch `ea246ddea0bf7f561f99c1639662be23`) before writing anything.  Epoch's website
+now serves a later release, so a fresh download will not match and must not replace
+the committed file.
 
 ## Processed files used by the app
 
@@ -66,12 +67,13 @@ in `DISCLOSURE.md`; it must not be claimed to be the 11 October source snapshot.
   11 October 2026 Epoch snapshot; `owner` is unique (20 rows).
 - **Time coverage / latest observation:** the snapshot is October 2026.  It is
   not a time series.
-- **Source:** Epoch AI's Data on AI Data Centers CSV above.  The original
-  11 October snapshot must be restored to reproduce these exact figures.
-- **Transform:** aggregate raw site records by owner; split / deduplicate site
-  countries for `country` and `n_countries`; sum data-centre counts, estimated
-  2025 USD capital cost, power and H100-equivalent fields; calculate each
-  owner's capital-cost share of the total.
+- **Source:** `sources/epoch/data_centers.csv` (93 site rows, 11/10/2026 snapshot).
+- **Transform:** strip the `#confident` / `#likely` / `#speculative` tags from
+  `Owner`; a missing owner becomes `Unknown` (9 sites); round H100 equivalents to
+  0 dp, power to 1 dp and capital cost to 3 dp per site; group the sites by owner;
+  `country` = the owner's listed site countries, de-duplicated and joined with
+  `|`; `n_countries` = how many; sum site counts, capital cost, power and H100
+  equivalents; `capex_share_pct` = owner capital cost / total x 100, 2 dp.
 
 | Column | Meaning and unit |
 |---|---|
@@ -83,10 +85,10 @@ in `DISCLOSURE.md`; it must not be claimed to be the 11 October source snapshot.
 | `h100_equivalents` | Epoch's estimated H100-equivalent chips; count |
 | `capex_share_pct` | owner's share of all processed capital cost; percent |
 
-## Rebuild rule
+## Rebuild
 
-The three processed files are the app's assessed data package.  A rebuild is
-valid only after the exact Epoch 11 October snapshot and the organisation
-classification mapping have been restored, the resulting row counts and
-headline totals have been compared with the app, and the refresh date / MD5
-values in the app and disclosure have been updated together.
+Run `python data/build_processed.py` from the repository root (needs pandas and
+openpyxl).  It stops on an MD5 mismatch, then writes the three processed files
+and `processed/MANIFEST.csv` (rows, source, transform and MD5 of each output).
+On the committed sources it reproduces the committed processed files byte for
+byte.

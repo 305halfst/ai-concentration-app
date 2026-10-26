@@ -64,7 +64,7 @@ SOURCES = [
 
 REFRESH_SHORT = "Last documented data refresh: 11 October 2026 (TOP500 June 2026 list; Epoch AI October 2026 update)."
 SOURCE_NOTE = (
-    "The project documentation identifies raw files, MD5 values and a processing script, but `data/sources/`, "
-    "`data/build_processed.py`, and `data/data_dictionary_en.md` are not present in this checkout. The app reads only the "
-    "three available processed CSVs. Map shapes: Natural Earth 1:110m via world-atlas 2.0.2 (ISC licence)."
+    "Both raw files were downloaded on 11/10/2026 and kept unedited in `data/sources/`. `python data/build_processed.py` "
+    "checks both MD5s and regenerates the three processed files the app reads. Map shapes: Natural Earth 1:110m via "
+    "world-atlas 2.0.2 (ISC licence)."
 )

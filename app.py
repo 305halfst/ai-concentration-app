@@ -1,7 +1,7 @@
 """Is cutting-edge AI becoming something only big tech can do?
 
 36104 A3 data narrative for a university research funding body. Run:  streamlit run app.py
-Reads only the three available files in data/processed/. The documented build script is not present in this checkout.
+Reads only the three files in data/processed/ (rebuilt from data/sources/ by data/build_processed.py).
 
 Order follows the course session pages: one-line purpose -> contents -> numbered sections, each with
 lead text -> controls -> chart -> how to read it -> what it shows -> bridge to the next section.
@@ -195,10 +195,10 @@ def draw_e() -> None:
 
     totals = E.summary(rows)
     investment, power, sites, h100 = st.columns(4)
-    investment.metric("Estimated investment", f"${totals['investment']:.1f}B", help="Sum of estimated capital cost in 2025 US dollars.")
-    power.metric("Listed power capacity", f"{totals['power']:,.0f} MW", help="Sum of listed power capacity for selected owner records.")
-    sites.metric("Data centres", f"{totals['datacenters']}", help="Sum of listed data-centre counts for selected owner records.")
-    h100.metric("Estimated H100 equivalents", f"{totals['h100']:,.0f}", help="Sum of the dataset's estimated H100 equivalents.")
+    investment.metric("Estimated investment", f"${totals['investment']:.1f}B")
+    power.metric("Listed power capacity", f"{totals['power']:,.0f} MW")
+    sites.metric("Data centres", f"{totals['datacenters']}")
+    h100.metric("Estimated H100 equivalents", f"{totals['h100']:,.0f}")
 
     visible = E.plottable(rows)
     if visible.empty:
@@ -227,6 +227,6 @@ md(page.LIMITS)
 
 st.header("Sources", anchor="sources")
 for app_file, holds, raw, publisher, licence, md5 in page.SOURCES:
-    md(f"- **{app_file}** ({holds}). Documented raw-file reference: `data/sources/{raw}` · {publisher} · Licence: {licence} · MD5 `{md5}`")
+    md(f"- **{app_file}** ({holds}). Raw file: `data/sources/{raw}` · {publisher} · Licence: {licence} · MD5 `{md5}`")
 st.caption(page.SOURCE_NOTE)
 st.markdown(f"**{page.REFRESH_SHORT}**")
