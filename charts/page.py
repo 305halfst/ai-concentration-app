@@ -28,6 +28,8 @@ def figures(segments, systems, owners, ai_systems) -> dict:
 
     gdp = read("au_gdp.csv").sort_values("year").iloc[-1]
     sites = read("datacenters_by_country.csv")
+    budget = read("au_budget.csv").iloc[0]
+    firmus = owners.set_index("owner").loc["Firmus"]
 
     h100 = owners["h100_equivalents"].sum()
     countries = by_country(systems, "All systems").set_index("country")["share_pct"]
@@ -51,6 +53,12 @@ def figures(segments, systems, owners, ai_systems) -> dict:
         "gdp_year": int(gdp["year"]),
         "n_sites": int(sites["n_datacenters"].sum()),
         "n_estimated": int(sites["n_estimated"].sum()),
+        "fed_pct_gdp": float(budget["pct_gdp"]),
+        "fed_aud_bn": float(budget["aud_bn"]),
+        "fed_year": str(budget["year"]),
+        "firmus_h100": float(firmus["h100_equivalents"]),
+        "firmus_cost_bn": float(firmus["capital_cost_2025usd_bn"]),
+        "firmus_mw": float(firmus["power_mw"]),
     }
 
 
@@ -84,11 +92,20 @@ def answer(f: dict) -> str:
 AUDIENCE = ("**For:** an Australian Government officer deciding whether to fund shared AI computing for universities.")
 
 
-def calculator(f: dict, target_pct: float) -> dict:
+def share_needed(f: dict, target_pct: float) -> dict:
     """Chips a new public owner would need for `target_pct` of the tracked total, if other owners did not grow."""
     need = target_pct / (100 - target_pct) * f["h100_total"]
-    return {"chips": need, "cost_bn": need * f["cost_per_h100"] / 1e9, "times_au": need / f["au_h100_n"],
-            "gdp_pct": need * f["cost_per_h100"] / 1e9 / f["gdp_bn"] * 100}
+    return {"chips": need, "cost_bn": need * f["cost_per_h100"] / 1e9}
+
+
+def calculator(f: dict, n_sites: int) -> dict:
+    """Fund `n_sites` university AI sites the size of Firmus (Australia's only tracked site)."""
+    chips = n_sites * f["firmus_h100"]
+    cost = n_sites * f["firmus_cost_bn"]
+    gdp_pct = cost / f["gdp_bn"] * 100
+    return {"chips": chips, "cost_bn": cost, "mw": n_sites * f["firmus_mw"],
+            "public_share": chips / (f["h100_total"] + chips) * 100,
+            "gdp_pct": gdp_pct, "fed_pct": gdp_pct / f["fed_pct_gdp"] * 100}
 
 
 def conclusion(f: dict) -> str:
@@ -101,14 +118,15 @@ def conclusion(f: dict) -> str:
 
 
 def recommendation(f: dict) -> str:
-    one = calculator(f, 1.0)
+    one, ten = calculator(f, 1), calculator(f, 10)
     return (
         "### Fund shared GPU capacity for Australian universities, built on public research facilities such as Setonix "
         "(Pawsey).\n"
-        f"Even 1% of today's tracked AI chips means about **{one['chips']:,.0f}** H100 equivalents, roughly "
-        f"**${one['cost_bn']:.1f}B**: a national investment, not a university one. Alternatives we weighed: cloud credits "
-        "(capacity stays private) and a larger AI share of existing machines (competes with current users). "
-        "*This is our recommendation, not a finding of the data.*"
+        f"One Firmus-sized site costs about **${one['cost_bn']:.1f}B**, **{one['gdp_pct']:.2f}%** of GDP or "
+        f"**{one['fed_pct']:.1f}%** of one year's federal spending: affordable if spread over several budgets. Ten would "
+        f"still give public institutions only **{ten['public_share']:.1f}%** of the world's tracked AI chips. Alternatives "
+        "we weighed: cloud credits (capacity stays private) and a larger AI share of existing machines (competes with "
+        "current users). *This is our recommendation, not a finding of the data.*"
     )
 
 
@@ -127,7 +145,8 @@ def limits(ai_systems, owners) -> str:
         "have no known owner; owner means operator, not the model developer.\n"
         "- **Epoch estimates cost from power,** so cost and power are not independent.\n"
         "- **No dataset measures demand** or who may use a machine, and TOP500 and Epoch are snapshots.\n"
-        "- **The calculator is an order of magnitude** (other owners held fixed, Epoch's average cost per chip), and the "
+        "- **The calculator is an order of magnitude:** it scales Epoch's estimated cost of the Firmus site, holds other owners "
+        "fixed, and compares a one-off build cost with one year's GDP (2025) and federal spending (2025-26); the "
         "**recommendation is ours.**"
     )
 
@@ -144,15 +163,18 @@ SOURCES = [
     ["au_gdp.csv", "5 rows, Australia's GDP 2021–2025 (US$ bn); used only for the calculator's share of GDP",
      "worldbank/MKTGDPAUA646NWDB.csv", "World Bank, GDP (current US$) NY.GDP.MKTP.CD, via FRED series MKTGDPAUA646NWDB "
      "(retrieved 26/10/2026)", "CC BY 4.0", "40729543b2a721515a3df7e20fb41f7b"],
+    ["au_budget.csv", "1 row, Australian Government total expenses 2025-26 (A$ bn and % of GDP); calculator only",
+     "pbo/mtbo_2025-26_total_expenses.csv", "Parliamentary Budget Office, 2025-26 Medium-term budget outlook, Table B-2 "
+     "(retrieved 26/10/2026)", "CC BY 4.0", "15870a60749a7b71e429ea3468bf4223"],
     ["ai_systems_by_sector.csv", "305 rows, sector x year, 1950–2025", "owid/affiliation-researchers-building-artificial-intelligence-systems-all.csv",
      "Our World in Data, from Epoch AI notable AI systems (2026)", "CC BY 4.0", "9c5bdd24852b8a3d9b06c17e7f61df98"],
 ]
 
 REFRESH_SHORT = ("Last data refresh: 11/10/2026 (TOP500 June 2026 list; Epoch AI October 2026 update; Our World in Data "
-                 "notable AI systems); 26/10/2026 (World Bank GDP for Australia, calculator only).")
+                 "notable AI systems); 26/10/2026 (World Bank GDP and PBO federal expenses, calculator only).")
 SOURCE_NOTE = (
     "The TOP500, Epoch AI and Our World in Data files were downloaded on 11/10/2026 and the World Bank GDP observations "
-    "were copied from FRED on 26/10/2026; all four are kept unedited in `data/sources/`. `python data/build_processed.py` "
+    "were copied from FRED and the PBO total-expenses figure from the PBO on 26/10/2026; all five are kept unedited in `data/sources/`. `python data/build_processed.py` "
     "checks their MD5s and regenerates every processed file the app reads. Map shapes: Natural Earth 1:110m via "
     "world-atlas 2.0.2 (ISC licence)."
 )

@@ -60,7 +60,7 @@ python3 -m venv .venv
 | A | Part-to-whole / magnitude | TOP500 share of systems and of Rmax by organisation type; measure toggle. |
 | C | Distribution | TOP500 machines by size band and organisation; segment filter. |
 | D | Spatial | TOP500 Rmax by country; all / public / private toggle. |
-| K | Calculator | Scenario card: if the Australian Government set a public-share goal (slider), the chips, rough cost, copies of Firmus (icons) and share of Australia's GDP it would take; bar of who would own the chips afterwards. |
+| K | Calculator | Scenario card: the Australian Government funds n Firmus-sized AI sites for universities (slider 1–40); chips added, rough cost, the public share of tracked AI chips afterwards, and the cost as a share of Australia's GDP and of federal spending. |
 
 ## Chart E design decision and contribution
 
@@ -85,16 +85,16 @@ data centres. Both axes use log scales so small owners do not pile up at the ori
 | `charts/chart_e_scale.py` | Chart E: AI data-centre scale versus investment bubble scatterplot. |
 | `charts/chart_p_pictogram.py`, `charts/hero_visuals.py` | Chart P; opening chip-ownership and 0-of-19 graphics and the Calculator K scenario card (HTML + inline SVG, no external images). |
 | `charts/common.py` | Processed-data reader, palette and shared Altair styling. |
-| `data/sources/` | The four raw files, unedited: `top500/TOP500_202606.xlsx`, `epoch/data_centers.csv`, `owid/affiliation-researchers-building-artificial-intelligence-systems-all.csv` (+ its metadata), all downloaded 11/10/2026; `worldbank/MKTGDPAUA646NWDB.csv` (+ README), copied from FRED 26/10/2026. |
-| `data/build_processed.py` | Checks all four raw files' MD5s and regenerates every file in `data/processed/`. |
-| `data/processed/` | The six CSV files used by the app, plus `MANIFEST.csv` (rows, source, transform and MD5 per file). |
+| `data/sources/` | The five raw files, unedited: `top500/TOP500_202606.xlsx`, `epoch/data_centers.csv`, `owid/affiliation-researchers-building-artificial-intelligence-systems-all.csv` (+ its metadata), all downloaded 11/10/2026; `worldbank/MKTGDPAUA646NWDB.csv` (+ README), copied from FRED 26/10/2026; `pbo/mtbo_2025-26_total_expenses.csv` (+ README), copied from the PBO 26/10/2026. |
+| `data/build_processed.py` | Checks all five raw files' MD5s and regenerates every file in `data/processed/`. |
+| `data/processed/` | The seven CSV files used by the app, plus `MANIFEST.csv` (rows, source, transform and MD5 per file). |
 | `data/data_dictionary_en.md` | Data dictionary: source, URL, licence, columns and units, primary key, time coverage, latest observation, transform. |
 | `PROVENANCE.md`, `DISCLOSURE.md` | AI provenance matrix; data and AI disclosure statement. |
 | `requirements.txt` | Python package versions. |
 
 ## Data and regeneration
 
-The app reads only the six files in `data/processed/`. They are regenerated from the four raw files in `data/sources/`
+The app reads only the seven files in `data/processed/`. They are regenerated from the five raw files in `data/sources/`
 with:
 
 ```bash
@@ -102,7 +102,7 @@ python data/build_processed.py
 ```
 
 The script stops if any raw file's MD5 differs from the committed snapshot (TOP500 `26d72ecb9eb8fcdcefb0df3a1b215f79`,
-Epoch `ea246ddea0bf7f561f99c1639662be23`, OWID `9c5bdd24852b8a3d9b06c17e7f61df98`, World Bank `40729543b2a721515a3df7e20fb41f7b`), then writes the six CSVs and `MANIFEST.csv`. Running it reproduces the committed
+Epoch `ea246ddea0bf7f561f99c1639662be23`, OWID `9c5bdd24852b8a3d9b06c17e7f61df98`, World Bank `40729543b2a721515a3df7e20fb41f7b`, PBO `15870a60749a7b71e429ea3468bf4223`), then writes the seven CSVs and `MANIFEST.csv`. Running it reproduces the committed
 processed files byte for byte.
 
 ## Design rules

@@ -1,4 +1,4 @@
-"""Rebuild the files the app reads (data/processed/) from the four raw files in data/sources/.
+"""Rebuild the files the app reads (data/processed/) from the raw files in data/sources/.
 
 Run from the repository root:   python data/build_processed.py
 Needs: pandas, openpyxl.  Deterministic: the same sources give byte-identical outputs.
@@ -22,6 +22,8 @@ EXPECTED_MD5 = {
     "owid/affiliation-researchers-building-artificial-intelligence-systems-all.csv": "9c5bdd24852b8a3d9b06c17e7f61df98",
     # World Bank GDP (current US$) for Australia via FRED, observations 2021-2025, retrieved 26/10/2026 (see worldbank/README.md)
     "worldbank/MKTGDPAUA646NWDB.csv": "40729543b2a721515a3df7e20fb41f7b",
+    # PBO 2025-26 Medium-term budget outlook, Table B-2 total expenses, copied 26/10/2026 (see pbo/README.md)
+    "pbo/mtbo_2025-26_total_expenses.csv": "15870a60749a7b71e429ea3468bf4223",
 }
 LAST_COMPLETE_YEAR = 2025   # OWID marks 2026 as incomplete
 
@@ -139,6 +141,12 @@ def build_gdp() -> None:
          "Year from observation_date; GDP in current US$ divided by 1e9 and rounded to 2 decimals (US$ billions).")
 
 
+def build_budget() -> None:
+    raw = pd.read_csv(SRC / "pbo/mtbo_2025-26_total_expenses.csv")
+    out = raw[["measure", "year", "aud_bn", "pct_gdp"]]
+    save(out, "au_budget.csv", "pbo/mtbo_2025-26_total_expenses.csv", "Kept measure, year, A$ billion and % of GDP; dropped the table label.")
+
+
 def write_manifest() -> None:
     man = pd.DataFrame(MANIFEST, columns=["processed_file", "rows", "source_files", "transform"])
     man["md5"] = man["processed_file"].map(lambda f: md5(OUT / f))
@@ -153,4 +161,5 @@ if __name__ == "__main__":
     build_datacenters_by_country()
     build_ai_systems()
     build_gdp()
+    build_budget()
     write_manifest()

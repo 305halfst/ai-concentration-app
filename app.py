@@ -310,17 +310,18 @@ st.header("5 · What it would take, and our ask", anchor="section-5")
 
 
 def draw_k() -> None:
-    target = st.slider("Scenario goal for the Australian Government: public share of the world's tracked AI chips (%)", 0.5, 10.0, 1.0, 0.5,
-                       key="k_target")
-    k = page.calculator(fig, target)
-    st.html(HV.scenario(target, k["chips"], k["cost_bn"], k["times_au"], fig["au_h100_n"], k["gdp_pct"], fig["gdp_bn"], fig["gdp_year"]))
-    md(f"*Assumes the other owners do not grow. Cost uses Epoch's average estimated cost of about ${fig['cost_per_h100']:,.0f} "
-       f"per H100 equivalent (total estimated cost ÷ {fig['h100_total']:,.0f} chips): an order of magnitude, not a budget.*")
-    source_caption(SRC_EPOCH + "; processed file `datacenters_by_owner_country.csv`.")
+    n = st.slider("Number of Firmus-sized AI sites the Australian Government funds for universities", 1, 40, 5, 1,
+                  key="k_target")
+    k = page.calculator(fig, n)
+    st.html(HV.scenario(n, k, fig))
+    md("*Cost scales Epoch's estimated capital cost of the Firmus site; other owners are held at today's size. "
+       "An order of magnitude, not a budget.*")
+    source_caption(SRC_EPOCH + "; processed files `datacenters_by_owner_country.csv`, `au_gdp.csv` (World Bank) and `au_budget.csv` (PBO).")
 
 
-chart_card("K", "Calculator · what it would take", "Calculator K. Chips and rough cost for a chosen public share of "
-           "today's tracked AI chips. Units: H100 equivalents; billions of 2025 US dollars.", draw_k)
+chart_card("K", "Calculator · what it would take", "Calculator K. What funding Firmus-sized AI sites for Australian "
+           "universities would add and cost, against Australia's GDP and federal spending. Units: H100 equivalents; billions "
+           "of 2025 US dollars; % of one year.", draw_k)
 md(page.conclusion(fig))
 with st.container(border=True, key="recommendation_box"):
     md(page.recommendation(fig))

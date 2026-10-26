@@ -2,7 +2,7 @@
 
 ## Data
 
-The app uses four public datasets, kept unedited in `data/sources/`:
+The app uses five public sources, kept unedited in `data/sources/`:
 
 - **TOP500.org, TOP500 List June 2026** (`data/sources/top500/TOP500_202606.xlsx`, MD5 `26d72ecb9eb8fcdcefb0df3a1b215f79`).
   No licence grant; © 1993–2026 TOP500.org, cited with attribution.
@@ -14,11 +14,14 @@ The app uses four public datasets, kept unedited in `data/sources/`:
   (`data/sources/worldbank/MKTGDPAUA646NWDB.csv`, MD5 `40729543b2a721515a3df7e20fb41f7b`). CC BY 4.0. The 2021–2025
   observations were copied from the FRED series page on 26/10/2026 because the CSV download was blocked in our build
   environment; used only for the calculator's share of GDP.
+- **Parliamentary Budget Office, 2025-26 Medium-term budget outlook, Table B-2** (`data/sources/pbo/mtbo_2025-26_total_expenses.csv`,
+  MD5 `15870a60749a7b71e429ea3468bf4223`). CC BY 4.0. Australian Government total expenses 2025-26 (A$785.7B, 27.3% of
+  GDP), copied from the PBO page on 26/10/2026; used only for the calculator's share of federal spending.
 
 The first three were downloaded on 11/10/2026.
 
-Map shapes come from Natural Earth 1:110m via world-atlas 2.0.2 (ISC licence). The six files in `data/processed/`
-are produced only by `data/build_processed.py`, which checks all four MD5s; the transforms are documented in
+Map shapes come from Natural Earth 1:110m via world-atlas 2.0.2 (ISC licence). The seven files in `data/processed/`
+are produced only by `data/build_processed.py`, which checks all five MD5s; the transforms are documented in
 `data/data_dictionary_en.md` and `data/processed/MANIFEST.csv`. Epoch's website now serves a later release of its CSV,
 so the committed 11/10/2026 file, not a fresh download, is the source for the app's figures.
 
