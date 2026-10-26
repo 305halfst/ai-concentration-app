@@ -1,4 +1,4 @@
-"""Section 4 / Chart D - TOP500 compute by country (choropleth; Spatial) with a labelled top-10 bar.
+"""Section 4 / Chart I - TOP500 compute by country (choropleth; Spatial) with a labelled top-10 bar.
 
 Reads data/processed/top500_systems_clean.csv. Country shapes: static/countries-110m.json
 (world-atlas 2.0.2, Natural Earth 1:110m, ISC licence).
@@ -59,7 +59,7 @@ def texts(df: pd.DataFrame, group: str) -> dict[str, str]:
     top3 = ", ".join(lead3[:-1]) + " and " + lead3[-1]
     return {
         "title": "Where the public compute sits, and where Australia stands",
-        "caption": ("Chart D. Share of the combined Rmax of TOP500 systems (June 2026 list) located in each country, for the "
+        "caption": ("Chart I. Share of the combined Rmax of TOP500 systems (June 2026 list) located in each country, for the "
                     "selected systems; the bar lists the ten largest shares. Units: % of the selected systems' Rmax."),
         "lead": (
             "The map shades each country by its share of the TOP500's combined Rmax; white countries have no system on the list. "

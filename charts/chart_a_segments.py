@@ -1,4 +1,4 @@
-"""Section 1 / Chart A - who runs the TOP500, and where our audience sits.
+"""Section 1 / Chart G - who runs the TOP500, and where our audience sits.
 
 Main view: 100% stacked bars (Part-to-whole). Toggle: paired bars (Magnitude).
 Reads data/processed/fig4_top500_by_segment.csv.
@@ -89,11 +89,11 @@ def texts(df: pd.DataFrame, systems: pd.DataFrame | None = None) -> dict[str, st
 
     return {
         "title": "What universities and public labs hold",
-        "caption": ("Chart A. How the 500 systems on the TOP500 list (June 2026) split by type of organisation: by number of "
+        "caption": ("Chart G. How the 500 systems on the TOP500 list (June 2026) split by type of organisation: by number of "
                     "machines (top bar) and by combined Rmax (bottom bar). Units: % of the whole list."),
         "lead": (
             "The public sector's main computing asset is supercomputers. The TOP500 (June 2026 edition), a twice-yearly list "
-            "of the 500 fastest machines, tags each one with the kind of organisation that runs it. Chart A shows the whole "
+            "of the 500 fastest machines, tags each one with the kind of organisation that runs it. Chart G shows the whole "
             "list twice: the top bar counts machines, the bottom bar weighs them by speed. Blues are the public sector "
             "(universities, research labs, government); oranges are industry and vendors."
         ),

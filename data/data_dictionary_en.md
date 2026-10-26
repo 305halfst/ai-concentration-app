@@ -128,7 +128,7 @@ the committed file.
 - **Source:** `sources/worldbank/MKTGDPAUA646NWDB.csv` (as above). **Grain / primary key:** one row per `year` (66 rows).
   **Time coverage:** 1960–2025. **Latest observation:** 2025, US$1,798.52 billion.
 - **Transform:** year taken from `observation_date`; GDP in current US$ divided by 1e9 and rounded to 2 decimals.
-  Used only by Calculator K (share of GDP, latest year).
+  Used only by Calculator J (share of GDP, latest year).
 
 | Column | Meaning and unit |
 |---|---|
@@ -139,7 +139,7 @@ the committed file.
 ### `processed/au_budget.csv`
 
 - **Source:** `sources/pbo/2025-26_Medium-Term_Budget_Outlook_-_Beyond_the_Budget_-_Data.xlsx`. **Grain / primary key:** `measure` + `year` (3 rows).
-  **Time coverage / latest observation:** 2025-26. **Transform:** read sheet `Table B-2`, rows `Total expenses` (A$785.7B, 27.3%), `Commonwealth grant scheme` (A$8.6B, 0.3%) and `Schools and higher education` (A$34.6B, 1.2%), 2025-26 columns (% of GDP, $ billion); the script asserts the headers. Used only by Calculator K.
+  **Time coverage / latest observation:** 2025-26. **Transform:** read sheet `Table B-2`, rows `Total expenses` (A$785.7B, 27.3%), `Commonwealth grant scheme` (A$8.6B, 0.3%) and `Schools and higher education` (A$34.6B, 1.2%), 2025-26 columns (% of GDP, $ billion); the script asserts the headers. Used only by Calculator J.
 
 | Column | Meaning and unit |
 |---|---|
@@ -150,8 +150,8 @@ the committed file.
 
 ## Values computed in the app (no extra processed file)
 
-- **Chart T:** years 2010–2025 only; "Other" and "Not specified" are drawn together as "Other / not specified".
-- **Calculator K:** for a public-share goal t% (slider 0.5–10): chips = t ÷ (100 − t) × 14,398,584 (other owners held
+- **Chart B:** years 2010–2025 only; "Other" and "Not specified" are drawn together as "Other / not specified".
+- **Calculator J:** for a public-share goal t% (slider 0.5–10): chips = t ÷ (100 − t) × 14,398,584 (other owners held
   fixed); Firmus-sized sites = chips ÷ 46,488 and cost = sites × US$1.553B (Firmus's `h100_equivalents` and
   `capital_cost_2025usd_bn` in `datacenters_by_owner_country.csv`; Firmus is the only Australian site Epoch tracks);
   share of GDP = cost ÷ latest `gdp_usd_bn` in `au_gdp.csv` (2025, US$1,798.52B); share of federal spending = share of

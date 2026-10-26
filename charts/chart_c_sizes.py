@@ -1,6 +1,6 @@
-"""Section 1, part 2 / Chart C - how big each group's machines are (counts by size band; Distribution).
+"""Section 1, part 2 / Chart H - how big each group's machines are (counts by size band; Distribution).
 
-Explains chart A: why universities run many machines but hold little compute.
+Explains chart G: why universities run many machines but hold little compute.
 Reads data/processed/top500_systems_clean.csv.
 """
 
@@ -52,10 +52,10 @@ def texts(df: pd.DataFrame, segments: list[str]) -> dict[str, str]:
     uni_total = c.loc["Academic"].sum()
     return {
         "title": "Why universities hold so little of the compute",
-        "caption": ("Chart C. Number of TOP500 machines (June 2026 list) in each size band, by type of organisation. "
+        "caption": ("Chart H. Number of TOP500 machines (June 2026 list) in each size band, by type of organisation. "
                     "Size is Rmax in PFlop/s; each cell is a count of machines."),
         "lead": (
-            "Chart A showed universities running a quarter of the machines but holding a tenth of the compute. The reason is "
+            "Chart G showed universities running a quarter of the machines but holding a tenth of the compute. The reason is "
             "machine size. The table sorts all 500 systems into five size bands by Rmax and counts how many each kind of "
             "organisation runs in each band. Use the segment filter to compare groups."
         ),

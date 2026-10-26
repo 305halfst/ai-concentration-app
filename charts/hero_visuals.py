@@ -198,7 +198,7 @@ def _meter(label: str, pct: float, scale: float, note: str, el_id: str) -> str:
 
 
 def scenario(target: float, k: dict, f: dict) -> str:
-    """Calculator K card: a public-share goal, the Firmus-sized university sites it takes, and what they cost against
+    """Calculator J card: a public-share goal, the Firmus-sized university sites it takes, and what they cost against
     GDP and the federal budget. Element ids let the static HTML export update it with JavaScript."""
     icons = "".join(f'<img src="data:image/svg+xml;base64,{MINI_PUBLIC}" width="20" height="20" alt="">'
                     for _ in range(max(1, round(k["sites"]))))

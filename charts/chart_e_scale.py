@@ -1,7 +1,7 @@
 """Chart E — AI data-centre scale versus investment (relational scatterplot).
 
 Reads the existing owner-level processed Epoch AI table. The chart deliberately
-compares measures rather than re-ranking owners, which is Chart B's purpose.
+compares measures rather than re-ranking owners, which is Chart D's purpose.
 """
 
 from __future__ import annotations

@@ -1,4 +1,4 @@
-"""Chart W - who owns the AI chips, as 100 squares (waffle / unit chart; Part-to-whole).
+"""Chart C - who owns the AI chips, as 100 squares (waffle / unit chart; Part-to-whole).
 
 Each square is 1% of the current estimated H100 equivalents in Epoch AI's data-centre snapshot
 (datacenters_by_owner_country.csv). Squares are allocated by largest remainder so they add up to exactly 100.
@@ -48,7 +48,7 @@ def texts(owners: pd.DataFrame) -> dict[str, str]:
     au = owners[owners["country"].str.split("|").map(lambda c: "Australia" in c)]["h100_equivalents"].sum() / total * 100
     n = squares(owners)["group"].value_counts()
     return {
-        "caption": ("Chart W. Who owns the AI chips in the large AI data centres Epoch AI tracks (October 2026 update). "
+        "caption": ("Chart C. Who owns the AI chips in the large AI data centres Epoch AI tracks (October 2026 update). "
                     "Each square is 1% of the current estimated H100 equivalents. Units: % of all estimated chips."),
         "read": (f"**How to read it:** {n[GROUPS[0]]} squares belong to the five largest named owners "
                  f"({s[GROUPS[0]]:.1f}%), {n[GROUPS[1]]} to other companies ({s[GROUPS[1]]:.1f}%) and {n[GROUPS[2]]} to sites "

@@ -1,4 +1,4 @@
-"""Section 2 / Chart B - who pays for frontier AI data centres (sorted horizontal bars; Ranking).
+"""Section 2 / Chart D - who pays for frontier AI data centres (sorted horizontal bars; Ranking).
 
 Reads data/processed/datacenters_by_owner_country.csv.
 """
@@ -65,7 +65,7 @@ def texts(df: pd.DataFrame, top_n: int, focus: str) -> dict[str, str]:
                   if len(rows) else f"No owner with a listed cost has a site in {focus}.")
     return {
         "title": "Owners ranked by estimated capital cost",
-        "caption": ("Chart B. Estimated capital cost of the AI data centres in Epoch AI's October 2026 update, summed by owner. "
+        "caption": ("Chart D. Estimated capital cost of the AI data centres in Epoch AI's October 2026 update, summed by owner. "
                     "Units: billions of 2025 US dollars."),
         "lead": (
             f"Epoch AI tracks large data centres built for AI, with each site's owner, location and estimated capital cost. "
@@ -88,6 +88,6 @@ def texts(df: pd.DataFrame, top_n: int, focus: str) -> dict[str, str]:
             "no public owner appears in this dataset."
         ),
         "bridge": (
-            "Chart B ranks owners by cost. Chart E looks at the same owners by size: power capacity and estimated AI chips."
+            "Chart D ranks owners by cost. Chart E looks at the same owners by size: power capacity and estimated AI chips."
         ),
     }

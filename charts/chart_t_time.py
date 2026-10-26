@@ -1,4 +1,4 @@
-"""Chart T - who builds notable AI systems, 2010-2025 (animated 100% stacked area; Change over time).
+"""Chart B - who builds notable AI systems, 2010-2025 (animated 100% stacked area; Change over time).
 
 Rendered with React + D3 inside a Streamlit component, because the year-by-year animation is the point of the
 chart. All numbers are computed here in Python from data/processed/ai_systems_by_sector.csv and passed to the
@@ -71,7 +71,7 @@ def texts(df: pd.DataFrame) -> dict[str, str]:
     f = facts(df)
     return {
         "title": "1 · Frontier AI is becoming an industry game",
-        "caption": (f"Chart T. Share of each year's notable AI systems by the sector of the researchers who built them, "
+        "caption": (f"Chart B. Share of each year's notable AI systems by the sector of the researchers who built them, "
                     f"{f['first']}–{f['last']}. Units: % of that year's notable systems."),
         "lead": ("The question asks whether AI is *becoming* a big-tech activity, so we start with change over time. Epoch AI "
                  "keeps a list of notable AI systems (models that advanced the state of the art or mattered historically) and "

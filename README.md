@@ -30,15 +30,15 @@ Data), and ends with a costed scenario, one recommendation labelled as ours, the
 1. **As a** research-infrastructure policy officer, **I want** to see whether frontier AI is shifting from universities
    to industry and who owns the AI infrastructure today, **so that** I can judge whether public institutions are being
    left behind.
-   *Walk-through:* section 1, Chart T (Play button and year slider); section 2, Charts W, B (top-N slider and country
+   *Walk-through:* section 1, Chart B (Play button and year slider); section 2, Charts C, D (top-N slider and country
    highlight) and E (country and owner filters); section 3, Chart F.
 2. **As a** research-infrastructure policy officer, **I want** to compare how much compute universities, public labs and
    Australia hold, **so that** I know what public capacity already exists.
-   *Walk-through:* section 4: Chart A (measure toggle), Chart C (segment filter; an empty selection shows a message),
-   Chart D (all / public / private systems).
+   *Walk-through:* section 4: Chart G (measure toggle), Chart H (segment filter; an empty selection shows a message),
+   Chart I (all / public / private systems).
 3. **As a** research-infrastructure policy officer, **I want** to see what a meaningful public share would cost and a
    clear recommendation with its limits, **so that** I can decide whether to fund shared GPU capacity for universities.
-   *Walk-through:* section 5: Calculator K (public-share slider: Firmus-sized sites, cost, share of GDP, federal
+   *Walk-through:* section 5: Calculator J (public-share slider: Firmus-sized sites, cost, share of GDP, federal
    spending and the Commonwealth grant scheme) and the recommendation; then "What the data cannot show" and "In summary".
 
 ## Run
@@ -57,22 +57,22 @@ python3 -m venv .venv
 | Chart | Visual vocabulary | Purpose and interaction |
 |---|---|---|
 | Opening | Magnitude + part-to-whole | Universities' share of notable AI systems as two area-proportional circles (80% in 2010 → 1.9% in 2025); chip-ownership bars per company (73.6% five companies); a scale card, 131 of 500 TOP500 machines run by universities → 0 of 19 named owners of AI data centres about 90× the power, with the 19 company names. Names are plain text, not logos. |
-| P | Part-to-whole | Pictogram, 1 square = 1 notable AI system, 2010 (10 systems) vs 2025 (106), coloured by builder sector. |
-| T | Change over time | Animated 100% stacked area (React + D3 inside Streamlit): share of notable AI systems by sector, 2010–2025; Play button and year slider; every value for the selected year is printed. |
-| W | Part-to-whole | Unit chart, 100 squares: owners of the estimated AI chips in Epoch's data centres. |
-| B | Ranking | AI data-centre owners by estimated capital cost; top-N slider and country highlight. |
+| A | Part-to-whole | Pictogram, 1 square = 1 notable AI system, 2010 (10 systems) vs 2025 (106), coloured by builder sector. |
+| B | Change over time | Animated 100% stacked area (React + D3 inside Streamlit): share of notable AI systems by sector, 2010–2025; Play button and year slider; every value for the selected year is printed. |
+| C | Part-to-whole | Unit chart, 100 squares: owners of the estimated AI chips in Epoch's data centres. |
+| D | Ranking | AI data-centre owners by estimated capital cost; top-N slider and country highlight. |
 | E | Relationship | Owner capital cost vs estimated AI chips (H100 equivalents), bubble = number of sites; country and owner filters. |
 | F | Part-to-whole | Two 100% bars: public share of TOP500 Rmax vs of estimated AI chips. |
-| A | Part-to-whole / magnitude | TOP500 share of systems and of Rmax by organisation type; measure toggle. |
-| C | Distribution | TOP500 machines by size band and organisation; segment filter. |
-| D | Spatial | TOP500 Rmax by country; all / public / private toggle. |
-| K | Calculator | Scenario card: if the Australian Government set a public-share goal for the world's tracked AI chips (slider 0.5–10%), how many Firmus-sized university sites, chips and dollars it would take (icons, one per site), and the cost as a share of Australia's GDP and of federal spending. |
+| G | Part-to-whole / magnitude | TOP500 share of systems and of Rmax by organisation type; measure toggle. |
+| H | Distribution | TOP500 machines by size band and organisation; segment filter. |
+| I | Spatial | TOP500 Rmax by country; all / public / private toggle. |
+| J | Calculator | Scenario card: if the Australian Government set a public-share goal for the world's tracked AI chips (slider 0.5–10%), how many Firmus-sized university sites, chips and dollars it would take (icons, one per site), and the cost as a share of Australia's GDP and of federal spending. |
 
 ## Chart E design decision and contribution
 
 Chart E (Yifan Wu) is the owner-level dashboard: country and owner filters, KPI cards, a labelled bubble chart, an
 accessible table, an empty state and a filtered CSV download. A scatterplot was chosen instead of another bar chart
-because Chart B already ranks owners by cost. The first version plotted capital cost against power; because Epoch
+because Chart D already ranks owners by cost. The first version plotted capital cost against power; because Epoch
 estimates cost from power (about $0.038B per MW for every owner), those axes carried the same information, so the
 y-axis now shows estimated AI chips (H100 equivalents), an independent measure, and bubble size shows the number of
 data centres. Both axes use log scales so small owners do not pile up at the origin.
@@ -82,14 +82,14 @@ data centres. Both axes use log scales so small owners do not pile up at the ori
 | Path | Purpose |
 |---|---|
 | `app.py` | Streamlit narrative page, controls, chart cards, downloads and source captions. |
-| `charts/chart_a_segments.py` | Chart A: organisation shares of TOP500 systems and Rmax. |
-| `charts/chart_c_sizes.py` | Chart C: TOP500 machines by Rmax size band and organisation. |
-| `charts/chart_d_map.py` | Chart D: TOP500 Rmax share by country. |
-| `charts/chart_b_capex.py` | Chart B: AI data-centre capital-cost ranking by owner. |
-| `charts/chart_t_time.py`, `charts/js/chart_t_template.html` | Chart T: React + D3 animated time chart; numbers computed in Python, libraries loaded from cdnjs at exact versions. |
-| `charts/chart_w_waffle.py`, `charts/chart_f_two_worlds.py` | Charts W and F. |
+| `charts/chart_a_segments.py` | Chart G: organisation shares of TOP500 systems and Rmax. |
+| `charts/chart_c_sizes.py` | Chart H: TOP500 machines by Rmax size band and organisation. |
+| `charts/chart_d_map.py` | Chart I: TOP500 Rmax share by country. |
+| `charts/chart_b_capex.py` | Chart D: AI data-centre capital-cost ranking by owner. |
+| `charts/chart_t_time.py`, `charts/js/chart_t_template.html` | Chart B: React + D3 animated time chart; numbers computed in Python, libraries loaded from cdnjs at exact versions. |
+| `charts/chart_w_waffle.py`, `charts/chart_f_two_worlds.py` | Charts C and F. |
 | `charts/chart_e_scale.py` | Chart E: AI data-centre scale versus investment bubble scatterplot. |
-| `charts/chart_p_pictogram.py`, `charts/hero_visuals.py` | Chart P; opening chip-ownership and 0-of-19 graphics and the Calculator K scenario card (HTML + inline SVG, no external images). |
+| `charts/chart_p_pictogram.py`, `charts/hero_visuals.py` | Chart A; opening chip-ownership and 0-of-19 graphics and the Calculator J scenario card (HTML + inline SVG, no external images). |
 | `charts/common.py` | Processed-data reader, palette and shared Altair styling. |
 | `data/sources/` | The five raw files, unedited: `top500/TOP500_202606.xlsx`, `epoch/data_centers.csv`, `owid/affiliation-researchers-building-artificial-intelligence-systems-all.csv` (+ its metadata), all downloaded 11/10/2026; `worldbank/MKTGDPAUA646NWDB.csv` (+ README), copied from FRED 26/10/2026; `pbo/2025-26_Medium-Term_Budget_Outlook_-_Beyond_the_Budget_-_Data.xlsx` (+ README), downloaded from the PBO 26/10/2026. |
 | `data/build_processed.py` | Checks all five raw files' MD5s and regenerates every file in `data/processed/`. |

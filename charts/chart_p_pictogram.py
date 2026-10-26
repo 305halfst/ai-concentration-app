@@ -1,4 +1,4 @@
-"""Chart P - one square per notable AI system: who built them in the first and last year (pictogram; Part-to-whole).
+"""Chart A - one square per notable AI system: who built them in the first and last year (pictogram; Part-to-whole).
 
 Reads data/processed/ai_systems_by_sector.csv. Each square is one system, so the change is shown in counts, not only
 shares: the 2010 row and the 2025 row use the same square size.
@@ -48,7 +48,7 @@ def build(df: pd.DataFrame, years: tuple[int, int]) -> alt.VConcatChart:
 
 def texts(df: pd.DataFrame, years: tuple[int, int]) -> dict[str, str]:
     return {
-        "caption": (f"Chart P. Every notable AI system released in {years[0]} and in {years[1]}, one square each, coloured by "
+        "caption": (f"Chart A. Every notable AI system released in {years[0]} and in {years[1]}, one square each, coloured by "
                     "the sector of the researchers who built it. Source: Epoch AI via Our World in Data."),
         "read": ("**How to read it:** count the dark-blue squares. The rows are not scaled to the same total: far more notable "
                  "systems appear each year now, and almost all of the new ones come from industry (orange)."),

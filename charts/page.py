@@ -3,7 +3,8 @@
 TITLE = "Is cutting-edge AI becoming something only big tech can do?"
 
 CONTENTS = [
-    ("question", "Our answer"),
+    ("question", "Question"),
+    ("section-0", "0 · Short answer"),
     ("section-1", "1 · Universities' share of notable AI systems has collapsed"),
     ("section-2", "2 · Five companies own most of the tracked AI infrastructure"),
     ("section-3", "3 · Public institutions won the last race, not this one"),
