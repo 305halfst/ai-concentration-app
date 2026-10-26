@@ -85,7 +85,7 @@ data centres. Both axes use log scales so small owners do not pile up at the ori
 | `charts/chart_e_scale.py` | Chart E: AI data-centre scale versus investment bubble scatterplot. |
 | `charts/chart_p_pictogram.py`, `charts/hero_visuals.py` | Chart P; opening chip-ownership and 0-of-19 graphics and the Calculator K scenario card (HTML + inline SVG, no external images). |
 | `charts/common.py` | Processed-data reader, palette and shared Altair styling. |
-| `data/sources/` | The five raw files, unedited: `top500/TOP500_202606.xlsx`, `epoch/data_centers.csv`, `owid/affiliation-researchers-building-artificial-intelligence-systems-all.csv` (+ its metadata), all downloaded 11/10/2026; `worldbank/MKTGDPAUA646NWDB.csv` (+ README), copied from FRED 26/10/2026; `pbo/mtbo_2025-26_total_expenses.csv` (+ README), copied from the PBO 26/10/2026. |
+| `data/sources/` | The five raw files, unedited: `top500/TOP500_202606.xlsx`, `epoch/data_centers.csv`, `owid/affiliation-researchers-building-artificial-intelligence-systems-all.csv` (+ its metadata), all downloaded 11/10/2026; `worldbank/MKTGDPAUA646NWDB.csv` (+ README), copied from FRED 26/10/2026; `pbo/2025-26_Medium-Term_Budget_Outlook_-_Beyond_the_Budget_-_Data.xlsx` (+ README), downloaded from the PBO 26/10/2026. |
 | `data/build_processed.py` | Checks all five raw files' MD5s and regenerates every file in `data/processed/`. |
 | `data/processed/` | The seven CSV files used by the app, plus `MANIFEST.csv` (rows, source, transform and MD5 per file). |
 | `data/data_dictionary_en.md` | Data dictionary: source, URL, licence, columns and units, primary key, time coverage, latest observation, transform. |
@@ -102,7 +102,7 @@ python data/build_processed.py
 ```
 
 The script stops if any raw file's MD5 differs from the committed snapshot (TOP500 `26d72ecb9eb8fcdcefb0df3a1b215f79`,
-Epoch `ea246ddea0bf7f561f99c1639662be23`, OWID `9c5bdd24852b8a3d9b06c17e7f61df98`, World Bank `2b4932edc8a10823709181e37b9c95b4`, PBO `15870a60749a7b71e429ea3468bf4223`), then writes the seven CSVs and `MANIFEST.csv`. Running it reproduces the committed
+Epoch `ea246ddea0bf7f561f99c1639662be23`, OWID `9c5bdd24852b8a3d9b06c17e7f61df98`, World Bank `2b4932edc8a10823709181e37b9c95b4`, PBO `16a4006e8a5b43df88610341b0b26ce6`), then writes the seven CSVs and `MANIFEST.csv`. Running it reproduces the committed
 processed files byte for byte.
 
 ## Design rules

@@ -14,13 +14,13 @@ as 11 October 2026.
 | Our World in Data, from Epoch AI notable AI systems | `sources/owid/affiliation-researchers-building-artificial-intelligence-systems-all.csv` | `https://ourworldindata.org/grapher/affiliation-researchers-building-artificial-intelligence-systems-all` | CC BY 4.0 | 1950–2025 used (2026 incomplete), downloaded 11/10/2026; MD5 `9c5bdd24852b8a3d9b06c17e7f61df98` | `Entity` + `Year` |
 | Epoch AI, Data on AI Data Centers | `sources/epoch/data_centers.csv` | `https://epoch.ai/data/data-centers-documentation/downloads` | CC BY 4.0 | October 2026 update, downloaded 11/10/2026; MD5 `ea246ddea0bf7f561f99c1639662be23`; 93 rows | `Name` |
 | World Bank, GDP (current US$) for Australia, `NY.GDP.MKTP.CD`, via FRED series `MKTGDPAUA646NWDB` | `sources/worldbank/MKTGDPAUA646NWDB.csv` | `https://fred.stlouisfed.org/series/MKTGDPAUA646NWDB` | CC BY 4.0 (World Bank) | 1960–2025 annual observations, FRED last updated 7 July 2026, downloaded as `fredgraph.csv` 26/10/2026 (see `sources/worldbank/README.md`); MD5 `2b4932edc8a10823709181e37b9c95b4` | `observation_date` |
-| Parliamentary Budget Office, *2025-26 Medium-term budget outlook*, Table B-2, total expenses | `sources/pbo/mtbo_2025-26_total_expenses.csv` | `https://www.pbo.gov.au/publications-and-data/publications/2025-26-Medium-term-budget-outlook` | CC BY 4.0 (Commonwealth of Australia) | 2025-26: A$785.7B, 27.3% of GDP; copied from the PBO page 26/10/2026 (see `sources/pbo/README.md`); MD5 `15870a60749a7b71e429ea3468bf4223` | `measure` + `year` |
+| Parliamentary Budget Office, *2025-26 Medium-term budget outlook*, Table B-2, total expenses | `sources/pbo/2025-26_Medium-Term_Budget_Outlook_-_Beyond_the_Budget_-_Data.xlsx` | `https://www.pbo.gov.au/publications-and-data/publications/2025-26-Medium-term-budget-outlook` | CC BY 4.0 (Commonwealth of Australia) | 2025-26: A$785.7B, 27.3% of GDP; downloaded as the PBO data workbook 26/10/2026, sheet `Table B-2`, row `Total expenses` (see `sources/pbo/README.md`); MD5 `16a4006e8a5b43df88610341b0b26ce6` | `measure` + `year` |
 
 The TOP500, Epoch and OWID files were downloaded on 11/10/2026; the World Bank GDP file was downloaded from FRED
-and the PBO total-expenses figure copied from the PBO page on 26/10/2026 (the PBO table could not be downloaded). All five are committed unedited.
+and the PBO data workbook on 26/10/2026. All five are committed unedited.
 `data/build_processed.py` checks their MD5s (TOP500 `26d72ecb9eb8fcdcefb0df3a1b215f79`,
 Epoch `ea246ddea0bf7f561f99c1639662be23`, OWID `9c5bdd24852b8a3d9b06c17e7f61df98`, World Bank
-`2b4932edc8a10823709181e37b9c95b4`, PBO `15870a60749a7b71e429ea3468bf4223`) before writing anything.  Epoch's website
+`2b4932edc8a10823709181e37b9c95b4`, PBO `16a4006e8a5b43df88610341b0b26ce6`) before writing anything.  Epoch's website
 now serves a later release, so a fresh download will not match and must not replace
 the committed file.
 
@@ -138,8 +138,8 @@ the committed file.
 
 ### `processed/au_budget.csv`
 
-- **Source:** `sources/pbo/mtbo_2025-26_total_expenses.csv`. **Grain / primary key:** `measure` + `year` (1 row).
-  **Time coverage / latest observation:** 2025-26. **Transform:** dropped the table-label column. Used only by Calculator K.
+- **Source:** `sources/pbo/2025-26_Medium-Term_Budget_Outlook_-_Beyond_the_Budget_-_Data.xlsx`. **Grain / primary key:** `measure` + `year` (1 row).
+  **Time coverage / latest observation:** 2025-26. **Transform:** read sheet `Table B-2`, row `Total expenses`, 2025-26 columns (% of GDP, $ billion). Used only by Calculator K.
 
 | Column | Meaning and unit |
 |---|---|

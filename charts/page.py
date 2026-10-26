@@ -158,8 +158,8 @@ SOURCES = [
      "worldbank/MKTGDPAUA646NWDB.csv", "World Bank, GDP (current US$) NY.GDP.MKTP.CD, via FRED series MKTGDPAUA646NWDB "
      "(retrieved 26/10/2026)", "CC BY 4.0", "2b4932edc8a10823709181e37b9c95b4"],
     ["au_budget.csv", "1 row, Australian Government total expenses 2025-26 (A$ bn and % of GDP); calculator only",
-     "pbo/mtbo_2025-26_total_expenses.csv", "Parliamentary Budget Office, 2025-26 Medium-term budget outlook, Table B-2 "
-     "(retrieved 26/10/2026)", "CC BY 4.0", "15870a60749a7b71e429ea3468bf4223"],
+     "pbo/2025-26_Medium-Term_Budget_Outlook_-_Beyond_the_Budget_-_Data.xlsx", "Parliamentary Budget Office, 2025-26 Medium-term budget outlook, Table B-2 "
+     "(retrieved 26/10/2026)", "CC BY 4.0", "16a4006e8a5b43df88610341b0b26ce6"],
     ["ai_systems_by_sector.csv", "305 rows, sector x year, 1950–2025", "owid/affiliation-researchers-building-artificial-intelligence-systems-all.csv",
      "Our World in Data, from Epoch AI notable AI systems (2026)", "CC BY 4.0", "9c5bdd24852b8a3d9b06c17e7f61df98"],
 ]
@@ -168,7 +168,7 @@ REFRESH_SHORT = ("Last data refresh: 11/10/2026 (TOP500 June 2026 list; Epoch AI
                  "notable AI systems); 26/10/2026 (World Bank GDP and PBO federal expenses, calculator only).")
 SOURCE_NOTE = (
     "The TOP500, Epoch AI and Our World in Data files were downloaded on 11/10/2026, the World Bank GDP file from FRED on "
-    "26/10/2026, and the PBO total-expenses figure was copied from the PBO page on 26/10/2026; all five are kept unedited in `data/sources/`. `python data/build_processed.py` "
+    "26/10/2026, and the PBO budget-outlook data workbook on 26/10/2026; all five are kept unedited in `data/sources/`. `python data/build_processed.py` "
     "checks their MD5s and regenerates every processed file the app reads. Map shapes: Natural Earth 1:110m via "
     "world-atlas 2.0.2 (ISC licence)."
 )

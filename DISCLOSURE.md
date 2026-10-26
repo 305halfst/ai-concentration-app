@@ -13,9 +13,9 @@ The app uses five public sources, kept unedited in `data/sources/`:
 - **World Bank, GDP (current US$) for Australia, NY.GDP.MKTP.CD, via FRED series MKTGDPAUA646NWDB**
   (`data/sources/worldbank/MKTGDPAUA646NWDB.csv`, MD5 `2b4932edc8a10823709181e37b9c95b4`). CC BY 4.0. Annual
   1960–2025, downloaded from FRED (fredgraph.csv) on 26/10/2026; used only for the calculator's share of GDP.
-- **Parliamentary Budget Office, 2025-26 Medium-term budget outlook, Table B-2** (`data/sources/pbo/mtbo_2025-26_total_expenses.csv`,
-  MD5 `15870a60749a7b71e429ea3468bf4223`). CC BY 4.0. Australian Government total expenses 2025-26 (A$785.7B, 27.3% of
-  GDP), copied from the PBO page on 26/10/2026; used only for the calculator's share of federal spending.
+- **Parliamentary Budget Office, 2025-26 Medium-term budget outlook, Table B-2** (`data/sources/pbo/2025-26_Medium-Term_Budget_Outlook_-_Beyond_the_Budget_-_Data.xlsx`,
+  MD5 `16a4006e8a5b43df88610341b0b26ce6`). CC BY 4.0. Australian Government total expenses 2025-26 (A$785.7B, 27.3% of
+  GDP; sheet Table B-2 of the PBO data workbook, downloaded 26/10/2026); used only for the calculator's share of federal spending.
 
 The first three were downloaded on 11/10/2026.
 

@@ -22,8 +22,8 @@ EXPECTED_MD5 = {
     "owid/affiliation-researchers-building-artificial-intelligence-systems-all.csv": "9c5bdd24852b8a3d9b06c17e7f61df98",
     # World Bank GDP (current US$) for Australia via FRED, annual 1960-2025, downloaded 26/10/2026 (see worldbank/README.md)
     "worldbank/MKTGDPAUA646NWDB.csv": "2b4932edc8a10823709181e37b9c95b4",
-    # PBO 2025-26 Medium-term budget outlook, Table B-2 total expenses, copied 26/10/2026 (see pbo/README.md)
-    "pbo/mtbo_2025-26_total_expenses.csv": "15870a60749a7b71e429ea3468bf4223",
+    # PBO 2025-26 Medium-term budget outlook data workbook, downloaded 26/10/2026 (see pbo/README.md)
+    "pbo/2025-26_Medium-Term_Budget_Outlook_-_Beyond_the_Budget_-_Data.xlsx": "16a4006e8a5b43df88610341b0b26ce6",
 }
 LAST_COMPLETE_YEAR = 2025   # OWID marks 2026 as incomplete
 
@@ -142,9 +142,12 @@ def build_gdp() -> None:
 
 
 def build_budget() -> None:
-    raw = pd.read_csv(SRC / "pbo/mtbo_2025-26_total_expenses.csv")
-    out = raw[["measure", "year", "aud_bn", "pct_gdp"]]
-    save(out, "au_budget.csv", "pbo/mtbo_2025-26_total_expenses.csv", "Kept measure, year, A$ billion and % of GDP; dropped the table label.")
+    raw = pd.read_excel(SRC / "pbo/2025-26_Medium-Term_Budget_Outlook_-_Beyond_the_Budget_-_Data.xlsx", sheet_name="Table B-2", header=None)
+    row = raw[raw[0] == "Total expenses"].iloc[0]
+    assert raw.iloc[3, 2] == "% of GDP" and raw.iloc[3, 6] == "$ billion" and raw.iloc[4, 1] == raw.iloc[4, 5] == "2025-26"
+    out = pd.DataFrame([{"measure": "Total expenses", "year": "2025-26", "aud_bn": float(row[5]), "pct_gdp": float(row[1])}])
+    save(out, "au_budget.csv", "pbo/2025-26_Medium-Term_Budget_Outlook_-_Beyond_the_Budget_-_Data.xlsx",
+         "Sheet 'Table B-2' (Comparison of expense programs), row 'Total expenses', 2025-26 columns: % of GDP and $ billion.")
 
 
 def write_manifest() -> None:
