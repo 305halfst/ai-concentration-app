@@ -103,7 +103,7 @@ with st.container(border=True, key="answer"):
         st.html(HV.uni_drop(fig))
     with right:
         st.html(HV.chip_owners(owners, fig["n_estimated"]))
-    st.html(HV.zero_owners(owners))
+    st.html(HV.zero_owners(owners, segments, systems, fig["n_estimated"]))
 tp = P.texts(ai_systems, (fig["t_first"], fig["t_last"]))
 
 

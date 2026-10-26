@@ -41,8 +41,15 @@ CSS = f"""<style>
 .hv-zero b {{font-size: 52px; line-height: 1;}}
 .hv-zero span {{font-size: 13px; font-weight: 600; max-width: 150px; line-height: 1.25;}}
 .hv-zerorow {{display: flex; gap: 14px; align-items: stretch; flex-wrap: wrap;}}
+.hv-scale {{display: grid; grid-template-columns: 1fr 90px 1fr; gap: 10px; align-items: stretch; margin-top: 6px;}}
+.hv-card {{background: #F3F5F8; border-radius: 6px; padding: 10px 14px;}}
+.hv-card span {{display: block; font-size: 13px; color: #3A4047;}}
+.hv-card b {{display: block; font-size: 40px; line-height: 1.1; margin: 4px 0 2px;}}
+.hv-dash {{background: #FFFFFF; border: 3px dashed {PUBLIC};}}
+.hv-arrow {{display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 34px; color: #B4232A; font-weight: 700;}}
+.hv-arrow small {{font-size: 12px; color: #555D65; font-weight: 400;}}
 .hv-note {{font-size: 12px; color: #555D65; margin-top: 6px;}}
-@media (max-width: 700px) {{.hv-chip {{grid-template-columns: 1fr;}} .hv-row {{grid-template-columns: 90px 1fr 52px;}}}}
+@media (max-width: 700px) {{.hv-scale {{grid-template-columns: 1fr;}} .hv-chip {{grid-template-columns: 1fr;}} .hv-row {{grid-template-columns: 90px 1fr 52px;}}}}
 </style>"""
 
 
@@ -103,17 +110,32 @@ def chip_owners(owners: pd.DataFrame, n_estimated: int) -> str:
     )
 
 
-def zero_owners(owners: pd.DataFrame) -> str:
+def zero_owners(owners: pd.DataFrame, segments: pd.DataFrame, systems: pd.DataFrame, n_estimated: int) -> str:
+    """Universities appear on the TOP500 (every machine above the list's cut-off) but not among the owners of the
+    largest AI data centres. The 0 is a statement about scale, so the card shows the scale of both lists."""
     named = owners[owners["owner"] != "Unknown"].sort_values(["h100_equivalents", "owner"], ascending=[False, True])
     tiles = "".join(
         f'<span class="hv-tile">{html.escape(o)}{" (AU)" if o == "Firmus" else ""}</span>' for o in named["owner"]
     )
+    uni = int(segments.loc[segments["segment"] == "Academic", "n_systems"].sum())
+    total = int(segments["n_systems"].sum())
+    smallest = systems["rmax_tflops"].min() / 1000
+    avg_chips = owners["h100_equivalents"].sum() / n_estimated
+    avg_mw = owners["power_mw"].sum() / n_estimated
     return (
-        f'{CSS}<div class="hv"><p class="hv-label">The {len(named)} named owners of the tracked AI data centres: '
-        f'<b style="color:{PRIVATE}">all {len(named)} are companies</b></p>'
-        f'<div class="hv-zerorow"><div class="hv-zero"><b>0</b><span>universities or public research labs</span></div>'
-        f'<div class="hv-tiles" style="flex:1">{tiles}</div></div>'
-        f'<p class="hv-note">Ordered by estimated H100 equivalents; our classification by owner name. A further '
+        f'{CSS}<div class="hv"><p class="hv-label"><b>Universities are on the supercomputer list, but not at AI-data-centre scale</b></p>'
+        f'<div class="hv-scale">'
+        f'<div class="hv-card"><span>Supercomputers (TOP500, June 2026; smallest machine {smallest:.1f} PFlop/s)</span>'
+        f'<b style="color:{PUBLIC}">{uni} of {total}</b><span>machines run by universities</span></div>'
+        f'<div class="hv-arrow">→<small>much larger</small></div>'
+        f'<div class="hv-card hv-dash"><span>Largest AI data centres (Epoch AI; the average site holds about '
+        f'{avg_chips:,.0f} H100-equivalent chips and {avg_mw:,.0f} MW)</span>'
+        f'<b style="color:{PUBLIC}">0 of {len(named)}</b><span>named owners are universities or public labs</span></div></div>'
+        f'<p class="hv-label" style="margin-top:12px">The {len(named)} named owners, all companies:</p>'
+        f'<div class="hv-tiles">{tiles}</div>'
+        f'<p class="hv-note">The 0 is about scale: Epoch tracks only very large AI data centres, and no university or '
+        f'public lab owns one. It does not mean universities have no AI computing. Owners ordered by estimated H100 '
+        f'equivalents; our classification by owner name; a further '
         f'{int(owners.loc[owners["owner"] == "Unknown", "n_datacenters"].sum())} sites have no known owner.</p></div>'
     )
 
