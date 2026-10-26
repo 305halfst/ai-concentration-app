@@ -132,6 +132,10 @@ SCENARIO_CSS = f"""<style>
 .sc-grid span {{display: block; font-size: 13px; color: #3A4047;}}
 .sc-grid b {{display: block; font-size: 30px; line-height: 1.15; margin-top: 2px;}}
 .sc-icons {{margin-top: 10px; line-height: 0;}}
+.sc-gdp {{display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; border-top: 1px solid #DCDFE2; margin-top: 12px; padding-top: 10px;}}
+.sc-gdp span {{font-size: 15px; font-weight: 600;}}
+.sc-gdp b {{font-size: 30px; color: {PUBLIC};}}
+.sc-gdp small {{font-size: 12px; color: #555D65;}}
 .sc-icons img {{margin: 0 3px 3px 0;}}
 @media (max-width: 700px) {{.sc-grid {{grid-template-columns: 1fr;}}}}
 </style>"""
@@ -154,7 +158,7 @@ def _mini_chip(fill: str) -> str:
 MINI_PUBLIC = _mini_chip(PUBLIC)
 
 
-def scenario(target: float, chips: float, cost_bn: float, times_au: float, au_chips: float) -> str:
+def scenario(target: float, chips: float, cost_bn: float, times_au: float, au_chips: float, gdp_pct: float, gdp_bn: float) -> str:
     """Plain-language card for Calculator K. Element ids let the static HTML export update it with JavaScript."""
     icons = "".join(f'<img src="data:image/svg+xml;base64,{MINI_PUBLIC}" width="20" height="20" alt="">'
                     for _ in range(max(1, round(times_au))))
@@ -168,5 +172,8 @@ def scenario(target: float, chips: float, cost_bn: float, times_au: float, au_ch
         f'<div><span>Copies of Australia\'s largest AI site today (Firmus, {au_chips:,.0f} chips)</span>'
         f'<b><span id="sc-times" style="display:inline;font-size:30px;color:#15181C">{times_au:,.0f}</span> ×</b></div></div>'
         f'<div class="sc-icons" id="sc-icons" title="Each icon = one Firmus-sized site">{icons}</div>'
-        f'<p style="font-size:12px;color:#555D65;margin:4px 0 0">Each blue chip icon = one site the size of Firmus.</p></div>'
+        f'<p style="font-size:12px;color:#555D65;margin:4px 0 0">Each blue chip icon = one site the size of Firmus.</p>'
+        f'<div class="sc-gdp"><span>Share of Australia\'s GDP</span><b id="sc-gdp">{gdp_pct:.2f}%</b>'
+        f'<small>one-off cost ÷ Australia\'s 2025 GDP of US${gdp_bn:,.0f}B (World Bank). For scale only: the build '
+        f'would be spread over several years.</small></div></div>'
     )

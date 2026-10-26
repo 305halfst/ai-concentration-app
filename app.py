@@ -326,7 +326,7 @@ def draw_k() -> None:
     target = st.slider("Australian Government goal: public share of the world's tracked AI chips (%)", 0.5, 10.0, 1.0, 0.5,
                        key="k_target")
     k = page.calculator(fig, target)
-    st.html(HV.scenario(target, k["chips"], k["cost_bn"], k["times_au"], fig["au_h100_n"]))
+    st.html(HV.scenario(target, k["chips"], k["cost_bn"], k["times_au"], fig["au_h100_n"], k["gdp_pct"], page.AU_GDP_USD_BN))
     total = fig["h100_total"] + k["chips"]
     big = fig["big5_h100"] / 100 * fig["h100_total"]
     rows = pd.DataFrame([("New public capacity", k["chips"]), ("Five largest named owners", big),

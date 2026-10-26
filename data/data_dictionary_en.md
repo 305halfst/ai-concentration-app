@@ -123,7 +123,8 @@ the committed file.
 
 - **Chart T:** years 2010–2025 only; "Other" and "Not specified" are drawn together as "Other / not specified".
 - **Calculator K:** chips needed = target / (100 − target) × total current H100 equivalents (other owners held
-  fixed); rough cost = chips × (total estimated capital cost ÷ total H100 equivalents), about $36,400 per chip.
+  fixed); rough cost = chips × (total estimated capital cost ÷ total H100 equivalents), about $36,400 per chip; copies of Firmus = chips ÷ 46,488; share of GDP = rough cost ÷ Australia's 2025 GDP
+  (US$1,798.52B, World Bank NY.GDP.MKTP.CD via FRED MKTGDPAUA646NWDB, retrieved 26/10/2026; a constant in `charts/page.py`).
 
 - **Chart F, owner groups (Epoch bar):** shares of `h100_equivalents` in `datacenters_by_owner_country.csv`.
   *Five largest named owners* = Google, Meta, Amazon, Microsoft, SpaceXAI (the top five named owners by estimated

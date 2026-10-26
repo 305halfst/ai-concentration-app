@@ -75,10 +75,15 @@ def answer(f: dict) -> str:
 AUDIENCE = ("**For:** an Australian Government officer deciding whether to fund shared AI computing for universities.")
 
 
+# Australia's GDP, 2025, current US$: World Bank series NY.GDP.MKTP.CD (via FRED MKTGDPAUA646NWDB), retrieved 26/10/2026.
+AU_GDP_USD_BN = 1798.52
+
+
 def calculator(f: dict, target_pct: float) -> dict:
     """Chips a new public owner would need for `target_pct` of the tracked total, if other owners did not grow."""
     need = target_pct / (100 - target_pct) * f["h100_total"]
-    return {"chips": need, "cost_bn": need * f["cost_per_h100"] / 1e9, "times_au": need / f["au_h100_n"]}
+    return {"chips": need, "cost_bn": need * f["cost_per_h100"] / 1e9, "times_au": need / f["au_h100_n"],
+            "gdp_pct": need * f["cost_per_h100"] / 1e9 / AU_GDP_USD_BN * 100}
 
 
 def conclusion(f: dict) -> str:
@@ -136,5 +141,7 @@ REFRESH_SHORT = "Last data refresh: 11/10/2026 (TOP500 June 2026 list; Epoch AI 
 SOURCE_NOTE = (
     "All three raw files were downloaded on 11/10/2026 and kept unedited in `data/sources/`. `python data/build_processed.py` "
     "checks their MD5s and regenerates every processed file the app reads. Map shapes: Natural Earth 1:110m via "
-    "world-atlas 2.0.2 (ISC licence)."
+    "world-atlas 2.0.2 (ISC licence). Calculator share of GDP: Australia's 2025 GDP, US$1,798.52B, World Bank "
+    "GDP (current US$) NY.GDP.MKTP.CD via FRED series MKTGDPAUA646NWDB (CC BY 4.0), retrieved 26/10/2026; one published value "
+    "kept as a constant in `charts/page.py`."
 )
