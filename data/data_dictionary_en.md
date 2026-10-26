@@ -151,13 +151,12 @@ the committed file.
 ## Values computed in the app (no extra processed file)
 
 - **Chart T:** years 2010–2025 only; "Other" and "Not specified" are drawn together as "Other / not specified".
-- **Calculator K:** for n Firmus-sized sites (slider 1–40): chips = n × 46,488 and cost = n × US$1.553B (Firmus's
-  `h100_equivalents` and `capital_cost_2025usd_bn` in `datacenters_by_owner_country.csv`; Firmus is the only Australian
-  site Epoch tracks); public share afterwards = chips ÷ (14,398,584 + chips); share of GDP = cost ÷ latest `gdp_usd_bn`
-  in `au_gdp.csv` (2025, US$1,798.52B); share of federal spending = share of GDP ÷ `pct_gdp` in `au_budget.csv` (27.3%),
-  which avoids an exchange rate. Check at n = 1: 1.553 ÷ 1,798.52 = 0.086% of GDP; 0.086 ÷ 27.3 = 0.32% of spending.
-- **Recommendation's 1% figure:** chips = 1/99 × 14,398,584 = 145,440; cost = chips × (total capital cost ÷ total H100
-  equivalents), about $36,400 per chip, = $5.3B.
+- **Calculator K:** for a public-share goal t% (slider 0.5–10): chips = t ÷ (100 − t) × 14,398,584 (other owners held
+  fixed); Firmus-sized sites = chips ÷ 46,488 and cost = sites × US$1.553B (Firmus's `h100_equivalents` and
+  `capital_cost_2025usd_bn` in `datacenters_by_owner_country.csv`; Firmus is the only Australian site Epoch tracks);
+  share of GDP = cost ÷ latest `gdp_usd_bn` in `au_gdp.csv` (2025, US$1,798.52B); share of federal spending = share of
+  GDP ÷ `pct_gdp` in `au_budget.csv` (27.3%), which avoids an exchange rate. Check at t = 1%: 145,440 chips ÷ 46,488 =
+  3.13 sites × 1.553 = US$4.86B; ÷ 1,798.52 = 0.27% of GDP; ÷ 27.3 = 0.99% of federal spending.
 
 - **Chart F, owner groups (Epoch bar):** shares of `h100_equivalents` in `datacenters_by_owner_country.csv`.
   *Five largest named owners* = Google, Meta, Amazon, Microsoft, SpaceXAI (the top five named owners by estimated

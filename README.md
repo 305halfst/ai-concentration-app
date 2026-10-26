@@ -60,7 +60,7 @@ python3 -m venv .venv
 | A | Part-to-whole / magnitude | TOP500 share of systems and of Rmax by organisation type; measure toggle. |
 | C | Distribution | TOP500 machines by size band and organisation; segment filter. |
 | D | Spatial | TOP500 Rmax by country; all / public / private toggle. |
-| K | Calculator | Scenario card: the Australian Government funds n Firmus-sized AI sites for universities (slider 1–40); chips added, rough cost, the public share of tracked AI chips afterwards, and the cost as a share of Australia's GDP and of federal spending. |
+| K | Calculator | Scenario card: if the Australian Government set a public-share goal for the world's tracked AI chips (slider 0.5–10%), how many Firmus-sized university sites, chips and dollars it would take (icons, one per site), and the cost as a share of Australia's GDP and of federal spending. |
 
 ## Chart E design decision and contribution
 

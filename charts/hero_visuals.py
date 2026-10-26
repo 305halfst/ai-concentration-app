@@ -154,7 +154,7 @@ SCENARIO_CSS = f"""<style>
 .sc-grid span {{display: block; font-size: 13px; color: #3A4047;}}
 .sc-grid b {{display: block; font-size: 30px; line-height: 1.15; margin-top: 2px;}}
 .sc-icons {{margin-top: 6px; line-height: 0;}}
-.sc-m {{display: grid; grid-template-columns: 210px 1fr 70px; gap: 10px; align-items: center; margin: 6px 0 0;}}
+.sc-m {{display: grid; grid-template-columns: 210px 1fr 96px; gap: 10px; align-items: center; margin: 6px 0 0;}}
 .sc-m small {{grid-column: 1 / -1; font-size: 12px; color: #555D65; margin-top: -4px;}}
 .sc-ml {{font-size: 15px; font-weight: 600;}}
 .sc-mt {{background: #EEF0F2; height: 20px; border-radius: 3px; overflow: hidden;}}
@@ -193,27 +193,29 @@ def _meter(label: str, pct: float, scale: float, note: str, el_id: str) -> str:
             f'style="width:{width:.2f}%"></i></span><b id="{el_id}">{pct:.2f}%</b><small>{note}</small></div>')
 
 
-def scenario(n: int, k: dict, f: dict) -> str:
-    """Calculator K card: n Firmus-sized university AI sites, what they add, and what they cost against GDP and the
-    federal budget. Element ids let the static HTML export update it with JavaScript."""
-    icons = "".join(f'<img src="data:image/svg+xml;base64,{MINI_PUBLIC}" width="20" height="20" alt="">' for _ in range(n))
+def scenario(target: float, k: dict, f: dict) -> str:
+    """Calculator K card: a public-share goal, the Firmus-sized university sites it takes, and what they cost against
+    GDP and the federal budget. Element ids let the static HTML export update it with JavaScript."""
+    icons = "".join(f'<img src="data:image/svg+xml;base64,{MINI_PUBLIC}" width="20" height="20" alt="">'
+                    for _ in range(max(1, round(k["sites"]))))
     return (
-        f'{SCENARIO_CSS}<div class="sc"><div class="sc-who">{_gov_icon()}<div><b>Scenario: the Australian Government funds '
-        f'AI sites for its universities</b><small>each site the size of Firmus, Australia\'s only AI data centre in Epoch\'s '
-        f'data ({f["firmus_h100"]:,.0f} H100-equivalent chips, {f["firmus_mw"]:.0f} MW, about ${f["firmus_cost_bn"]:.2f}B); '
-        f'the reader picks the number; not a government policy or figure</small></div></div>'
-        f'<p class="sc-goal"><em id="sc-n">{n}</em> Firmus-sized site<span id="sc-s">{"" if n == 1 else "s"}</span> for universities</p>'
+        f'{SCENARIO_CSS}<div class="sc"><div class="sc-who">{_gov_icon()}<div><b>Scenario: if the Australian Government '
+        f'set a goal</b><small>the reader sets the goal with the slider; not a government policy, target or figure</small>'
+        f'</div></div>'
+        f'<p class="sc-goal">Goal: public institutions own <em id="sc-pct">{target:.1f}%</em> of the world\'s tracked AI chips '
+        f'(five companies hold {f["big5_h100"]:.1f}% today).</p>'
+        f'<p class="sc-need">That would take</p><div class="sc-grid">'
+        f'<div><span>University AI sites the size of Firmus, Australia\'s only tracked site ({f["firmus_h100"]:,.0f} chips, '
+        f'{f["firmus_mw"]:.0f} MW)</span><b id="sc-sites">{k["sites"]:,.0f}</b></div>'
+        f'<div><span>New AI chips (H100 equivalents)</span><b id="sc-chips">{k["chips"]:,.0f}</b></div>'
+        f'<div><span>Rough build cost (2025 US$; ${f["firmus_cost_bn"]:.2f}B per site)</span><b id="sc-cost">${k["cost_bn"]:,.1f}B</b></div></div>'
         f'<div class="sc-icons" id="sc-icons" title="Each icon = one Firmus-sized site">{icons}</div>'
-        f'<div class="sc-grid">'
-        f'<div><span>AI chips added (H100 equivalents)</span><b id="sc-chips">{k["chips"]:,.0f}</b></div>'
-        f'<div><span>Rough build cost (2025 US$)</span><b id="sc-cost">${k["cost_bn"]:,.1f}B</b></div>'
-        f'<div><span>Public share of the world\'s tracked AI chips afterwards (five companies hold {f["big5_h100"]:.1f}% today)</span>'
-        f'<b id="sc-pub">{k["public_share"]:.1f}%</b></div></div>'
+        f'<p style="font-size:12px;color:#555D65;margin:2px 0 0">Each blue chip icon = one Firmus-sized site.</p>'
         f'<p class="sc-need">Can Australia afford it? One-off cost as a share of one year of</p>'
-        + _meter("Australia's GDP", k["gdp_pct"], 5, f'GDP {f["gdp_year"]}: US${f["gdp_bn"]:,.0f}B (World Bank)', "sc-gdp")
-        + _meter("Federal government spending", k["fed_pct"], 5,
+        + _meter("Australia's GDP", k["gdp_pct"], 12, f'GDP {f["gdp_year"]}: US${f["gdp_bn"]:,.0f}B (World Bank)', "sc-gdp")
+        + _meter("Federal government spending", k["fed_pct"], 12,
                  f'total expenses {f["fed_year"]}: A${f["fed_aud_bn"]:,.1f}B = {f["fed_pct_gdp"]:.1f}% of GDP (PBO)', "sc-fed")
-        + '<p style="font-size:12px;color:#555D65;margin:6px 0 0">Bars run from 0 to 5%. A build would be spread over '
+        + '<p style="font-size:12px;color:#555D65;margin:6px 0 0">Bars run from 0 to 12%. A build would be spread over '
           'several years, so the yearly share would be smaller.</p></div>'
     )
 

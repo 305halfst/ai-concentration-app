@@ -310,17 +310,17 @@ st.header("5 · What it would take, and our ask", anchor="section-5")
 
 
 def draw_k() -> None:
-    n = st.slider("Number of Firmus-sized AI sites the Australian Government funds for universities", 1, 40, 5, 1,
-                  key="k_target")
-    k = page.calculator(fig, n)
-    st.html(HV.scenario(n, k, fig))
-    md("*Cost scales Epoch's estimated capital cost of the Firmus site; other owners are held at today's size. "
+    target = st.slider("Scenario goal for the Australian Government: public share of the world's tracked AI chips (%)",
+                       0.5, 10.0, 1.0, 0.5, key="k_target")
+    k = page.calculator(fig, target)
+    st.html(HV.scenario(target, k, fig))
+    md("*Other owners are held at today's size; new capacity is costed at Epoch's estimate for the Firmus site. "
        "An order of magnitude, not a budget.*")
     source_caption(SRC_EPOCH + "; processed files `datacenters_by_owner_country.csv`, `au_gdp.csv` (World Bank) and `au_budget.csv` (PBO).")
 
 
-chart_card("K", "Calculator · what it would take", "Calculator K. What funding Firmus-sized AI sites for Australian "
-           "universities would add and cost, against Australia's GDP and federal spending. Units: H100 equivalents; billions "
+chart_card("K", "Calculator · what it would take", "Calculator K. What a chosen public share of today's tracked AI "
+           "chips would take, in Firmus-sized university sites, and its cost against Australia's GDP and federal spending. Units: H100 equivalents; billions "
            "of 2025 US dollars; % of one year.", draw_k)
 md(page.conclusion(fig))
 with st.container(border=True, key="recommendation_box"):

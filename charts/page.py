@@ -92,20 +92,14 @@ def answer(f: dict) -> str:
 AUDIENCE = ("**For:** an Australian Government officer deciding whether to fund shared AI computing for universities.")
 
 
-def share_needed(f: dict, target_pct: float) -> dict:
-    """Chips a new public owner would need for `target_pct` of the tracked total, if other owners did not grow."""
-    need = target_pct / (100 - target_pct) * f["h100_total"]
-    return {"chips": need, "cost_bn": need * f["cost_per_h100"] / 1e9}
-
-
-def calculator(f: dict, n_sites: int) -> dict:
-    """Fund `n_sites` university AI sites the size of Firmus (Australia's only tracked site)."""
-    chips = n_sites * f["firmus_h100"]
-    cost = n_sites * f["firmus_cost_bn"]
+def calculator(f: dict, target_pct: float) -> dict:
+    """A public share `target_pct` of today's tracked AI chips (other owners held fixed), built as university AI sites
+    the size of Firmus (Australia's only tracked site) and costed at Firmus's estimated cost per site."""
+    chips = target_pct / (100 - target_pct) * f["h100_total"]
+    sites = chips / f["firmus_h100"]
+    cost = sites * f["firmus_cost_bn"]
     gdp_pct = cost / f["gdp_bn"] * 100
-    return {"chips": chips, "cost_bn": cost, "mw": n_sites * f["firmus_mw"],
-            "public_share": chips / (f["h100_total"] + chips) * 100,
-            "gdp_pct": gdp_pct, "fed_pct": gdp_pct / f["fed_pct_gdp"] * 100}
+    return {"chips": chips, "sites": sites, "cost_bn": cost, "gdp_pct": gdp_pct, "fed_pct": gdp_pct / f["fed_pct_gdp"] * 100}
 
 
 def conclusion(f: dict) -> str:
@@ -118,15 +112,15 @@ def conclusion(f: dict) -> str:
 
 
 def recommendation(f: dict) -> str:
-    one, ten = calculator(f, 1), calculator(f, 10)
+    one, five = calculator(f, 1.0), calculator(f, 5.0)
     return (
         "### Fund shared GPU capacity for Australian universities, built on public research facilities such as Setonix "
         "(Pawsey).\n"
-        f"One Firmus-sized site costs about **${one['cost_bn']:.1f}B**, **{one['gdp_pct']:.2f}%** of GDP or "
-        f"**{one['fed_pct']:.1f}%** of one year's federal spending: affordable if spread over several budgets. Ten would "
-        f"still give public institutions only **{ten['public_share']:.1f}%** of the world's tracked AI chips. Alternatives "
-        "we weighed: cloud credits (capacity stays private) and a larger AI share of existing machines (competes with "
-        "current users). *This is our recommendation, not a finding of the data.*"
+        f"Even 1% of today's tracked AI chips means about **{one['sites']:.0f}** Firmus-sized sites, roughly "
+        f"**${one['cost_bn']:.1f}B**, or **{one['fed_pct']:.1f}%** of one year's federal spending; 5% would take "
+        f"**{five['sites']:.0f}** sites and **{five['fed_pct']:.1f}%**. A national investment spread over several budgets, "
+        "not a university one. Alternatives we weighed: cloud credits (capacity stays private) and a larger AI share of "
+        "existing machines (competes with current users). *This is our recommendation, not a finding of the data.*"
     )
 
 
@@ -145,8 +139,8 @@ def limits(ai_systems, owners) -> str:
         "have no known owner; owner means operator, not the model developer.\n"
         "- **Epoch estimates cost from power,** so cost and power are not independent.\n"
         "- **No dataset measures demand** or who may use a machine, and TOP500 and Epoch are snapshots.\n"
-        "- **The calculator is an order of magnitude:** it scales Epoch's estimated cost of the Firmus site, holds other owners "
-        "fixed, and compares a one-off build cost with one year's GDP (2025) and federal spending (2025-26); the "
+        "- **The calculator is an order of magnitude:** it holds other owners fixed, builds the new capacity as sites the size of "
+        "Firmus at Epoch's estimated cost for that site, and compares a one-off build cost with one year's GDP (2025) and federal spending (2025-26); the "
         "**recommendation is ours.**"
     )
 
