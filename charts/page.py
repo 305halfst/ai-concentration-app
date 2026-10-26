@@ -5,7 +5,7 @@ TITLE = "Is cutting-edge AI becoming something only big tech can do?"
 CONTENTS = [
     ("question", "Our answer"),
     ("section-1", "1 · Universities have been squeezed out of frontier AI"),
-    ("section-2", "2 · Five companies own the AI infrastructure"),
+    ("section-2", "2 · Five companies own most of the tracked AI infrastructure"),
     ("section-3", "3 · Public institutions won the last race, not this one"),
     ("section-4", "4 · Universities and Australia barely register"),
     ("section-5", "5 · What it would take, and our ask"),
@@ -56,9 +56,9 @@ def hero(f: dict) -> list[tuple[str, str, str]]:
     """Three numbers that cover the whole of the three datasets, for the opening screen."""
     return [
         (f"Universities' share of notable AI systems, {f['t_last']}", f"{f['t_uni_last']:.1f}%",
-         f"down from {f['t_uni_first']:.0f}% in {f['t_first']} (Epoch AI via Our World in Data)"),
-        ("AI chips owned by five companies", f"{f['big5_h100']:.1f}%",
-         "estimated H100 equivalents in the data centres Epoch AI tracks, October 2026"),
+         f"{f['t_uni_last'] - f['t_uni_first']:+.1f} points since {f['t_first']} ({f['t_uni_first']:.0f}%)"),
+        ("Tracked AI chips owned by five companies", f"{f['big5_h100']:.1f}%",
+         "estimated H100 equivalents, Epoch AI data centres, October 2026"),
         ("Universities or public labs among the owners", "0",
          f"of {f['named']} named owners of those AI data centres"),
     ]

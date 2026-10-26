@@ -70,13 +70,18 @@ def build(df: pd.DataFrame) -> alt.LayerChart:
         size=alt.Size("n_datacenters:Q", title="Data centres (count)", scale=alt.Scale(range=[60, 900])),
         color=alt.Color("owner_group:N", title="Owner group", sort=groups, scale=alt.Scale(domain=groups, range=[PRIVATE, "#E8B98A", OTHER])),
     )
-    labels = base.mark_text(align="left", baseline="middle", dx=9, fontSize=11, color=INK).encode(text="owner:N")
-    return (points + labels).properties(height=440)
+    labels_r = base.transform_filter("indexof(['SpaceXAI','Unknown'], datum.owner) < 0").transform_calculate(
+        dy="datum.owner == 'Microsoft' ? -11 : (datum.owner == 'Amazon' ? 9 : 0)").mark_text(
+        align="left", baseline="middle", dx=9, fontSize=11, color=INK).encode(text="owner:N", yOffset="dy:Q")
+    labels_l = base.transform_filter("indexof(['SpaceXAI','Unknown'], datum.owner) >= 0").transform_calculate(
+        dy="datum.owner == 'Unknown' ? -10 : 8").mark_text(
+        align="right", baseline="middle", dx=-10, fontSize=11, color=INK).encode(text="owner:N", yOffset="dy:Q")
+    return (points + labels_r + labels_l).properties(height=440)
 
 
 def texts() -> dict[str, str]:
     return {
-        "title": "Bigger budgets buy more chips, and every budget on this chart is a company's",
+        "title": "Bigger budgets go with more chips, and every named owner here is a company (one bubble is sites with no known owner)",
         "caption": ("Chart E. Each bubble is an AI data-centre owner in Epoch AI's October 2026 update: estimated capital cost "
                     "against estimated AI chips (both log scales); bubble size is its number of data centres."),
         "lead": "",

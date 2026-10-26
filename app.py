@@ -1,7 +1,7 @@
 """Is cutting-edge AI becoming something only big tech can do?
 
 36104 A3 data narrative for a university research funding body. Run:  streamlit run app.py
-Reads only the three files in data/processed/ (rebuilt from data/sources/ by data/build_processed.py).
+Reads only the five files in data/processed/ (rebuilt from data/sources/ by data/build_processed.py).
 
 Order follows the course session pages: one-line purpose -> contents -> numbered sections, each with
 lead text -> controls -> chart -> how to read it -> what it shows -> bridge to the next section.
@@ -22,8 +22,10 @@ from charts import chart_d_map as D
 from charts import chart_e_scale as E
 from charts import chart_f_two_worlds as F
 from charts import chart_m_ai_map as M
+from charts import chart_p_pictogram as P
 from charts import chart_t_time as T
 from charts import chart_w_waffle as W
+from charts import hero_visuals as HV
 from charts import page
 from charts.common import SEGMENT_NAME, SEGMENT_ORDER, WORLD_URL, read, style
 
@@ -96,9 +98,24 @@ st.title(page.TITLE, anchor="question")
 st.markdown(f'<p class="bridge">{page.QUESTION_FOR_READER}</p>', unsafe_allow_html=True)
 with st.container(border=True, key="answer"):
     md(page.answer(fig))
-    for column, (label, value, note) in zip(st.columns(3), page.hero(fig)):
-        column.metric(label, value)
-        column.caption(note)
+    label, value, note = page.hero(fig)[0]
+    left, right = st.columns([1.15, 2.3], gap="large")
+    left.metric(label, value, delta=note, delta_color="normal")
+    left.caption("Epoch AI notable AI systems via Our World in Data")
+    with right:
+        st.html(HV.chip_owners(owners))
+    st.html(HV.zero_owners(owners))
+tp = P.texts(ai_systems, (fig["t_first"], fig["t_last"]))
+
+
+def draw_p() -> None:
+    st.altair_chart(style(P.build(ai_systems, (fig["t_first"], fig["t_last"]))), theme=None)
+    read_box(tp["read"])
+    source_caption("Source: Our World in Data, from Epoch AI's notable AI systems; processed file `ai_systems_by_sector.csv`. "
+                   "Last data refresh: 11/10/2026.")
+
+
+chart_card("P", "Part-to-whole · pictogram (1 square = 1 system)", tp["caption"], draw_p)
 md(page.QUESTION_EXPLAINED + "  \n" + page.AUDIENCE)
 st.caption("Last data refresh: 11/10/2026 · sources at the end of the page · " +
            " · ".join(f"[{name}](#{anchor})" for anchor, name in page.CONTENTS[1:]))
@@ -121,11 +138,12 @@ def draw_t() -> None:
 
 
 chart_card("T", "Change over time · animated 100% stacked area", tt["caption"], draw_t)
-finding(f"Universities built <b>{fig['t_uni_first']:.0f}%</b> of notable AI systems in {fig['t_first']}. "
-        f"In {fig['t_last']}: <b>{fig['t_uni_last']:.1f}%</b>. Industry took over in {fig['t_cross']}.")
+finding(f"Universities built <b>{fig['t_uni_first']:.0f}%</b> of notable AI systems in {fig['t_first']} "
+        f"({fig['t_n_first']} systems). In {fig['t_last']}: <b>{fig['t_uni_last']:.1f}%</b> ({fig['t_n_last']} systems). "
+        f"Industry took over in {fig['t_cross']}.")
 
 # ---------------------------------------------------------------- 2 · ownership (W, B, E)
-st.header("2 · Five companies own the AI infrastructure", anchor="section-2")
+st.header("2 · Five companies own most of the tracked AI infrastructure", anchor="section-2")
 tw = W.texts(owners)
 
 
@@ -136,8 +154,8 @@ def draw_w() -> None:
 
 
 chart_card("W", "Part-to-whole · unit chart (1 square = 1%)", tw["caption"], draw_w)
-finding(f"<b>{fig['big5_h100']:.1f}%</b> of the AI chips belong to five companies. Universities and public labs own "
-        "<b>none</b> of the squares.")
+finding(f"<b>{fig['big5_h100']:.1f}%</b> of the AI chips Epoch tracks (October 2026) belong to five companies. "
+        "Universities and public labs own <b>none</b> of the squares.")
 
 countries = B.countries(owners)
 priced = B.ranked(owners)
@@ -216,8 +234,8 @@ def draw_f() -> None:
 
 
 chart_card("F", "Part-to-whole · two 100% stacked bars", tf["caption"], draw_f)
-finding(f"Public institutions run <b>{fig['public_rmax']:.1f}%</b> of supercomputing, and <b>0%</b> of the AI chips "
-        "with a named owner.")
+finding(f"Public institutions run <b>{fig['public_rmax']:.1f}%</b> of TOP500 supercomputing (June 2026), and <b>0%</b> "
+        "of the tracked AI chips with a named owner (October 2026).")
 
 # ---------------------------------------------------------------- 4 · universities and Australia (A, C, D, M)
 st.header("4 · Universities and Australia barely register", anchor="section-4")
@@ -297,8 +315,8 @@ def draw_m() -> None:
 
 
 chart_card("M", "Spatial · choropleth", tm["caption"], draw_m)
-finding(f"Australia: <b>{fig['au_top500']:.1f}%</b> of the world's supercomputing, <b>{tm['au']:.1f}%</b> of its AI chips. "
-        f"The United States: {tm['us']:.1f}% of the AI chips.")
+finding(f"Australia: <b>{fig['au_top500']:.1f}%</b> of TOP500 compute (June 2026) and <b>{tm['au']:.1f}%</b> of the AI "
+        f"chips Epoch tracks (October 2026). The United States: {tm['us']:.1f}% of those chips.")
 
 # ---------------------------------------------------------------- 5 · what it would take, and the ask
 st.header("5 · What it would take, and our ask", anchor="section-5")
@@ -319,7 +337,7 @@ def draw_k() -> None:
                                  x=alt.X("share:Q", stack="zero", title="Share of tracked AI chips after the new capacity (%)",
                                          scale=alt.Scale(domain=[0, 100])), order="rank:Q")
     st.altair_chart(style((bar.mark_bar(height=44, stroke="#FFFFFF").encode(
-        color=alt.Color("group:N", title=None, sort=groups, scale=alt.Scale(domain=groups, range=["#1F4E8C", "#D9822B", "#E8B98A"])))
+        color=alt.Color("group:N", title="Owner of tracked AI chips", sort=groups, scale=alt.Scale(domain=groups, range=["#1F4E8C", "#D9822B", "#E8B98A"])))
         + bar.mark_text(color="white", fontWeight=700, fontSize=13).transform_stack(
             stack="share", groupby=["row"], sort=[alt.SortField("rank")], as_=["x0", "x1"]).transform_calculate(
             mid="(datum.x0 + datum.x1) / 2").encode(x="mid:Q", text="label:N"))

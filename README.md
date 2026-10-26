@@ -34,7 +34,7 @@ frontier AI runs on (Epoch AI's database of large AI data centres), what the pub
    Chart D (all / public / private systems) and Chart M.
 3. **As a** research-infrastructure policy officer, **I want** to see what a meaningful public share would cost and a
    clear recommendation with its limits, **so that** I can decide whether to fund shared GPU capacity for universities.
-   *Walk-through:* section 5: Calculator K (target-share slider), conclusion and recommendation; section 6, limits.
+   *Walk-through:* section 5: Calculator K (target-share slider), conclusion and recommendation; then "What the data cannot show".
 
 ## Run
 

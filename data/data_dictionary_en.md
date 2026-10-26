@@ -65,7 +65,7 @@ the committed file.
 ### `processed/datacenters_by_owner_country.csv`
 
 - **Grain / primary key:** one row per named owner in the app's documented
-  11 October 2026 Epoch snapshot; `owner` is unique (20 rows).
+  11 October 2026 Epoch snapshot; `owner` is unique (20 rows = 19 named owners + `Unknown`).
 - **Time coverage / latest observation:** the snapshot is October 2026.  It is
   not a time series.
 - **Source:** `sources/epoch/data_centers.csv` (93 site rows, 11/10/2026 snapshot).

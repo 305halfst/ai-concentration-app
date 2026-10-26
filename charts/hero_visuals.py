@@ -1,0 +1,118 @@
+"""Opening hero graphics (HTML + inline SVG, no external assets).
+
+1. chip_owners(): a drawn, generic AI-chip icon beside the share of tracked H100 equivalents held by each of the
+   five largest owners, then the other companies and unknown owners.
+2. zero_owners(): one tile per named owner of the tracked AI data centres, all companies, plus an empty highlighted
+   slot for universities and public labs, which is 0.
+
+Companies are shown by name in plain text, not by logo: logos are trademarks and the names carry the same
+information. All numbers come from datacenters_by_owner_country.csv.
+"""
+
+from __future__ import annotations
+
+import base64
+import html
+
+import pandas as pd
+
+from charts.common import OTHER, PRIVATE, PUBLIC
+
+BIG_FIVE = ["Google", "Meta", "Amazon", "Microsoft", "SpaceXAI"]
+LIGHT = "#E8B98A"
+
+CSS = f"""<style>
+.hv {{font-family: 'Source Sans Pro', 'IBM Plex Sans', Helvetica, Arial, sans-serif; color: #15181C;}}
+.hv-label {{font-size: 14px; color: #3A4047; margin: 0 0 6px;}}
+.hv-chip {{display: grid; grid-template-columns: 190px 1fr; gap: 22px; align-items: center;}}
+.hv-big {{font-size: 52px; font-weight: 700; line-height: 1; margin: 6px 0 2px; color: {PRIVATE};}}
+.hv-row {{display: grid; grid-template-columns: 112px 1fr 58px; gap: 8px; align-items: center; margin: 3px 0;}}
+.hv-name {{font-weight: 700; font-size: 15px; letter-spacing: .01em;}}
+.hv-name.dim {{font-weight: 500; color: #555D65; font-size: 13px;}}
+.hv-track {{background: #EEF0F2; height: 18px; border-radius: 3px; overflow: hidden;}}
+.hv-track i {{display: block; height: 100%;}}
+.hv-pct {{font-weight: 700; font-size: 14px; text-align: right;}}
+.hv-sum {{border-top: 2px solid #15181C; margin-top: 6px; padding-top: 4px; font-size: 14px;}}
+.hv-tiles {{display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px;}}
+.hv-tile {{background: {PRIVATE}; color: #fff; border-radius: 4px; padding: 6px 8px; font-size: 12px; font-weight: 600;
+          min-width: 74px; text-align: center;}}
+.hv-zero {{border: 3px dashed {PUBLIC}; background: #FFFFFF; color: {PUBLIC}; border-radius: 6px; padding: 2px 14px;
+          display: flex; align-items: center; gap: 10px;}}
+.hv-zero b {{font-size: 52px; line-height: 1;}}
+.hv-zero span {{font-size: 13px; font-weight: 600; max-width: 150px; line-height: 1.25;}}
+.hv-zerorow {{display: flex; gap: 14px; align-items: stretch; flex-wrap: wrap;}}
+.hv-note {{font-size: 12px; color: #555D65; margin-top: 6px;}}
+@media (max-width: 700px) {{.hv-chip {{grid-template-columns: 1fr;}} .hv-row {{grid-template-columns: 90px 1fr 52px;}}}}
+</style>"""
+
+
+def _chip_svg() -> str:
+    """A generic accelerator: package, die and memory stacks, with pins. Not any vendor's artwork."""
+    pins = "".join(
+        f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="#8C96A0"/>'
+        for i in range(9)
+        for x, y, w, h in [(30 + i * 15, 6, 6, 12), (30 + i * 15, 162, 6, 12), (6, 30 + i * 15, 12, 6), (162, 30 + i * 15, 12, 6)]
+    )
+    hbm = "".join(f'<rect x="{x}" y="{y}" width="22" height="30" rx="2" fill="#5B6570"/>'
+                  for x in (40, 118) for y in (48, 102))
+    return (
+        '<svg viewBox="0 0 180 180" width="170" height="170" role="img" aria-label="Generic AI accelerator chip">'
+        f"{pins}"
+        '<rect x="18" y="18" width="144" height="144" rx="10" fill="#2B3138"/>'
+        f"{hbm}"
+        '<rect x="68" y="48" width="44" height="84" rx="3" fill="#C9A227"/>'
+        '<text x="90" y="86" font-family="Helvetica,Arial,sans-serif" text-anchor="middle" font-size="13" font-weight="700" fill="#2B3138">H100</text>'
+        '<text x="90" y="101" font-family="Helvetica,Arial,sans-serif" text-anchor="middle" font-size="9" fill="#2B3138">equivalent</text>'
+        "</svg>"
+    )
+
+
+def _chip_img() -> str:
+    """As an <img> data URI: st.html sanitises inline SVG away."""
+    svg = _chip_svg().replace("<svg ", '<svg xmlns="http://www.w3.org/2000/svg" ', 1)
+    data = base64.b64encode(svg.encode()).decode()
+    return f'<img src="data:image/svg+xml;base64,{data}" width="170" height="170" alt="Generic AI accelerator chip">'
+
+
+
+def chip_shares(owners: pd.DataFrame) -> pd.DataFrame:
+    total = owners["h100_equivalents"].sum()
+    big = owners[owners["owner"].isin(BIG_FIVE)].sort_values("h100_equivalents", ascending=False)
+    rows = [(o, v / total * 100, PRIVATE, True) for o, v in zip(big["owner"], big["h100_equivalents"])]
+    unknown = owners.loc[owners["owner"] == "Unknown", "h100_equivalents"].sum()
+    rest = total - big["h100_equivalents"].sum() - unknown
+    rows += [("Other companies", rest / total * 100, LIGHT, False), ("Owner unknown", unknown / total * 100, OTHER, False)]
+    return pd.DataFrame(rows, columns=["name", "share", "colour", "big"])
+
+
+def chip_owners(owners: pd.DataFrame) -> str:
+    data = chip_shares(owners)
+    top = data["share"].max()
+    big = data.loc[data["big"], "share"].sum()
+    bars = "".join(
+        f'<div class="hv-row"><span class="hv-name{"" if r.big else " dim"}">{html.escape(r.name)}</span>'
+        f'<span class="hv-track"><i style="width:{r.share / top * 100:.1f}%;background:{r.colour}"></i></span>'
+        f'<span class="hv-pct">{r.share:.1f}%</span></div>'
+        for r in data.itertuples()
+    )
+    return (
+        f'{CSS}<div class="hv"><p class="hv-label">Who owns the tracked AI chips (estimated H100 equivalents, '
+        f'Epoch AI data centres, October 2026)</p><div class="hv-chip"><div style="text-align:center">{_chip_img()}<div class="hv-big">{big:.1f}%</div><div style="font-size:13px;color:#555D65">owned by five companies</div></div><div>'
+        f"{bars}<div class=\"hv-sum\">100% = {owners['h100_equivalents'].sum():,.0f} estimated H100 equivalents "
+        f"in the {int(owners['n_datacenters'].sum()) - 20} of {int(owners['n_datacenters'].sum())} tracked sites with an estimate</div></div></div></div>"
+    )
+
+
+def zero_owners(owners: pd.DataFrame) -> str:
+    named = owners[owners["owner"] != "Unknown"].sort_values(["h100_equivalents", "owner"], ascending=[False, True])
+    tiles = "".join(
+        f'<span class="hv-tile">{html.escape(o)}{" (AU)" if o == "Firmus" else ""}</span>' for o in named["owner"]
+    )
+    return (
+        f'{CSS}<div class="hv"><p class="hv-label">The {len(named)} named owners of the tracked AI data centres: '
+        f'<b style="color:{PRIVATE}">all {len(named)} are companies</b></p>'
+        f'<div class="hv-zerorow"><div class="hv-zero"><b>0</b><span>universities or public research labs</span></div>'
+        f'<div class="hv-tiles" style="flex:1">{tiles}</div></div>'
+        f'<p class="hv-note">Ordered by estimated H100 equivalents; our classification by owner name. A further '
+        f'{int(owners.loc[owners["owner"] == "Unknown", "n_datacenters"].sum())} sites have no known owner.</p></div>'
+    )
