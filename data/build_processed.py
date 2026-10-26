@@ -20,8 +20,8 @@ EXPECTED_MD5 = {
     "epoch/data_centers.csv": "ea246ddea0bf7f561f99c1639662be23",      # Epoch AI data centres, downloaded 11/10/2026
     # Our World in Data, from Epoch AI's notable AI systems, downloaded 11/10/2026
     "owid/affiliation-researchers-building-artificial-intelligence-systems-all.csv": "9c5bdd24852b8a3d9b06c17e7f61df98",
-    # World Bank GDP (current US$) for Australia via FRED, observations 2021-2025, retrieved 26/10/2026 (see worldbank/README.md)
-    "worldbank/MKTGDPAUA646NWDB.csv": "40729543b2a721515a3df7e20fb41f7b",
+    # World Bank GDP (current US$) for Australia via FRED, annual 1960-2025, downloaded 26/10/2026 (see worldbank/README.md)
+    "worldbank/MKTGDPAUA646NWDB.csv": "2b4932edc8a10823709181e37b9c95b4",
     # PBO 2025-26 Medium-term budget outlook, Table B-2 total expenses, copied 26/10/2026 (see pbo/README.md)
     "pbo/mtbo_2025-26_total_expenses.csv": "15870a60749a7b71e429ea3468bf4223",
 }

@@ -13,14 +13,14 @@ as 11 October 2026.
 | TOP500 List, June 2026 | `sources/top500/TOP500_202606.xlsx` | `https://www.top500.org/lists/top500/2026/06/` | Copyright TOP500.org; no licence grant stated, used with attribution | June 2026 | `rank` |
 | Our World in Data, from Epoch AI notable AI systems | `sources/owid/affiliation-researchers-building-artificial-intelligence-systems-all.csv` | `https://ourworldindata.org/grapher/affiliation-researchers-building-artificial-intelligence-systems-all` | CC BY 4.0 | 1950–2025 used (2026 incomplete), downloaded 11/10/2026; MD5 `9c5bdd24852b8a3d9b06c17e7f61df98` | `Entity` + `Year` |
 | Epoch AI, Data on AI Data Centers | `sources/epoch/data_centers.csv` | `https://epoch.ai/data/data-centers-documentation/downloads` | CC BY 4.0 | October 2026 update, downloaded 11/10/2026; MD5 `ea246ddea0bf7f561f99c1639662be23`; 93 rows | `Name` |
-| World Bank, GDP (current US$) for Australia, `NY.GDP.MKTP.CD`, via FRED series `MKTGDPAUA646NWDB` | `sources/worldbank/MKTGDPAUA646NWDB.csv` | `https://fred.stlouisfed.org/series/MKTGDPAUA646NWDB` | CC BY 4.0 (World Bank) | 2021–2025 annual observations, FRED last updated 7 July 2026, copied from the series page 26/10/2026 (see `sources/worldbank/README.md`); MD5 `40729543b2a721515a3df7e20fb41f7b` | `observation_date` |
+| World Bank, GDP (current US$) for Australia, `NY.GDP.MKTP.CD`, via FRED series `MKTGDPAUA646NWDB` | `sources/worldbank/MKTGDPAUA646NWDB.csv` | `https://fred.stlouisfed.org/series/MKTGDPAUA646NWDB` | CC BY 4.0 (World Bank) | 1960–2025 annual observations, FRED last updated 7 July 2026, downloaded as `fredgraph.csv` 26/10/2026 (see `sources/worldbank/README.md`); MD5 `2b4932edc8a10823709181e37b9c95b4` | `observation_date` |
 | Parliamentary Budget Office, *2025-26 Medium-term budget outlook*, Table B-2, total expenses | `sources/pbo/mtbo_2025-26_total_expenses.csv` | `https://www.pbo.gov.au/publications-and-data/publications/2025-26-Medium-term-budget-outlook` | CC BY 4.0 (Commonwealth of Australia) | 2025-26: A$785.7B, 27.3% of GDP; copied from the PBO page 26/10/2026 (see `sources/pbo/README.md`); MD5 `15870a60749a7b71e429ea3468bf4223` | `measure` + `year` |
 
-The TOP500, Epoch and OWID files were downloaded on 11/10/2026; the World Bank GDP observations were copied from FRED
-and the PBO total-expenses figure from the PBO on 26/10/2026 (downloads were blocked in our build environment). All five are committed unedited.
+The TOP500, Epoch and OWID files were downloaded on 11/10/2026; the World Bank GDP file was downloaded from FRED
+and the PBO total-expenses figure copied from the PBO page on 26/10/2026 (the PBO table could not be downloaded). All five are committed unedited.
 `data/build_processed.py` checks their MD5s (TOP500 `26d72ecb9eb8fcdcefb0df3a1b215f79`,
 Epoch `ea246ddea0bf7f561f99c1639662be23`, OWID `9c5bdd24852b8a3d9b06c17e7f61df98`, World Bank
-`40729543b2a721515a3df7e20fb41f7b`, PBO `15870a60749a7b71e429ea3468bf4223`) before writing anything.  Epoch's website
+`2b4932edc8a10823709181e37b9c95b4`, PBO `15870a60749a7b71e429ea3468bf4223`) before writing anything.  Epoch's website
 now serves a later release, so a fresh download will not match and must not replace
 the committed file.
 
@@ -125,8 +125,8 @@ the committed file.
 
 ### `processed/au_gdp.csv`
 
-- **Source:** `sources/worldbank/MKTGDPAUA646NWDB.csv` (as above). **Grain / primary key:** one row per `year` (5 rows).
-  **Time coverage:** 2021–2025. **Latest observation:** 2025, US$1,798.52 billion.
+- **Source:** `sources/worldbank/MKTGDPAUA646NWDB.csv` (as above). **Grain / primary key:** one row per `year` (66 rows).
+  **Time coverage:** 1960–2025. **Latest observation:** 2025, US$1,798.52 billion.
 - **Transform:** year taken from `observation_date`; GDP in current US$ divided by 1e9 and rounded to 2 decimals.
   Used only by Calculator K (share of GDP, latest year).
 

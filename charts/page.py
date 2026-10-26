@@ -160,9 +160,9 @@ SOURCES = [
      "Epoch AI, Data on AI data centers (October 2026 update)", "CC BY 4.0", "ea246ddea0bf7f561f99c1639662be23"],
     ["datacenters_by_country.csv", "12 rows, one per site country", "epoch/data_centers.csv",
      "Epoch AI, Data on AI data centers (October 2026 update)", "CC BY 4.0", "ea246ddea0bf7f561f99c1639662be23"],
-    ["au_gdp.csv", "5 rows, Australia's GDP 2021–2025 (US$ bn); used only for the calculator's share of GDP",
+    ["au_gdp.csv", "66 rows, Australia's GDP 1960–2025 (US$ bn); used only for the calculator's share of GDP",
      "worldbank/MKTGDPAUA646NWDB.csv", "World Bank, GDP (current US$) NY.GDP.MKTP.CD, via FRED series MKTGDPAUA646NWDB "
-     "(retrieved 26/10/2026)", "CC BY 4.0", "40729543b2a721515a3df7e20fb41f7b"],
+     "(retrieved 26/10/2026)", "CC BY 4.0", "2b4932edc8a10823709181e37b9c95b4"],
     ["au_budget.csv", "1 row, Australian Government total expenses 2025-26 (A$ bn and % of GDP); calculator only",
      "pbo/mtbo_2025-26_total_expenses.csv", "Parliamentary Budget Office, 2025-26 Medium-term budget outlook, Table B-2 "
      "(retrieved 26/10/2026)", "CC BY 4.0", "15870a60749a7b71e429ea3468bf4223"],
@@ -173,8 +173,8 @@ SOURCES = [
 REFRESH_SHORT = ("Last data refresh: 11/10/2026 (TOP500 June 2026 list; Epoch AI October 2026 update; Our World in Data "
                  "notable AI systems); 26/10/2026 (World Bank GDP and PBO federal expenses, calculator only).")
 SOURCE_NOTE = (
-    "The TOP500, Epoch AI and Our World in Data files were downloaded on 11/10/2026 and the World Bank GDP observations "
-    "were copied from FRED and the PBO total-expenses figure from the PBO on 26/10/2026; all five are kept unedited in `data/sources/`. `python data/build_processed.py` "
+    "The TOP500, Epoch AI and Our World in Data files were downloaded on 11/10/2026, the World Bank GDP file from FRED on "
+    "26/10/2026, and the PBO total-expenses figure was copied from the PBO page on 26/10/2026; all five are kept unedited in `data/sources/`. `python data/build_processed.py` "
     "checks their MD5s and regenerates every processed file the app reads. Map shapes: Natural Earth 1:110m via "
     "world-atlas 2.0.2 (ISC licence)."
 )

@@ -11,9 +11,8 @@ The app uses five public sources, kept unedited in `data/sources/`:
 - **Our World in Data, from Epoch AI's notable AI systems** (`data/sources/owid/affiliation-researchers-building-artificial-intelligence-systems-all.csv`,
   MD5 `9c5bdd24852b8a3d9b06c17e7f61df98`). CC BY 4.0. Citation: Epoch AI (2026), with major processing by Our World in Data.
 - **World Bank, GDP (current US$) for Australia, NY.GDP.MKTP.CD, via FRED series MKTGDPAUA646NWDB**
-  (`data/sources/worldbank/MKTGDPAUA646NWDB.csv`, MD5 `40729543b2a721515a3df7e20fb41f7b`). CC BY 4.0. The 2021–2025
-  observations were copied from the FRED series page on 26/10/2026 because the CSV download was blocked in our build
-  environment; used only for the calculator's share of GDP.
+  (`data/sources/worldbank/MKTGDPAUA646NWDB.csv`, MD5 `2b4932edc8a10823709181e37b9c95b4`). CC BY 4.0. Annual
+  1960–2025, downloaded from FRED (fredgraph.csv) on 26/10/2026; used only for the calculator's share of GDP.
 - **Parliamentary Budget Office, 2025-26 Medium-term budget outlook, Table B-2** (`data/sources/pbo/mtbo_2025-26_total_expenses.csv`,
   MD5 `15870a60749a7b71e429ea3468bf4223`). CC BY 4.0. Australian Government total expenses 2025-26 (A$785.7B, 27.3% of
   GDP), copied from the PBO page on 26/10/2026; used only for the calculator's share of federal spending.

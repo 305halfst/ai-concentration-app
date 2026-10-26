@@ -102,7 +102,7 @@ python data/build_processed.py
 ```
 
 The script stops if any raw file's MD5 differs from the committed snapshot (TOP500 `26d72ecb9eb8fcdcefb0df3a1b215f79`,
-Epoch `ea246ddea0bf7f561f99c1639662be23`, OWID `9c5bdd24852b8a3d9b06c17e7f61df98`, World Bank `40729543b2a721515a3df7e20fb41f7b`, PBO `15870a60749a7b71e429ea3468bf4223`), then writes the seven CSVs and `MANIFEST.csv`. Running it reproduces the committed
+Epoch `ea246ddea0bf7f561f99c1639662be23`, OWID `9c5bdd24852b8a3d9b06c17e7f61df98`, World Bank `2b4932edc8a10823709181e37b9c95b4`, PBO `15870a60749a7b71e429ea3468bf4223`), then writes the seven CSVs and `MANIFEST.csv`. Running it reproduces the committed
 processed files byte for byte.
 
 ## Design rules
