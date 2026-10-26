@@ -45,6 +45,12 @@ def figures(segments, systems, owners, ai_systems) -> dict:
         "unknown_sites": int(owners.loc[owners["owner"] == "Unknown", "n_datacenters"].sum()),
         "uni_systems": seg.loc["Academic", "system_share_pct"],
         "uni_rmax": seg.loc["Academic", "rmax_share_pct"],
+        "uni_n": int(seg.loc["Academic", "n_systems"]),
+        **_collab_peak(ai_systems),
+        "top10_public": int((systems.nlargest(10, "rmax_tflops")["sector_group"] == "Public").sum()),
+        "fastest_site": systems.nlargest(1, "rmax_tflops").iloc[0]["site"],
+        "fastest_pflops": systems["rmax_tflops"].max() / 1000,
+        "unknown_h100": owners.loc[owners["owner"] == "Unknown", "h100_equivalents"].sum() / h100 * 100,
         "au_top500": countries.get("Australia", 0),
         "au_owner": ", ".join(australia["owner"]),
         "au_h100_n": australia["h100_equivalents"].sum(),
@@ -72,6 +78,12 @@ QUESTION_EXPLAINED = (
     "*Cutting-edge AI* means the most capable AI systems and the AI-specific data centres they are trained in. "
     "*Only big tech* means a handful of companies build and own almost all of it."
 )
+
+
+def _collab_peak(ai_systems) -> dict:
+    c = ai_systems[(ai_systems["year"] >= 2010) & ai_systems["sector"].str.contains("collaboration")]
+    top = c.loc[c["n_systems"].idxmax()]
+    return {"collab_peak_n": int(top["n_systems"]), "collab_peak_year": int(top["year"])}
 
 
 def answer(f: dict) -> str:
@@ -147,18 +159,33 @@ def limits(ai_systems, owners, f: dict) -> str:
 
 def summary(f: dict) -> str:
     one, five = calculator(f, 1.0), calculator(f, 5.0)
+    collab_n = round(f["t_collab_last"] * f["t_n_last"] / 100)
     return (
         "### Yes: cutting-edge AI is becoming something only big tech can do.\n"
+        "**The evidence for Yes**\n\n"
         f"- **The builders changed.** Universities built **{f['t_uni_first']:.0f}%** of notable AI systems in "
-        f"{f['t_first']} and **{f['t_uni_last']:.1f}%** in {f['t_last']}; industry has led every year since {f['t_cross']}.\n"
-        f"- **The infrastructure is owned by companies.** Five of them hold **{f['big5_h100']:.1f}%** of the tracked AI "
+        f"{f['t_first']} and **{f['t_uni_last']:.1f}%** in {f['t_last']}; industry has led every year since {f['t_cross']} "
+        f"and built **{f['t_ind_last']:.1f}%** in {f['t_last']}.\n"
+        f"- **The AI infrastructure is owned by companies.** Five of them hold **{f['big5_h100']:.1f}%** of the tracked AI "
         f"chips, and none of the {f['named']} named owners is a university or public lab.\n"
-        f"- **Public strength is in the old race.** Public institutions run **{f['public_rmax']:.1f}%** of TOP500 "
-        f"supercomputing, but universities hold {f['uni_rmax']:.1f}% of it and Australia {f['au_top500']:.1f}%.\n"
-        f"- **Catching up is a national decision, and its scale is known.** A **1%** public share means about "
-        f"**{one['sites']:.0f}** Firmus-sized sites, **US${one['cost_bn']:.1f}B**, **{one['fed_pct']:.1f}%** of one year's "
-        f"federal spending or **{one['cgs_years']:.1f} years** of the Commonwealth grant scheme; **5%** means "
-        f"**{five['sites']:.0f}** sites and **{five['fed_pct']:.1f}%**.\n\n"
+        f"- **Australia barely registers.** It holds {f['au_top500']:.1f}% of TOP500 compute and {f['au_h100']:.1f}% of the "
+        "tracked AI chips, in one commercial site.\n\n"
+        "**The evidence for No**\n\n"
+        f"- **Public institutions still lead supercomputing.** They run **{f['public_rmax']:.1f}%** of TOP500 compute and "
+        f"{f['top10_public']} of the 10 fastest machines; the fastest ({f['fastest_pflops']:,.0f} PFlop/s) is at a public "
+        "research centre.\n"
+        f"- **Universities have not disappeared.** They run {f['uni_n']} of the 500 TOP500 machines, and in {f['t_last']} "
+        f"another {f['t_collab_last']:.1f}% of notable AI systems ({collab_n} of {f['t_n_last']}) came from "
+        "university–industry collaborations.\n"
+        f"- **Ownership is not fully known.** {f['unknown_h100']:.1f}% of the tracked AI chips sit in sites with no known "
+        "owner.\n\n"
+        "**Why Yes still wins:** TOP500 measures general supercomputers' Linpack speed, not the AI data centres where "
+        f"frontier models are trained; universities hold only {f['uni_rmax']:.1f}% of that compute; collaborations "
+        f"peaked at {f['collab_peak_n']} systems in {f['collab_peak_year']} and fell to {collab_n} in {f['t_last']}; and even if every unknown-owner site were public, companies would still hold most of the "
+        "tracked AI chips.\n\n"
+        f"**What catching up would take:** a **1%** public share means about **{one['sites']:.0f}** Firmus-sized sites, "
+        f"**US${one['cost_bn']:.1f}B**, **{one['fed_pct']:.1f}%** of one year's federal spending or **{one['cgs_years']:.1f} "
+        f"years** of the Commonwealth grant scheme; **5%** means **{five['sites']:.0f}** sites and **{five['fed_pct']:.1f}%**.\n\n"
         "**For the decision:** the data show no public route to AI-data-centre-scale compute for Australian universities. "
         "Funding shared GPU capacity, starting from public facilities such as Setonix (Pawsey), is the lever the "
         "government controls. *This is our reading of the data and our recommendation.*"

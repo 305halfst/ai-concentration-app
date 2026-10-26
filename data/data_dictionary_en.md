@@ -158,6 +158,10 @@ the committed file.
   GDP ÷ `pct_gdp` in `au_budget.csv` (27.3%), which avoids an exchange rate. Check at t = 1%: 145,440 chips ÷ 46,488 =
   3.13 sites × 1.553 = US$4.86B; ÷ 1,798.52 = 0.27% of GDP; ÷ 27.3 = 0.99% of federal spending;
   years of the Commonwealth grant scheme = 0.99% × 785.7 ÷ 8.6 = 0.90 (A$ billions from the same table).
+- **In summary, evidence for No:** 7 of the 10 fastest machines = `sector_group == "Public"` among the top 10
+  `rmax_tflops` in `top500_systems_clean.csv` (the fastest, 2,198 PFlop/s, is at NSCS Shenzhen, `Research`);
+  collaborations = `University–industry collaboration` rows of `ai_systems_by_sector.csv` (5 of 106 in 2025; peak 29 in
+  2023); unknown-owner share = `Unknown` `h100_equivalents` ÷ total (12.6%).
 - **Opening scale card:** 131 of 500 = `n_systems` for `Academic` in `fig4_top500_by_segment.csv`; average TOP500
   power = mean `power_kw` of the 200 machines with power > 0 in `top500_systems_clean.csv` (2.08 MW); average AI site =
   sum `power_mw` ÷ 73 estimated sites (189 MW); ratio ≈ 91×.

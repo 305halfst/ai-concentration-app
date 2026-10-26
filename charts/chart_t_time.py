@@ -39,6 +39,7 @@ def facts(df: pd.DataFrame) -> dict:
     return {"first": first, "last": last, "uni_first": w.loc[first, "Universities"], "uni_last": w.loc[last, "Universities"],
             "ind_first": w.loc[first, "Industry"], "ind_last": w.loc[last, "Industry"], "cross": cross,
             "n_first": int(w.loc[first, "total"]), "n_last": int(w.loc[last, "total"]),
+            "collab_last": w.loc[last, "University–industry collaboration"],
             "early_max": int(early[early.index >= 2000].max())}
 
 
