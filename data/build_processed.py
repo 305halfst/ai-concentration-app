@@ -1,4 +1,4 @@
-"""Rebuild the three files the app reads (data/processed/) from the two raw files in data/sources/.
+"""Rebuild the files the app reads (data/processed/) from the three raw files in data/sources/.
 
 Run from the repository root:   python data/build_processed.py
 Needs: pandas, openpyxl.  Deterministic: the same sources give byte-identical outputs.
@@ -18,7 +18,10 @@ MANIFEST = []
 EXPECTED_MD5 = {
     "top500/TOP500_202606.xlsx": "26d72ecb9eb8fcdcefb0df3a1b215f79",   # TOP500 June 2026, downloaded 11/10/2026
     "epoch/data_centers.csv": "ea246ddea0bf7f561f99c1639662be23",      # Epoch AI data centres, downloaded 11/10/2026
+    # Our World in Data, from Epoch AI's notable AI systems, downloaded 11/10/2026
+    "owid/affiliation-researchers-building-artificial-intelligence-systems-all.csv": "9c5bdd24852b8a3d9b06c17e7f61df98",
 }
+LAST_COMPLETE_YEAR = 2025   # OWID marks 2026 as incomplete
 
 
 def md5(path: Path) -> str:
@@ -96,6 +99,36 @@ def build_datacenters() -> None:
          "site count, sums of capital cost, power and H100 equivalents, and each owner's share of total capital cost.")
 
 
+def build_ai_systems() -> None:
+    raw = pd.read_csv(SRC / "owid/affiliation-researchers-building-artificial-intelligence-systems-all.csv")
+    raw.columns = ["sector", "year", "n_systems"]
+    raw = raw[raw["year"] <= LAST_COMPLETE_YEAR]
+    grid = pd.MultiIndex.from_product([sorted(raw["sector"].unique()), sorted(raw["year"].unique())],
+                                      names=["sector", "year"]).to_frame(index=False)
+    out = grid.merge(raw, how="left").fillna({"n_systems": 0}).astype({"n_systems": int})
+    out["total_year"] = out.groupby("year")["n_systems"].transform("sum")
+    out["share_pct"] = (100 * out["n_systems"] / out["total_year"]).round(2)
+    out = out.sort_values(["year", "sector"]).reset_index(drop=True)
+    assert not out.duplicated(["sector", "year"]).any()
+    save(out, "ai_systems_by_sector.csv", "owid/affiliation-researchers-building-artificial-intelligence-systems-all.csv",
+         "Renamed columns; kept years up to 2025 (2026 incomplete); filled sector-years with no systems as 0; "
+         "total_year = all sectors that year; share_pct = n_systems / total_year x 100, 2 dp.")
+
+
+def build_datacenters_by_country() -> None:
+    raw = pd.read_csv(SRC / "epoch/data_centers.csv")
+    sites = pd.DataFrame({"country": raw["Country"].str.strip(),
+                          "h100_equivalents": raw["Current H100 equivalents"].fillna(0).round(0)})
+    out = (sites.groupby("country").agg(n_datacenters=("country", "size"), h100_equivalents=("h100_equivalents", "sum"))
+           .reset_index())
+    out["n_estimated"] = sites[sites["h100_equivalents"] > 0].groupby("country").size().reindex(out["country"]).fillna(0).astype(int).values
+    out["h100_share_pct"] = (100 * out["h100_equivalents"] / out["h100_equivalents"].sum()).round(2)
+    out = out.sort_values("h100_equivalents", ascending=False).reset_index(drop=True)
+    save(out, "datacenters_by_country.csv", "epoch/data_centers.csv",
+         "Grouped the 93 sites by Country: site count, sites with a current estimate (n_estimated), sum of current H100 "
+         "equivalents (blank = 0), and each country's share of the total.")
+
+
 def write_manifest() -> None:
     man = pd.DataFrame(MANIFEST, columns=["processed_file", "rows", "source_files", "transform"])
     man["md5"] = man["processed_file"].map(lambda f: md5(OUT / f))
@@ -107,4 +140,6 @@ if __name__ == "__main__":
     check_sources()
     build_top500()
     build_datacenters()
+    build_datacenters_by_country()
+    build_ai_systems()
     write_manifest()

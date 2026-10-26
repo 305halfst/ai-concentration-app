@@ -1,0 +1,89 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  :root { --ink:#15181C; --muted:#555D65; --bg:#F3F4F2; --card:#FFFFFF; --uni:#0B2A55; --collab:#8AB0D8; --ind:#D9822B; --oth:#C5CBD1; }
+  body { margin:0; background:transparent; font-family:"IBM Plex Sans",Helvetica,Arial,sans-serif; color:var(--ink); }
+  .card { background:var(--card); padding:4px 6px; max-width:1100px; margin:0 auto; }
+  .eyebrow { font:500 12px/1.2 "IBM Plex Mono",monospace; letter-spacing:.06em; text-transform:uppercase; color:#1F4E8C; margin:0 0 6px; }
+  h2 { margin:0 0 4px; font-size:26px; line-height:1.2; }
+  .sub { color:var(--muted); margin:0 0 12px; font-size:14px; }
+  .controls { display:flex; gap:14px; align-items:center; margin:8px 0 4px; }
+  button { font:600 14px/1 inherit; padding:9px 16px; border-radius:6px; border:1px solid #1F4E8C; background:#1F4E8C; color:#fff; cursor:pointer; }
+  input[type=range] { flex:1; accent-color:#1F4E8C; }
+  .yearbig { font:700 34px/1 "IBM Plex Sans",sans-serif; min-width:86px; text-align:right; }
+  .read { font-size:14px; color:var(--ink); margin-top:8px; }
+  .src { font-size:12px; color:var(--muted); margin-top:6px; }
+</style></head>
+<body>
+<div class="card"><div id="root"></div></div>
+<!--LIBS-->
+<script>
+const DATA = /*DATA*/;
+const TEXT = /*TEXT*/;
+const KEYS = ["Universities", "University–industry collaboration", "Industry", "Other / not specified"];
+const SHORT = {"Universities":"Universities","University–industry collaboration":"Collaborations","Industry":"Industry","Other / not specified":"Other"};
+const COL = {"Universities":"var(--uni)","University–industry collaboration":"var(--collab)","Industry":"var(--ind)","Other / not specified":"var(--oth)"};
+const e = React.createElement;
+const W = 1060, H = 360, M = {top: 16, right: 230, bottom: 34, left: 70};
+const years = DATA.map(d => d.year);
+const x = d3.scaleLinear().domain([years[0], years[years.length - 1]]).range([M.left, W - M.right]);
+const y = d3.scaleLinear().domain([0, 100]).range([H - M.bottom, M.top]);
+const stack = d3.stack().keys(KEYS)(DATA);
+const crossover = DATA.find(d => d.Industry > d.Universities).year;
+const start = Number(new URLSearchParams(location.search).get("year")) || TEXT.start || years[years.length - 1];
+
+function Chart() {
+  const [year, setYear] = React.useState(start);
+  const [playing, setPlaying] = React.useState(false);
+  React.useEffect(() => {
+    if (!playing) return;
+    const t = setInterval(() => setYear(v => {
+      if (v >= years[years.length - 1]) { setPlaying(false); return v; }
+      return v + 1;
+    }), 650);
+    return () => clearInterval(t);
+  }, [playing]);
+  const cur = DATA.find(d => d.year === year);
+  const area = d3.area().x(d => x(d.data.year)).y0(d => y(d[0])).y1(d => y(d[1])).curve(d3.curveMonotoneX);
+  const shown = s => s.filter(d => d.data.year <= year);
+  // right-hand labels at the current year, placed at the middle of each band, spread so they never overlap
+  let labels = stack.map(s => { const d = s.find(p => p.data.year === year); return {k: s.key, v: cur[s.key], mid: y((d[0] + d[1]) / 2)}; })
+                    .filter(l => l.v > 0);
+  labels.sort((a, b) => b.mid - a.mid);
+  for (let i = 1; i < labels.length; i++) if (labels[i - 1].mid - labels[i].mid < 22) labels[i].mid = labels[i - 1].mid - 22;
+  const svg = e("svg", {viewBox: `0 0 ${W} ${H}`, width: "100%", role: "img",
+      "aria-label": `Share of notable AI systems by sector, 2010 to ${year}`},
+    // grid + axes
+    [0, 25, 50, 75, 100].map(t => e("g", {key: "g" + t},
+      e("line", {x1: M.left, x2: W - M.right, y1: y(t), y2: y(t), stroke: "#E4E7EA"}),
+      e("text", {x: M.left - 8, y: y(t) + 4, textAnchor: "end", fontSize: 12, fill: "#555D65"}, t + "%"))),
+    years.filter(v => v % 3 === 1 || v === years[years.length - 1]).map(v => e("text", {key: "x" + v, x: x(v), y: H - 12, textAnchor: "middle", fontSize: 12, fill: "#555D65"}, v)),
+    e("text", {x: 14, y: H / 2, transform: `rotate(-90 14 ${H / 2})`, textAnchor: "middle", fontSize: 12, fill: "#555D65"}, "Share of that year's notable AI systems (%)"),
+    // areas revealed up to the current year
+    stack.map(s => e("path", {key: s.key, d: area(shown(s)), fill: COL[s.key], stroke: "#fff", strokeWidth: 0.6})),
+    // crossover annotation
+    year >= crossover && e("g", null,
+      e("line", {x1: x(crossover), x2: x(crossover), y1: M.top, y2: H - M.bottom, stroke: "#15181C", strokeDasharray: "4 3"}),
+      e("text", {x: x(crossover) - 6, y: H - M.bottom - 10, textAnchor: "end", fontSize: 12, fontWeight: 700, fill: "#FFFFFF"}, `${crossover}: industry overtakes universities`)),
+    // current-year marker and direct labels (no hover needed)
+    e("line", {x1: x(year), x2: x(year), y1: M.top, y2: H - M.bottom, stroke: "#15181C", strokeWidth: 2}),
+    labels.map(l => e("text", {key: "l" + l.k, x: x(year) + 10, y: l.mid + 4, fontSize: 14, fontWeight: 700, fill: "#15181C"},
+      `${SHORT[l.k]}: ${l.v.toFixed(1)}%`))
+  );
+  return e("div", null,
+    e("h2", null, TEXT.title),
+    e("p", {className: "sub"}, "Share of each year's notable AI systems by the sector of the organisations that built them, 2010–2025. Press Play, or drag the year."),
+    e("div", {className: "controls"},
+      e("button", {onClick: () => { if (year >= years[years.length - 1]) setYear(years[0]); setPlaying(!playing); }}, playing ? "Pause" : "Play"),
+      e("input", {type: "range", min: years[0], max: years[years.length - 1], step: 1, value: year,
+                  onChange: ev => { setPlaying(false); setYear(Number(ev.target.value)); }, "aria-label": "Year"}),
+      e("div", {className: "yearbig"}, year)),
+    svg,
+    e("p", {className: "read"}, e("b", null, `${year}: `),
+      `universities ${cur["Universities"].toFixed(1)}%, collaborations ${cur["University–industry collaboration"].toFixed(1)}%, industry ${cur["Industry"].toFixed(1)}% — based on ${cur.total} notable AI systems released that year.`),
+    e("p", {className: "src"}, TEXT.source)
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(e(Chart));
+</script>
+</body></html>

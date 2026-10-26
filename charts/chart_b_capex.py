@@ -64,7 +64,7 @@ def texts(df: pd.DataFrame, top_n: int, focus: str) -> dict[str, str]:
                   + (f"; {', '.join(f'{r.owner} ranks {r.rank} of {len(priced)}' for r in rows.itertuples())}." if len(rows) else ".")
                   if len(rows) else f"No owner with a listed cost has a site in {focus}.")
     return {
-        "title": "1 · Who owns frontier AI infrastructure",
+        "title": "Owners ranked by estimated capital cost",
         "caption": ("Chart B. Estimated capital cost of the AI data centres in Epoch AI's October 2026 update, summed by owner. "
                     "Units: billions of 2025 US dollars."),
         "lead": (

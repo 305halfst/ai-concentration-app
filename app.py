@@ -11,6 +11,8 @@ from __future__ import annotations
 
 import altair as alt
 import pandas as pd
+import os
+
 import streamlit as st
 
 from charts import chart_a_segments as A
@@ -19,6 +21,9 @@ from charts import chart_c_sizes as C
 from charts import chart_d_map as D
 from charts import chart_e_scale as E
 from charts import chart_f_two_worlds as F
+from charts import chart_m_ai_map as M
+from charts import chart_t_time as T
+from charts import chart_w_waffle as W
 from charts import page
 from charts.common import SEGMENT_NAME, SEGMENT_ORDER, WORLD_URL, read, style
 
@@ -67,35 +72,65 @@ def source_caption(text: str) -> None:
 
 
 segments, owners, systems = load(A.FILE), load(B.FILE), load(C.FILE)
+ai_systems, ai_countries = load(T.FILE), load(M.FILE)
+fig = page.figures(segments, systems, owners, ai_systems)
+SRC_TOP500 = "Source: TOP500 List, June 2026"
+SRC_EPOCH = "Source: Epoch AI, Data on AI data centers, October 2026 update"
 
-# ---------------------------------------------------------------- opening: question, framing, answer, chart F
+# ---------------------------------------------------------------- the question, our answer, the reader
 st.markdown('<p class="eyebrow">36104 · A3 · data narrative</p>', unsafe_allow_html=True)
-st.title(page.TITLE)
+st.title(page.TITLE, anchor="question")
 st.markdown(f'<p class="bridge">{page.QUESTION_FOR_READER}</p>', unsafe_allow_html=True)
+md(page.QUESTION_EXPLAINED)
 with st.container(border=True, key="answer"):
-    md(page.opening(segments, systems, owners))
-tf = F.texts(segments, owners)
-
-
-def draw_f() -> None:
-    st.altair_chart(style(F.build(segments, owners)), theme=None, width="stretch")
-    read_box(tf["read"])
-    source_caption("Sources: TOP500 List, June 2026 (`fig4_top500_by_segment.csv`); Epoch AI, Data on AI data centers, "
-                   "October 2026 update (`datacenters_by_owner_country.csv`). Last documented refresh: 11 October 2026.")
-
-
-chart_card("F", "Part-to-whole · two 100% stacked bars", tf["caption"], draw_f)
-
-st.header("Who this page is for", anchor="audience")
+    md(page.answer(fig))
 md(page.AUDIENCE)
 with st.container(border=True):
     st.markdown("**On this page**  \n" + "  \n".join(f"[{name}](#{anchor})" for anchor, name in page.CONTENTS))
 
-# ---------------------------------------------------------------- section 1: who owns AI infrastructure (B, E)
+# ---------------------------------------------------------------- 1 · change over time (T, React)
+tt = T.texts(ai_systems)
+st.header(tt["title"], anchor="section-1")
+md(tt["lead"])
+
+
+def draw_t() -> None:
+    libs = "cdn"
+    if os.environ.get("A3_INLINE_JS"):  # offline testing only; the deployed app loads the libraries from cdnjs
+        libs = os.environ["A3_INLINE_JS"]
+        libs = "\n".join(open(path).read() for path in libs.split(os.pathsep))
+    st.iframe(T.html(ai_systems, libs), height=545)
+    source_caption("Source: Our World in Data, from Epoch AI's notable AI systems; processed file `ai_systems_by_sector.csv`. "
+                   "Last data refresh: 11/10/2026.")
+    st.download_button("Download chart T data (CSV)", T.yearly(ai_systems).to_csv(index=False), "chart_t_ai_systems_by_sector.csv",
+                       key="t_download")
+
+
+chart_card("T", "Change over time · animated 100% stacked area", tt["caption"], draw_t)
+md(tt["after"])
+bridge(tt["bridge"])
+
+# ---------------------------------------------------------------- 2 · who owns the AI infrastructure (W, B, E)
+st.header("2 · Who owns the AI infrastructure today", anchor="section-2")
+md("Training frontier systems needs AI-specific data centres. Epoch AI tracks the large ones, with each site's owner, "
+   "location, power and estimated AI chips (H100 equivalents, a common unit for AI computing power).")
+tw = W.texts(owners)
+
+
+def draw_w() -> None:
+    st.altair_chart(style(W.build(owners)), theme=None, width="stretch")
+    read_box(tw["read"])
+    source_caption(SRC_EPOCH + "; processed file `datacenters_by_owner_country.csv`. Last data refresh: 11/10/2026.")
+
+
+chart_card("W", "Part-to-whole · unit chart (1 square = 1%)", tw["caption"], draw_w)
+md(f"**So what for the decision:** the AI-specific capacity that frontier research runs on is owned by companies; "
+   f"{fig['big5_h100']:.1f}% of it by five of them.")
+
 countries = B.countries(owners)
 priced = B.ranked(owners)
 tb = B.texts(owners, st.session_state.get("b_top_n", 10), st.session_state.get("b_country", "Australia"))
-st.header(tb["title"], anchor="section-1")
+st.subheader(tb["title"], anchor="ranking")
 md(tb["lead"])
 
 
@@ -158,8 +193,26 @@ def draw_e() -> None:
 
 chart_card("E", "Relationship · bubble scatterplot", te["caption"], draw_e)
 
-# ---------------------------------------------------------------- section 2: what the public sector holds (A, C, D)
-st.header("2 · What the public sector holds", anchor="section-2")
+# ---------------------------------------------------------------- 3 · the turn (F)
+st.header("3 · Strong in the old race, absent from the new one", anchor="section-3")
+md("The public sector is not without computing power. It runs most of the world's measured supercomputers. But that is a "
+   "different kind of computing, measured by the Linpack benchmark, not by AI training.")
+tf = F.texts(segments, owners)
+
+
+def draw_f() -> None:
+    st.altair_chart(style(F.build(segments, owners)), theme=None, width="stretch")
+    read_box(tf["read"])
+    source_caption("Sources: TOP500 List, June 2026 (`fig4_top500_by_segment.csv`); Epoch AI, Data on AI data centers, "
+                   "October 2026 update (`datacenters_by_owner_country.csv`). Last documented refresh: 11 October 2026.")
+
+
+chart_card("F", "Part-to-whole · two 100% stacked bars", tf["caption"], draw_f)
+md(f"**So what for the decision:** public institutions hold {fig['public_rmax']:.1f}% of one kind of computing and none of "
+   "the other. Funding the old kind will not, by itself, give researchers the new kind.")
+
+# ---------------------------------------------------------------- 4 · universities and Australia (A, C, D, M)
+st.header("4 · Universities and Australia", anchor="section-4")
 ta = A.texts(segments, systems)
 st.subheader(ta["title"], anchor="public-share")
 md(ta["lead"])
@@ -233,15 +286,50 @@ chart_card("D", "Spatial · choropleth", td["caption"], draw_d)
 md(D.texts(systems, st.session_state.get("d_group", D.GROUPS[0]))["after"])
 bridge(td["bridge"])
 
-# ---------------------------------------------------------------- conclusion, recommendation, limits, sources
-st.header("3 · Conclusion", anchor="conclusion")
-md(page.conclusion(segments, systems, owners))
+tm = M.texts(ai_countries)
 
-st.header("4 · Our recommendation", anchor="recommendation")
+
+def draw_m() -> None:
+    st.altair_chart(style(M.build(ai_countries, alt.topo_feature(WORLD_URL, "countries"))), theme=None, width="stretch")
+    read_box(tm["read"])
+    source_caption(SRC_EPOCH + "; processed file `datacenters_by_country.csv`. Last data refresh: 11/10/2026.")
+    st.download_button("Download chart M data (CSV)", ai_countries.to_csv(index=False), "chart_m_ai_chips_by_country.csv", key="m_download")
+
+
+chart_card("M", "Spatial · choropleth", tm["caption"], draw_m)
+md(f"The United States holds **{tm['us']:.1f}%** of the estimated AI chips; Australia **{tm['au']:.2f}%**.\n\n"
+   "**So what for the decision:** Australian researchers who need AI-scale computing depend on capacity located, and "
+   "owned, overseas.")
+
+# ---------------------------------------------------------------- 5 · what it would take, conclusion, recommendation
+st.header("5 · What it would take, and our recommendation", anchor="section-5")
+md("Use the slider to choose the share of today's tracked AI chips a new public owner should hold. The calculator shows "
+   "the chips needed and a rough cost at Epoch's own average.")
+
+
+def draw_k() -> None:
+    target = st.slider("Target public share of tracked AI chips (%)", 0.5, 10.0, 1.0, 0.5, key="k_target")
+    k = page.calculator(fig, target)
+    one, two, three = st.columns(3)
+    one.metric("AI chips needed (H100 equivalents)", f"{k['chips']:,.0f}")
+    two.metric("Rough cost (2025 US$)", f"${k['cost_bn']:,.1f}B")
+    three.metric("Compared with Australia's only listed site", f"{k['times_au']:,.0f}×")
+    md(f"*Assumes the other owners do not grow. Cost uses Epoch's average estimated cost of about ${fig['cost_per_h100']:,.0f} "
+       f"per H100 equivalent (total estimated cost ÷ {fig['h100_total']:,.0f} chips): an order of magnitude, not a budget.*")
+    source_caption(SRC_EPOCH + "; processed file `datacenters_by_owner_country.csv`.")
+
+
+chart_card("K", "Calculator · what it would take", "Calculator K. Chips and rough cost for a chosen public share of "
+           "today's tracked AI chips. Units: H100 equivalents; billions of 2025 US dollars.", draw_k)
+
+st.subheader("Conclusion", anchor="conclusion")
+md(page.conclusion(fig))
+st.subheader("Our recommendation", anchor="recommendation")
 with st.container(border=True, key="recommendation_box"):
-    md(page.recommendation(segments, systems, owners))
+    md(page.recommendation(fig))
 
-st.header("5 · What the data cannot show", anchor="section-5")
+# ---------------------------------------------------------------- 6 · limits and sources
+st.header("6 · What the data cannot show", anchor="limits")
 md(page.LIMITS)
 
 st.header("Sources", anchor="sources")

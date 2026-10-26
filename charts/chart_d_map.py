@@ -80,7 +80,6 @@ def texts(df: pd.DataFrame, group: str) -> dict[str, str]:
             + ". The largest, Setonix at the Pawsey Supercomputing Centre, is a GPU system run by a public research centre."
         ),
         "bridge": (
-            "So Australia has public supercomputing, but little of it, and no public owner holds AI-specific capacity. "
-            "The conclusion puts the two datasets together."
+            "So Australia has public supercomputing, but little of it. Chart M shows the same for AI chips."
         ),
     }

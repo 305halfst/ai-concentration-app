@@ -23,17 +23,18 @@ frontier AI runs on (Epoch AI's database of large AI data centres), what the pub
 
 ## User stories
 
-1. **As a** research-infrastructure policy officer, **I want** to see who owns the chips in large AI data centres
-   compared with who owns supercomputing, **so that** I can see where public institutions stand.
-   *Walk-through:* opening Chart F, then section 1: Chart B (top-N slider and country highlight) and Chart E (country
-   and owner filters).
+1. **As a** research-infrastructure policy officer, **I want** to see whether frontier AI is shifting from universities
+   to industry and who owns the AI infrastructure today, **so that** I can judge whether public institutions are being
+   left behind.
+   *Walk-through:* section 1, Chart T (Play button and year slider); section 2, Charts W, B (top-N slider and country
+   highlight) and E (country and owner filters); section 3, Chart F.
 2. **As a** research-infrastructure policy officer, **I want** to compare how much compute universities, public labs and
    Australia hold, **so that** I know what public capacity already exists.
-   *Walk-through:* section 2: Chart A (measure toggle), Chart C (segment filter; an empty selection shows a message) and
-   Chart D (all / public / private systems).
-3. **As a** research-infrastructure policy officer, **I want** a clear recommendation with its limits, **so that** I can
-   decide whether to fund shared GPU capacity for universities.
-   *Walk-through:* sections 3 (conclusion), 4 (recommendation) and 5 (what the data cannot show).
+   *Walk-through:* section 4: Chart A (measure toggle), Chart C (segment filter; an empty selection shows a message),
+   Chart D (all / public / private systems) and Chart M.
+3. **As a** research-infrastructure policy officer, **I want** to see what a meaningful public share would cost and a
+   clear recommendation with its limits, **so that** I can decide whether to fund shared GPU capacity for universities.
+   *Walk-through:* section 5: Calculator K (target-share slider), conclusion and recommendation; section 6, limits.
 
 ## Run
 
@@ -49,12 +50,16 @@ python3 -m venv .venv
 
 | Chart | Visual vocabulary | Purpose and interaction |
 |---|---|---|
-| F | Part-to-whole | Opening chart: two 100% bars, each a share of its own dataset — TOP500 Rmax by sector, and Epoch estimated H100 equivalents by owner group. |
-| A | Part-to-whole / magnitude | 100% stacked or paired bars comparing TOP500 systems and Rmax shares by organisation segment. |
-| C | Distribution | Heatmap of TOP500 machine counts by size band and organisation; segment filter. |
-| D | Spatial / ranking | Choropleth and labelled top-10 bar chart of national Rmax shares; system-group selector. |
-| B | Ranking | Sorted bars of AI data-centre capital cost by owner; top-N slider and country highlight. |
-| E | Relationship | Bubble scatterplot relating owner capital cost, listed power capacity and estimated H100 equivalents; country and owner filters. |
+| T | Change over time | Animated 100% stacked area (React + D3 inside Streamlit): share of notable AI systems by sector, 2010–2025; Play button and year slider; every value for the selected year is printed. |
+| W | Part-to-whole | Unit chart, 100 squares: owners of the estimated AI chips in Epoch's data centres. |
+| B | Ranking | AI data-centre owners by estimated capital cost; top-N slider and country highlight. |
+| E | Relationship | Owner capital cost vs power, bubble = estimated AI chips; country and owner filters. |
+| F | Part-to-whole | Two 100% bars: public share of TOP500 Rmax vs of estimated AI chips. |
+| A | Part-to-whole / magnitude | TOP500 share of systems and of Rmax by organisation type; measure toggle. |
+| C | Distribution | TOP500 machines by size band and organisation; segment filter. |
+| D | Spatial | TOP500 Rmax by country; all / public / private toggle. |
+| M | Spatial | Estimated AI chips by country (Epoch). |
+| K | Calculator | Chips and rough cost for a chosen public share; target slider. |
 
 ## Chart E design decision and contribution
 
@@ -76,11 +81,13 @@ a causal relationship between the three measures.
 | `charts/chart_c_sizes.py` | Chart C: TOP500 machines by Rmax size band and organisation. |
 | `charts/chart_d_map.py` | Chart D: TOP500 Rmax share by country. |
 | `charts/chart_b_capex.py` | Chart B: AI data-centre capital-cost ranking by owner. |
+| `charts/chart_t_time.py`, `charts/js/chart_t_template.html` | Chart T: React + D3 animated time chart; numbers computed in Python, libraries loaded from cdnjs at exact versions. |
+| `charts/chart_w_waffle.py`, `charts/chart_f_two_worlds.py`, `charts/chart_m_ai_map.py` | Charts W, F and M. |
 | `charts/chart_e_scale.py` | Chart E: AI data-centre scale versus investment bubble scatterplot. |
 | `charts/common.py` | Processed-data reader, palette and shared Altair styling. |
-| `data/sources/` | The two raw files, unedited: `top500/TOP500_202606.xlsx` and `epoch/data_centers.csv` (both downloaded 11/10/2026). |
+| `data/sources/` | The three raw files, unedited (all downloaded 11/10/2026): `top500/TOP500_202606.xlsx`, `epoch/data_centers.csv`, `owid/affiliation-researchers-building-artificial-intelligence-systems-all.csv` (+ its metadata). |
 | `data/build_processed.py` | Checks both raw files' MD5s and regenerates every file in `data/processed/`. |
-| `data/processed/` | The three CSV files used by the app, plus `MANIFEST.csv` (rows, source, transform and MD5 per file). |
+| `data/processed/` | The five CSV files used by the app, plus `MANIFEST.csv` (rows, source, transform and MD5 per file). |
 | `data/data_dictionary_en.md` | Data dictionary: source, URL, licence, columns and units, primary key, time coverage, latest observation, transform. |
 | `PROVENANCE.md`, `DISCLOSURE.md` | AI provenance matrix; data and AI disclosure statement. |
 | `requirements.txt` | Python package versions. |

@@ -85,7 +85,35 @@ the committed file.
 | `h100_equivalents` | Epoch's estimated H100-equivalent chips; count |
 | `capex_share_pct` | owner's share of all processed capital cost; percent |
 
+### `processed/ai_systems_by_sector.csv`
+
+- **Source:** `sources/owid/affiliation-researchers-building-artificial-intelligence-systems-all.csv` (Our World in
+  Data, from Epoch AI's notable AI systems; CC BY 4.0; https://ourworldindata.org/grapher/affiliation-researchers-building-artificial-intelligence-systems-all;
+  MD5 `9c5bdd24852b8a3d9b06c17e7f61df98`; downloaded 11/10/2026).
+- **Grain / primary key:** one row per (`sector`, `year`); 305 rows. **Time coverage:** 1950–2025; latest observation
+  2025 (2026 is incomplete in the source and dropped).
+- **Transform:** rename columns; drop years after 2025; fill sector-years with no systems as 0; `total_year` = sum over
+  sectors; `share_pct` = `n_systems` / `total_year` x 100, 2 dp.
+
+| Column | Meaning and unit |
+|---|---|
+| `sector` | Academia; Academia and industry collaboration; Industry; Not specified; Other |
+| `year` | year of publication |
+| `n_systems`, `total_year` | notable AI systems; count |
+| `share_pct` | share of that year's notable systems; percent |
+
+### `processed/datacenters_by_country.csv`
+
+- **Source:** `sources/epoch/data_centers.csv` (as above). **Grain / primary key:** one row per `country` (12 rows).
+  **Time coverage:** October 2026 snapshot.
+- **Transform:** group the 93 sites by `Country`; `n_datacenters` = sites; `n_estimated` = sites with a current H100
+  estimate; `h100_equivalents` = sum (blank = 0); `h100_share_pct` = share of the total, 2 dp.
+
 ## Values computed in the app (no extra processed file)
+
+- **Chart T:** years 2010–2025 only; "Other" and "Not specified" are drawn together as "Other / not specified".
+- **Calculator K:** chips needed = target / (100 − target) × total current H100 equivalents (other owners held
+  fixed); rough cost = chips × (total estimated capital cost ÷ total H100 equivalents), about $36,400 per chip.
 
 - **Chart F, owner groups (Epoch bar):** shares of `h100_equivalents` in `datacenters_by_owner_country.csv`.
   *Five largest named owners* = Google, Meta, Amazon, Microsoft, SpaceXAI (the top five named owners by estimated
