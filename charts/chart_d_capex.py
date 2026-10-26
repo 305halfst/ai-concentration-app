@@ -67,27 +67,10 @@ def texts(df: pd.DataFrame, top_n: int, focus: str) -> dict[str, str]:
         "title": "Owners ranked by estimated capital cost",
         "caption": ("Chart D. Estimated capital cost of the AI data centres in Epoch AI's October 2026 update, summed by owner. "
                     "Units: billions of 2025 US dollars."),
-        "lead": (
-            f"Epoch AI tracks large data centres built for AI, with each site's owner, location and estimated capital cost. "
-            f"Its October 2026 update covers {int(df['n_datacenters'].sum())} sites with a combined cost of **US${total:.1f}B** "
-            f"(2025 US dollars), held by {int((df['owner'] != 'Unknown').sum())} named owners plus sites with no known owner. The bars rank owners by estimated capital cost. Use the slider to show more "
-            "owners, and pick a country to highlight; owners with a site there are always shown, in green."
-        ),
         "read": (
             f"**How to read the bars:** #n is the owner's rank by capital cost; the countries are where its listed sites are. "
             + (f"Shown in addition to the top {top_n} because they have a site in {focus}: "
                + ", ".join(f"{r.owner} (rank {r.rank})" for r in extra.itertuples()) + ". " if len(extra) else "")
             + f"Not ranked because Epoch lists no cost: {zero}."
-        ),
-        "after": (
-            f"Google tops the ranking at **US${google:.1f}B**. The five largest named owners (Google, Meta, Amazon, Microsoft and "
-            f"SpaceXAI) account for **{big_five / total * 100:.1f}%** of the total estimated cost. All five list sites in the United States; only "
-            f"Google also lists one other country (the United Kingdom). "
-            f"None of the {int((df['owner'] != 'Unknown').sum())} named owners is a university or public research body. {focus_line}\n\n"
-            "**So what for the decision:** the infrastructure frontier AI runs on is being built and owned by companies; "
-            "no public owner appears in this dataset."
-        ),
-        "bridge": (
-            "Chart D ranks owners by cost. Chart E looks at the same owners by size: power capacity and estimated AI chips."
         ),
     }

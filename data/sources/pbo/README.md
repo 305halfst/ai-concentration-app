@@ -8,5 +8,6 @@
 - **Licence:** Commonwealth of Australia; PBO publications are released under Creative Commons Attribution 4.0
   International (PBO copyright notice). Attribution: "Based on Commonwealth of Australia data."
 - **Downloaded:** 26/10/2026.
-- **Used for:** only Calculator J's "share of federal spending" and "years of the Commonwealth grant scheme" = (cost as % of GDP) ÷ 27.3%. Using the
+- **Used for:** only Calculator J: share of federal spending = (cost as % of GDP) ÷ 27.3%; years of the Commonwealth
+  grant scheme = share of federal spending × 785.7 ÷ 8.6. Using the
   percentage-of-GDP form keeps US-dollar costs and Australian-dollar budgets comparable without an exchange rate.

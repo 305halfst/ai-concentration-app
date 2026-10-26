@@ -52,7 +52,7 @@ def texts(owners: pd.DataFrame) -> dict[str, str]:
                     "Each square is 1% of the current estimated H100 equivalents. Units: % of all estimated chips."),
         "read": (f"**How to read it:** {n[GROUPS[0]]} squares belong to the five largest named owners "
                  f"({s[GROUPS[0]]:.1f}%), {n[GROUPS[1]]} to other companies ({s[GROUPS[1]]:.1f}%) and {n[GROUPS[2]]} to sites "
-                 f"whose owner Epoch does not identify ({s[GROUPS[2]]:.1f}%). **No square belongs to a university or public "
-                 f"research body.** Australia's only listed site would fill {au:.1f}% — a third of one square."),
+                 f"whose owner Epoch does not identify ({s[GROUPS[2]]:.1f}%). **None of the named owners' squares belongs to a university "
+                 f"or public research body.** Australia's only listed site would fill {au:.1f}% — a third of one square."),
         "au": au,
     }

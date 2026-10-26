@@ -38,12 +38,9 @@ the committed file.
 - **Time coverage / latest observation:** TOP500 June 2026 list (latest observation June 2026); latest observed
   system in this cross-sectional list is June 2026.
 - **Source:** `sources/top500/TOP500_202606.xlsx`.
-- **Transform:** select the fields below from the TOP500 list; convert Rmax and
-  Rpeak from PFlop/s to TFlop/s by multiplying by 1,000; retain power in kW;
-  add the group's documented organisation classification (`segment` and
-  `sector_group`) for narrative comparison.  The classification mapping is
-  represented in this committed processed table and should be reviewed before
-  any refresh.
+- **Transform:** select the fields below from the TOP500 list; keep `Rmax [TFlop/s]` and `Rpeak [TFlop/s]` as
+  published; power in kW (blank where blank); `segment` is TOP500's own `Segment`; add `sector_group`
+  (Research, Academic, Government = Public; Industry, Vendor = Private; Others = Other) in `build_top500()`.
 
 | Column | Meaning and unit |
 |---|---|
@@ -165,7 +162,8 @@ the committed file.
   3.13 sites × 1.553 = US$4.86B; ÷ 1,798.52 = 0.27% of GDP; ÷ 27.3 = 0.99% of federal spending;
   years of the Commonwealth grant scheme = 0.99% × 785.7 ÷ 8.6 = 0.90 (A$ billions from the same table).
   Recommendation's first step, one Firmus-sized site: 1.553 ÷ 1,798.52 = 0.086% of GDP ÷ 27.3 = 0.32% of federal
-  spending × 785.7 ÷ 8.6 = 0.29 years of the grant scheme.
+  spending × 785.7 ÷ 8.6 = 0.29 years of the grant scheme; 0.32% × A$785.7B = A$2.5B. NCRIS as the funding route
+  is the group's suggestion, not a data value.
 - **In summary, evidence for No:** 7 of the 10 fastest machines = `sector_group == "Public"` among the top 10
   `rmax_tflops` in `top500_systems_clean.csv` (the fastest, 2,198 PFlop/s, is at NSCS Shenzhen, `Research`);
   collaborations = `Academia and industry collaboration` rows of `ai_systems_by_sector.csv` (5 of 106 in 2025; peak 29 in

@@ -1,8 +1,7 @@
-"""Shared loading, colours and text helpers used by every section.
+"""Shared loading, colours and Altair styling used by every chart module.
 
-Each chart module exposes pure `build_*` functions that return an Altair chart (used by the
-Streamlit app and by the static HTML preview) and a `section()` function that renders the
-section in Streamlit: lead text -> controls -> chart -> how to read it -> bridge to the next section.
+Each chart module exposes pure `build*` functions that return an Altair chart and a `texts()` function that returns
+its caption and "How to read this chart" text; app.py lays them out.
 """
 
 from __future__ import annotations

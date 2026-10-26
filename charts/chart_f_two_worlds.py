@@ -1,4 +1,4 @@
-"""Opening / Chart F - two kinds of computing, two kinds of owner (two 100% stacked bars; Part-to-whole).
+"""Section 3 / Chart F - two kinds of computing, two kinds of owner (two 100% stacked bars; Part-to-whole).
 
 Each bar is a share of its own dataset's total, so the two units are never mixed:
 - TOP500 supercomputing: share of combined Rmax (Linpack), by sector group (fig4_top500_by_segment.csv).

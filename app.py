@@ -15,15 +15,15 @@ import os
 
 import streamlit as st
 
-from charts import chart_g_segments as A
-from charts import chart_d_capex as B
-from charts import chart_h_sizes as C
-from charts import chart_i_map as D
+from charts import chart_g_segments as G
+from charts import chart_d_capex as D
+from charts import chart_h_sizes as H
+from charts import chart_i_map as I
 from charts import chart_e_scale as E
 from charts import chart_f_two_worlds as F
-from charts import chart_a_pictogram as P
-from charts import chart_b_time as T
-from charts import chart_c_waffle as W
+from charts import chart_a_pictogram as A
+from charts import chart_b_time as B
+from charts import chart_c_waffle as C
 from charts import hero_visuals as HV
 from charts import page
 from charts.common import SEGMENT_NAME, SEGMENT_ORDER, WORLD_URL, read, style
@@ -70,8 +70,8 @@ def source_caption(text: str) -> None:
     st.caption(text)
 
 
-segments, owners, systems = load(A.FILE), load(B.FILE), load(C.FILE)
-ai_systems = load(T.FILE)
+segments, owners, systems = load(G.FILE), load(D.FILE), load(H.FILE)
+ai_systems = load(B.FILE)
 fig = page.figures(segments, systems, owners, ai_systems)
 SRC_TOP500 = "Source: TOP500 List, June 2026"
 SRC_EPOCH = "Source: Epoch AI, Data on AI data centers, October 2026 update"
@@ -99,75 +99,75 @@ with st.container(border=True, key="answer"):
     with right:
         st.html(HV.chip_owners(owners, fig["n_estimated"]))
     st.html(HV.zero_owners(owners, segments, systems, fig["n_estimated"]))
-tp = P.texts(ai_systems, (fig["t_first"], fig["t_last"]))
+tp = A.texts(ai_systems, (fig["t_first"], fig["t_last"]))
 
 
-def draw_p() -> None:
-    st.altair_chart(style(P.build(ai_systems, (fig["t_first"], fig["t_last"]))), theme=None)
+def draw_a() -> None:
+    st.altair_chart(style(A.build(ai_systems, (fig["t_first"], fig["t_last"]))), theme=None)
     read_box(tp["read"])
     source_caption("Source: Our World in Data, from Epoch AI's notable AI systems; processed file `ai_systems_by_sector.csv`. "
                    "Last data refresh: 11/10/2026.")
 
 
-chart_card("A", "Part-to-whole · pictogram (1 square = 1 system)", tp["caption"], draw_p)
+chart_card("A", "Part-to-whole · pictogram (1 square = 1 system)", tp["caption"], draw_a)
 md(page.QUESTION_EXPLAINED + "  \n" + page.AUDIENCE)
 st.caption("Last data refresh: 11/10/2026 · sources at the end of the page · " +
            " · ".join(f"[{name}](#{anchor})" for anchor, name in page.CONTENTS[1:]))
 
-# ---------------------------------------------------------------- 1 · time (T)
-tt = T.texts(ai_systems)
+# ---------------------------------------------------------------- 1 · time (B)
+tt = B.texts(ai_systems)
 st.header("1 · Universities' share of notable AI systems has collapsed", anchor="section-1")
 
 
-def draw_t() -> None:
+def draw_b() -> None:
     libs = "cdn"
     if os.environ.get("A3_INLINE_JS"):  # offline testing only; the deployed app loads the libraries from cdnjs
         libs = os.environ["A3_INLINE_JS"]
         libs = "\n".join(open(path).read() for path in libs.split(os.pathsep))
-    st.iframe(T.html(ai_systems, libs), height=545)
+    st.iframe(B.html(ai_systems, libs), height=545)
     source_caption("Source: Our World in Data, from Epoch AI's notable AI systems; processed file `ai_systems_by_sector.csv`. "
                    "Last data refresh: 11/10/2026.")
-    st.download_button("Download chart B data (CSV)", T.yearly(ai_systems).to_csv(index=False), "chart_b_ai_systems_by_sector.csv",
+    st.download_button("Download chart B data (CSV)", B.yearly(ai_systems).to_csv(index=False), "chart_b_ai_systems_by_sector.csv",
                        key="t_download")
 
 
-chart_card("B", "Change over time · animated 100% stacked area", tt["caption"], draw_t)
+chart_card("B", "Change over time · animated 100% stacked area", tt["caption"], draw_b)
 finding(f"Universities built <b>{fig['t_uni_first']:.0f}%</b> of notable AI systems in {fig['t_first']} "
         f"({round(fig['t_uni_first'] * fig['t_n_first'] / 100)} of {fig['t_n_first']}). In {fig['t_last']}: "
         f"<b>{fig['t_uni_last']:.1f}%</b> ({round(fig['t_uni_last'] * fig['t_n_last'] / 100)} of {fig['t_n_last']}). "
         f"Industry took over in {fig['t_cross']}.")
 
-# ---------------------------------------------------------------- 2 · ownership (W, B, E)
+# ---------------------------------------------------------------- 2 · ownership (C, D, E)
 st.header("2 · Five companies own most of the tracked AI infrastructure", anchor="section-2")
-tw = W.texts(owners)
+tw = C.texts(owners)
 
 
-def draw_w() -> None:
-    st.altair_chart(style(W.build(owners)), theme=None, width="stretch")
+def draw_c() -> None:
+    st.altair_chart(style(C.build(owners)), theme=None, width="stretch")
     read_box(tw["read"])
     source_caption(SRC_EPOCH + "; processed file `datacenters_by_owner_country.csv`. Last data refresh: 11/10/2026.")
 
 
-chart_card("C", "Part-to-whole · unit chart (1 square = 1%)", tw["caption"], draw_w)
+chart_card("C", "Part-to-whole · unit chart (1 square = 1%)", tw["caption"], draw_c)
 finding(f"<b>{fig['big5_h100']:.1f}%</b> of the AI chips Epoch tracks (October 2026) belong to five companies. "
-        "Universities and public labs own <b>none</b> of the squares.")
+        "None of the named owners is a university or public lab (grey squares: owner unknown).")
 
-countries = B.countries(owners)
-priced = B.ranked(owners)
-tb = B.texts(owners, st.session_state.get("b_top_n", 10), st.session_state.get("b_country", "Australia"))
+countries = D.countries(owners)
+priced = D.ranked(owners)
+tb = D.texts(owners, st.session_state.get("b_top_n", 10), st.session_state.get("b_country", "Australia"))
 
 
-def draw_b() -> None:
+def draw_d() -> None:
     left, right = st.columns([3, 2])
     n = left.slider("Owners shown (top N by capital cost)", 3, len(priced), 10, key="b_top_n")
     where = right.selectbox("Highlight a country", countries, index=countries.index("Australia"), key="b_country")
-    st.altair_chart(style(B.build(owners, n, where)), theme=None, width="stretch")
-    read_box(B.texts(owners, n, where)["read"])
+    st.altair_chart(style(D.build(owners, n, where)), theme=None, width="stretch")
+    read_box(D.texts(owners, n, where)["read"])
     source_caption("Source: Epoch AI, Data on AI data centers, October 2026 update; processed file `datacenters_by_owner_country.csv`. Last documented refresh: 11 October 2026.")
     st.download_button("Download chart D data (CSV)", owners.to_csv(index=False), "chart_d_datacenters_by_owner.csv", key="b_download")
 
 
-chart_card("D", "Ranking · sorted horizontal bars", tb["caption"], draw_b)
+chart_card("D", "Ranking · sorted horizontal bars", tb["caption"], draw_d)
 google = owners.set_index("owner").loc["Google", "capital_cost_2025usd_bn"]
 finding(f"Google alone: <b>US${google:.1f}B</b> of estimated capital cost. Australia's only site: "
         f"<b>US${owners.set_index('owner').loc['Firmus', 'capital_cost_2025usd_bn']:.1f}B</b>.")
@@ -232,53 +232,53 @@ chart_card("F", "Part-to-whole · two 100% stacked bars", tf["caption"], draw_f)
 finding(f"Public institutions run <b>{fig['public_rmax']:.1f}%</b> of TOP500 supercomputing (June 2026), and <b>0%</b> "
         "of the tracked AI chips with a named owner (October 2026).")
 
-# ---------------------------------------------------------------- 4 · universities and Australia (A, C, D)
+# ---------------------------------------------------------------- 4 · universities and Australia (G, H, I)
 st.header("4 · Universities and Australia barely register", anchor="section-4")
-ta = A.texts(segments, systems)
+ta = G.texts(segments, systems)
 
 
-def draw_a() -> None:
-    view = st.radio("Measure", A.VIEWS, horizontal=True, key="a_measure")
-    chart = A.build_stacked(segments) if view == A.VIEWS[0] else A.build_paired(segments)
+def draw_g() -> None:
+    view = st.radio("Measure", G.VIEWS, horizontal=True, key="a_measure")
+    chart = G.build_stacked(segments) if view == G.VIEWS[0] else G.build_paired(segments)
     st.altair_chart(style(chart), theme=None, width="stretch")
     read_box(ta["read"])
     source_caption("Source: TOP500 List, June 2026; processed file `fig4_top500_by_segment.csv`. Last documented refresh: 11 October 2026.")
     st.download_button("Download chart G data (CSV)", segments.to_csv(index=False), "chart_g_top500_by_segment.csv", key="a_download")
 
 
-chart_card("G", "Part-to-whole · 100% stacked bars", ta["caption"], draw_a)
+chart_card("G", "Part-to-whole · 100% stacked bars", ta["caption"], draw_g)
 finding(f"Even in supercomputing, universities run {fig['uni_systems']:.1f}% of the machines but hold "
         f"<b>{fig['uni_rmax']:.1f}%</b> of the compute.")
 
-tc = C.texts(systems, SEGMENT_ORDER)
+tc = H.texts(systems, SEGMENT_ORDER)
 
 
-def draw_c() -> None:
+def draw_h() -> None:
     chosen = st.multiselect("Segments", SEGMENT_ORDER, default=SEGMENT_ORDER, format_func=SEGMENT_NAME.get, key="c_segments")
     if not chosen:
-        st.info(C.EMPTY)
+        st.info(H.EMPTY)
         return
-    st.altair_chart(style(C.build(systems, chosen)), theme=None, width="stretch")
+    st.altair_chart(style(H.build(systems, chosen)), theme=None, width="stretch")
     read_box(tc["read"])
     source_caption("Source: TOP500 List, June 2026; processed file `top500_systems_clean.csv`. Last documented refresh: 11 October 2026.")
     rows = systems[systems["segment"].isin(chosen)]
     st.download_button("Download chart H data (CSV)", rows.to_csv(index=False), "chart_h_top500_systems.csv", key="c_download")
 
 
-chart_card("H", "Distribution · machines by size band", tc["caption"], draw_c)
+chart_card("H", "Distribution · machines by size band", tc["caption"], draw_h)
 uni_max = systems[systems["segment"] == "Academic"]["rmax_tflops"].max() / 1000
-finding(f"Their biggest machine runs at <b>{uni_max:,.0f}</b> PFlop/s; the list's biggest at "
+finding(f"Universities' biggest machine runs at <b>{uni_max:,.0f}</b> PFlop/s; the list's biggest at "
         f"{systems['rmax_tflops'].max() / 1000:,.0f}.")
 
-td = D.texts(systems, st.session_state.get("d_group", D.GROUPS[0]))
+td = I.texts(systems, st.session_state.get("d_group", I.GROUPS[0]))
 
 
-def draw_d() -> None:
-    chosen = st.radio("Systems included", D.GROUPS, horizontal=True, key="d_group")
-    table = D.by_country(systems, chosen)
-    st.altair_chart(style(D.build_map(table, alt.topo_feature(WORLD_URL, "countries"))), theme=None, width="stretch")
+def draw_i() -> None:
+    chosen = st.radio("Systems included", I.GROUPS, horizontal=True, key="d_group")
+    table = I.by_country(systems, chosen)
+    st.altair_chart(style(I.build_map(table, alt.topo_feature(WORLD_URL, "countries"))), theme=None, width="stretch")
     st.markdown("**Top 10 countries by share of Rmax** (labelled, because small countries are hard to see on the map)")
-    st.altair_chart(style(D.build_bar(table)), theme=None, width="stretch")
+    st.altair_chart(style(I.build_bar(table)), theme=None, width="stretch")
     st.markdown("**All country values**")
     country_table = table.rename(columns={
         "country": "Country", "systems": "TOP500 systems", "rmax_tflops": "Combined Rmax (TFlop/s)",
@@ -292,21 +292,21 @@ def draw_d() -> None:
         hide_index=True,
         width="stretch",
     )
-    read_box(D.texts(systems, chosen)["read"])
+    read_box(I.texts(systems, chosen)["read"])
     source_caption("Source: TOP500 List, June 2026; processed file `top500_systems_clean.csv`. Last documented refresh: 11 October 2026.")
     st.download_button("Download chart I data (CSV)", table.drop(columns=["map_name"]).to_csv(index=False),
                        "chart_i_rmax_by_country.csv", key="d_download")
 
 
-chart_card("I", "Spatial · choropleth", td["caption"], draw_d)
+chart_card("I", "Spatial · choropleth", td["caption"], draw_i)
 finding(f"Australia: <b>{fig['au_top500']:.1f}%</b> of TOP500 compute (June 2026) and <b>{fig['au_h100']:.1f}%</b> of the "
         "AI chips Epoch tracks (October 2026).")
 
-# ---------------------------------------------------------------- 5 · what it would take, and the ask
+# ---------------------------------------------------------------- 5 · what it would take (J), and the ask
 st.header("5 · What it would take, and our ask", anchor="section-5")
 
 
-def draw_k() -> None:
+def draw_j() -> None:
     target = st.slider("Scenario goal for the Australian Government: public share of the world's tracked AI chips (%)",
                        0.5, 10.0, 1.0, 0.5, key="k_target")
     k = page.calculator(fig, target)
@@ -318,7 +318,7 @@ def draw_k() -> None:
 
 chart_card("J", "Calculator · what it would take", "Calculator J. What a chosen public share of today's tracked AI "
            "chips would take, in Firmus-sized university sites, and its cost against Australia's GDP and federal spending. Units: H100 equivalents; billions "
-           "of 2025 US dollars; % of one year.", draw_k)
+           "of 2025 US dollars; % of one year.", draw_j)
 with st.container(border=True, key="recommendation_box"):
     md(page.recommendation(fig))
 

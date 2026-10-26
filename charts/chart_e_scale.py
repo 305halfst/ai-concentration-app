@@ -62,7 +62,7 @@ def build(df: pd.DataFrame) -> alt.LayerChart:
     groups = ["Five largest named owners", "Other companies", "Owner not identified"]
     base = alt.Chart(shown).encode(
         x=alt.X("capital_cost_2025usd_bn:Q", title="Estimated capital cost (billions of 2025 US dollars, log scale)",
-                scale=alt.Scale(type="log", domain=[1, 200]), axis=alt.Axis(values=[1, 2, 5, 10, 20, 50, 100, 200], format="$,.0f")),
+                scale=alt.Scale(type="log", domain=[1, 200]), axis=alt.Axis(values=[1, 2, 5, 10, 20, 50, 100, 200], labelExpr="'US$' + datum.value + 'B'")),
         y=alt.Y("h100_equivalents:Q", title="Estimated AI chips (H100 equivalents, log scale)",
                 scale=alt.Scale(type="log", domain=[20_000, 5_000_000]), axis=alt.Axis(format="~s")),
     )
@@ -86,7 +86,6 @@ def texts() -> dict[str, str]:
         "title": "Bigger budgets go with more chips, and every named owner here is a company (one bubble is sites with no known owner)",
         "caption": ("Chart E. Each bubble is an AI data-centre owner in Epoch AI's October 2026 update: estimated capital cost "
                     "against estimated AI chips (both log scales); bubble size is its number of data centres."),
-        "lead": "",
         "read": ("**How to read it:** further right = more estimated capital cost; higher = more estimated AI chips; bigger "
                  "bubble = more data centres. Both axes use a log scale, so each step is a multiple. Owners with no estimate "
                  "(Cipher Mining, G42, Mistral AI, Softbank) cannot be placed and appear only in the table."),

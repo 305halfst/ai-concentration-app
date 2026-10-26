@@ -61,25 +61,5 @@ def texts(df: pd.DataFrame, group: str) -> dict[str, str]:
         "title": "Where the public compute sits, and where Australia stands",
         "caption": ("Chart I. Share of the combined Rmax of TOP500 systems (June 2026 list) located in each country, for the "
                     "selected systems; the bar lists the ten largest shares. Units: % of the selected systems' Rmax."),
-        "lead": (
-            "The map shades each country by its share of the TOP500's combined Rmax; white countries have no system on the list. "
-            "The bar below it labels the ten largest shares, because small countries such as Singapore are too small to see on a "
-            "world map. Switch between all, public and private systems."
-        ),
         "read": f"**How to read the map:** darker blue = a larger share of the selected systems' compute. Selection shown: {group.lower()}.",
-        "after": (
-            f"The largest shares are {top3}"
-            + ("." if "China" in table.head(3).index else f"; China holds only **{table.get('China', 0):.1f}%**.") + " "
-            f"Among public systems the US share is "
-            f"{pub.get('United States', 0):.1f}%; among private systems it is lower, {pri.get('United States', 0):.1f}%, because two "
-            f"large Italian energy-company machines (HPC6 and HPC7) give Italy {pri.get('Italy', 0):.1f}% of private compute. "
-            f"Australia holds {table.get('Australia', 0):.1f}% of the selected compute.\n\n"
-            "**Australia's machines on the list:** "
-            + "; ".join(f"{r.name} ({r.segment.lower()}, {r.rmax_tflops / 1000:.1f} PFlop/s)"
-                        for r in df[df["country"] == "Australia"].sort_values("rmax_tflops", ascending=False).itertuples())
-            + ". The largest, Setonix at the Pawsey Supercomputing Centre, is a GPU system run by a public research centre."
-        ),
-        "bridge": (
-            "So Australia has public supercomputing, but little of it, and it holds 0.3% of the AI chips Epoch tracks."
-        ),
     }

@@ -1,4 +1,4 @@
-"""Section 1 / Chart G - who runs the TOP500, and where our audience sits.
+"""Section 4 / Chart G - who runs the TOP500, and where our audience sits.
 
 Main view: 100% stacked bars (Part-to-whole). Toggle: paired bars (Magnitude).
 Reads data/processed/fig4_top500_by_segment.csv.
@@ -26,7 +26,8 @@ def _long(df: pd.DataFrame) -> pd.DataFrame:
 
 def build_stacked(df: pd.DataFrame) -> alt.LayerChart:
     long = _long(df)
-    long["show"] = long.apply(lambda r: f"{r['segment']} {r['share']:.1f}%" if r["share"] >= 15
+    short = {"Academic": "Universities", "Research": "Research labs", "Industry": "Industry"}
+    long["show"] = long.apply(lambda r: f"{short.get(r['segment'], r['segment'])} {r['share']:.1f}%" if r["share"] >= 15
                               else (f"{r['share']:.1f}" if r["share"] >= 3.4 else ""), axis=1)
     names = [SEGMENT_NAME[s] for s in SEGMENT_ORDER]
     y = alt.Y("measure:N", sort=list(MEASURES.values()), title="Measure", axis=alt.Axis(labelFontSize=13, labelLimit=220))
@@ -91,12 +92,6 @@ def texts(df: pd.DataFrame, systems: pd.DataFrame | None = None) -> dict[str, st
         "title": "What universities and public labs hold",
         "caption": ("Chart G. How the 500 systems on the TOP500 list (June 2026) split by type of organisation: by number of "
                     "machines (top bar) and by combined Rmax (bottom bar). Units: % of the whole list."),
-        "lead": (
-            "The public sector's main computing asset is supercomputers. The TOP500 (June 2026 edition), a twice-yearly list "
-            "of the 500 fastest machines, tags each one with the kind of organisation that runs it. Chart G shows the whole "
-            "list twice: the top bar counts machines, the bottom bar weighs them by speed. Blues are the public sector "
-            "(universities, research labs, government); oranges are industry and vendors."
-        ),
         "read": (
             "**How to read the two bars**\n\n"
             "- **Share of systems:** how many of the 500 machines each type of organisation runs, divided by 500. Every machine counts once, from the smallest (2.7 PFlop/s) to the largest (2,198 PFlop/s).\n"
@@ -105,19 +100,5 @@ def texts(df: pd.DataFrame, systems: pd.DataFrame | None = None) -> dict[str, st
             + "; ".join(f"{SEGMENT_NAME[r.segment]} {getattr(r, c):.1f}% of {'systems' if c == 'system_share_pct' else 'compute'}"
                         for c in MEASURES for r in df.itertuples() if getattr(r, c) < 3.4)
             + ". Every value is also printed in the paired-bars view."
-        ),
-        "after": (
-            f"Universities run **{a.loc['Academic', 'system_share_pct']:.1f}% of the machines but only "
-            f"{a.loc['Academic', 'rmax_share_pct']:.1f}% of the compute**: they own many systems, but small ones. Public research labs "
-            f"go the other way, from {a.loc['Research', 'system_share_pct']:.1f}% of machines to {a.loc['Research', 'rmax_share_pct']:.1f}% "
-            f"of compute. Industry runs the most machines ({a.loc['Industry', 'system_share_pct']:.1f}%) but holds "
-            f"{a.loc['Industry', 'rmax_share_pct']:.1f}% of the compute. Taken together, the public sector holds "
-            f"{public['system_share_pct']:.1f}% of the machines and {public['rmax_share_pct']:.1f}% of the compute.\n\n"
-            f"**So what for the decision:** public supercomputing is large, but universities, the people the funding is for, "
-            f"hold only {a.loc['Academic', 'rmax_share_pct']:.1f}% of it."
-        ),
-        "bridge": (
-            "So public compute is not scarce on this list; the gap is between public labs and universities. Why do universities "
-            "hold so much less compute than their number of machines suggests? The answer is the size of the machines."
         ),
     }

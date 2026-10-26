@@ -70,16 +70,6 @@ def html(df: pd.DataFrame, libs: str = "cdn") -> str:
 def texts(df: pd.DataFrame) -> dict[str, str]:
     f = facts(df)
     return {
-        "title": "1 · Frontier AI is becoming an industry game",
         "caption": (f"Chart B. Share of each year's notable AI systems by the sector of the researchers who built them, "
                     f"{f['first']}–{f['last']}. Units: % of that year's notable systems."),
-        "lead": ("The question asks whether AI is *becoming* a big-tech activity, so we start with change over time. Epoch AI "
-                 "keeps a list of notable AI systems (models that advanced the state of the art or mattered historically) and "
-                 "records who built each one. Press **Play** to watch the years go by, or drag the year."),
-        "after": (f"In {f['first']}, universities built **{f['uni_first']:.0f}%** of the {f['n_first']} notable systems and industry "
-                  f"{f['ind_first']:.0f}%. Industry overtook universities in **{f['cross']}**. By {f['last']}, industry built "
-                  f"**{f['ind_last']:.1f}%** of {f['n_last']} systems and universities {f['uni_last']:.1f}%.\n\n"
-                  "**So what for the decision:** the people the funding is for have almost stopped producing notable AI systems "
-                  "on their own."),
-        "bridge": "Why? Building frontier systems needs very large computing infrastructure. The next section asks who owns it.",
     }

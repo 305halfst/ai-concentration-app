@@ -1,4 +1,4 @@
-"""Section 1, part 2 / Chart H - how big each group's machines are (counts by size band; Distribution).
+"""Section 4, part 2 / Chart H - how big each group's machines are (counts by size band; Distribution).
 
 Explains chart G: why universities run many machines but hold little compute.
 Reads data/processed/top500_systems_clean.csv.
@@ -54,21 +54,7 @@ def texts(df: pd.DataFrame, segments: list[str]) -> dict[str, str]:
         "title": "Why universities hold so little of the compute",
         "caption": ("Chart H. Number of TOP500 machines (June 2026 list) in each size band, by type of organisation. "
                     "Size is Rmax in PFlop/s; each cell is a count of machines."),
-        "lead": (
-            "Chart G showed universities running a quarter of the machines but holding a tenth of the compute. The reason is "
-            "machine size. The table sorts all 500 systems into five size bands by Rmax and counts how many each kind of "
-            "organisation runs in each band. Use the segment filter to compare groups."
-        ),
         "read": ("**How to read the table:** each cell is a number of machines; darker blue means more machines. A dash means "
                  "none. Size bands are in PFlop/s (1 PFlop/s = 1,000 TFlop/s); the smallest machine on the list runs at 2.7 and "
                  "the largest at 2,198."),
-        "after": (
-            f"**{uni_small} of the universities' {uni_total} machines are under 20 PFlop/s**; their largest runs at "
-            f"{df[df['segment'] == 'Academic']['rmax_tflops'].max() / 1000:,.0f} PFlop/s, against "
-            f"{df['rmax_tflops'].max() / 1000:,.0f} for the largest machine on the list. All "
-            f"{c[('Research', BAND_NAMES[4])]} giant machines belong to public research labs, which is why labs hold almost 60% of "
-            f"the compute. Industry runs the most small machines ({c[('Industry', BAND_NAMES[0])]}), which is why its share of compute "
-            "is smaller than its share of machines."
-        ),
-        "bridge": "So the public sector's compute sits in a handful of national-lab giants. The next question is where those machines are.",
     }
