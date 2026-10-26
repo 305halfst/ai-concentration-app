@@ -59,7 +59,9 @@ def md(text: str) -> None:
 
 
 def read_box(text: str) -> None:
-    md(text)
+    """'How to read' notes stay on screen but folded, so the chart leads."""
+    with st.expander("How to read this chart"):
+        md(text)
 
 
 def bridge(text: str) -> None:
@@ -77,21 +79,33 @@ fig = page.figures(segments, systems, owners, ai_systems)
 SRC_TOP500 = "Source: TOP500 List, June 2026"
 SRC_EPOCH = "Source: Epoch AI, Data on AI data centers, October 2026 update"
 
-# ---------------------------------------------------------------- the question, our answer, the reader
+
+def finding(text: str) -> None:
+    st.markdown(f'<p class="finding">{text}</p>', unsafe_allow_html=True)
+
+
+st.markdown("""<style>
+.finding {font-size: 20px; line-height: 1.4; font-weight: 600; margin: 4px 0 26px;}
+.finding b {color: #D9822B;}
+[data-testid="stMetricValue"] {font-size: 52px; font-weight: 700;}
+</style>""", unsafe_allow_html=True)
+
+# ---------------------------------------------------------------- question and answer, first
 st.markdown('<p class="eyebrow">36104 · A3 · data narrative</p>', unsafe_allow_html=True)
 st.title(page.TITLE, anchor="question")
 st.markdown(f'<p class="bridge">{page.QUESTION_FOR_READER}</p>', unsafe_allow_html=True)
-md(page.QUESTION_EXPLAINED)
 with st.container(border=True, key="answer"):
     md(page.answer(fig))
-md(page.AUDIENCE)
-with st.container(border=True):
-    st.markdown("**On this page**  \n" + "  \n".join(f"[{name}](#{anchor})" for anchor, name in page.CONTENTS))
+    for column, (label, value, note) in zip(st.columns(3), page.hero(fig)):
+        column.metric(label, value)
+        column.caption(note)
+md(page.QUESTION_EXPLAINED + "  \n" + page.AUDIENCE)
+st.caption("Last data refresh: 11/10/2026 · sources at the end of the page · " +
+           " · ".join(f"[{name}](#{anchor})" for anchor, name in page.CONTENTS[1:]))
 
-# ---------------------------------------------------------------- 1 · change over time (T, React)
+# ---------------------------------------------------------------- 1 · time (T)
 tt = T.texts(ai_systems)
-st.header(tt["title"], anchor="section-1")
-md(tt["lead"])
+st.header("1 · Universities have been squeezed out of frontier AI", anchor="section-1")
 
 
 def draw_t() -> None:
@@ -107,13 +121,11 @@ def draw_t() -> None:
 
 
 chart_card("T", "Change over time · animated 100% stacked area", tt["caption"], draw_t)
-md(tt["after"])
-bridge(tt["bridge"])
+finding(f"Universities built <b>{fig['t_uni_first']:.0f}%</b> of notable AI systems in {fig['t_first']}. "
+        f"In {fig['t_last']}: <b>{fig['t_uni_last']:.1f}%</b>. Industry took over in {fig['t_cross']}.")
 
-# ---------------------------------------------------------------- 2 · who owns the AI infrastructure (W, B, E)
-st.header("2 · Who owns the AI infrastructure today", anchor="section-2")
-md("Training frontier systems needs AI-specific data centres. Epoch AI tracks the large ones, with each site's owner, "
-   "location, power and estimated AI chips (H100 equivalents, a common unit for AI computing power).")
+# ---------------------------------------------------------------- 2 · ownership (W, B, E)
+st.header("2 · Five companies own the AI infrastructure", anchor="section-2")
 tw = W.texts(owners)
 
 
@@ -124,14 +136,12 @@ def draw_w() -> None:
 
 
 chart_card("W", "Part-to-whole · unit chart (1 square = 1%)", tw["caption"], draw_w)
-md(f"**So what for the decision:** the AI-specific capacity that frontier research runs on is owned by companies; "
-   f"{fig['big5_h100']:.1f}% of it by five of them.")
+finding(f"<b>{fig['big5_h100']:.1f}%</b> of the AI chips belong to five companies. Universities and public labs own "
+        "<b>none</b> of the squares.")
 
 countries = B.countries(owners)
 priced = B.ranked(owners)
 tb = B.texts(owners, st.session_state.get("b_top_n", 10), st.session_state.get("b_country", "Australia"))
-st.subheader(tb["title"], anchor="ranking")
-md(tb["lead"])
 
 
 def draw_b() -> None:
@@ -145,12 +155,11 @@ def draw_b() -> None:
 
 
 chart_card("B", "Ranking · sorted horizontal bars", tb["caption"], draw_b)
-md(B.texts(owners, st.session_state.get("b_top_n", 10), st.session_state.get("b_country", "Australia"))["after"])
-bridge(tb["bridge"])
+google = owners.set_index("owner").loc["Google", "capital_cost_2025usd_bn"]
+finding(f"Google alone: <b>${google:.1f}B</b> of estimated capital cost. Australia's only site: "
+        f"<b>${owners.set_index('owner').loc['Firmus', 'capital_cost_2025usd_bn']:.1f}B</b>.")
 
 te = E.texts()
-st.subheader(te["title"], anchor="scale")
-md(te["lead"])
 
 
 def draw_e() -> None:
@@ -192,11 +201,10 @@ def draw_e() -> None:
 
 
 chart_card("E", "Relationship · bubble scatterplot", te["caption"], draw_e)
+finding(te["title"] + ".")
 
 # ---------------------------------------------------------------- 3 · the turn (F)
-st.header("3 · Strong in the old race, absent from the new one", anchor="section-3")
-md("The public sector is not without computing power. It runs most of the world's measured supercomputers. But that is a "
-   "different kind of computing, measured by the Linpack benchmark, not by AI training.")
+st.header("3 · Public institutions won the last race, not this one", anchor="section-3")
 tf = F.texts(segments, owners)
 
 
@@ -208,14 +216,12 @@ def draw_f() -> None:
 
 
 chart_card("F", "Part-to-whole · two 100% stacked bars", tf["caption"], draw_f)
-md(f"**So what for the decision:** public institutions hold {fig['public_rmax']:.1f}% of one kind of computing and none of "
-   "the other. Funding the old kind will not, by itself, give researchers the new kind.")
+finding(f"Public institutions run <b>{fig['public_rmax']:.1f}%</b> of supercomputing, and <b>0%</b> of the AI chips "
+        "with a named owner.")
 
 # ---------------------------------------------------------------- 4 · universities and Australia (A, C, D, M)
-st.header("4 · Universities and Australia", anchor="section-4")
+st.header("4 · Universities and Australia barely register", anchor="section-4")
 ta = A.texts(segments, systems)
-st.subheader(ta["title"], anchor="public-share")
-md(ta["lead"])
 
 
 def draw_a() -> None:
@@ -228,12 +234,10 @@ def draw_a() -> None:
 
 
 chart_card("A", "Part-to-whole · 100% stacked bars", ta["caption"], draw_a)
-md(ta["after"])
-bridge(ta["bridge"])
+finding(f"Even in supercomputing, universities run {fig['uni_systems']:.1f}% of the machines but hold "
+        f"<b>{fig['uni_rmax']:.1f}%</b> of the compute.")
 
 tc = C.texts(systems, SEGMENT_ORDER)
-st.subheader(tc["title"], anchor="why-universities")
-md(tc["lead"])
 
 
 def draw_c() -> None:
@@ -249,12 +253,11 @@ def draw_c() -> None:
 
 
 chart_card("C", "Distribution · machines by size band", tc["caption"], draw_c)
-md(tc["after"])
-bridge(tc["bridge"])
+uni_max = systems[systems["segment"] == "Academic"]["rmax_tflops"].max() / 1000
+finding(f"Their biggest machine runs at <b>{uni_max:,.0f}</b> PFlop/s; the list's biggest at "
+        f"{systems['rmax_tflops'].max() / 1000:,.0f}.")
 
 td = D.texts(systems, st.session_state.get("d_group", D.GROUPS[0]))
-st.subheader(td["title"], anchor="where")
-md(td["lead"])
 
 
 def draw_d() -> None:
@@ -283,9 +286,6 @@ def draw_d() -> None:
 
 
 chart_card("D", "Spatial · choropleth", td["caption"], draw_d)
-md(D.texts(systems, st.session_state.get("d_group", D.GROUPS[0]))["after"])
-bridge(td["bridge"])
-
 tm = M.texts(ai_countries)
 
 
@@ -297,19 +297,33 @@ def draw_m() -> None:
 
 
 chart_card("M", "Spatial · choropleth", tm["caption"], draw_m)
-md(f"The United States holds **{tm['us']:.1f}%** of the estimated AI chips; Australia **{tm['au']:.2f}%**.\n\n"
-   "**So what for the decision:** Australian researchers who need AI-scale computing depend on capacity located, and "
-   "owned, overseas.")
+finding(f"Australia: <b>{fig['au_top500']:.1f}%</b> of the world's supercomputing, <b>{tm['au']:.1f}%</b> of its AI chips. "
+        f"The United States: {tm['us']:.1f}% of the AI chips.")
 
-# ---------------------------------------------------------------- 5 · what it would take, conclusion, recommendation
-st.header("5 · What it would take, and our recommendation", anchor="section-5")
-md("Use the slider to choose the share of today's tracked AI chips a new public owner should hold. The calculator shows "
-   "the chips needed and a rough cost at Epoch's own average.")
+# ---------------------------------------------------------------- 5 · what it would take, and the ask
+st.header("5 · What it would take, and our ask", anchor="section-5")
 
 
 def draw_k() -> None:
     target = st.slider("Target public share of tracked AI chips (%)", 0.5, 10.0, 1.0, 0.5, key="k_target")
     k = page.calculator(fig, target)
+    total = fig["h100_total"] + k["chips"]
+    big = fig["big5_h100"] / 100 * fig["h100_total"]
+    rows = pd.DataFrame([("New public capacity", k["chips"]), ("Five largest named owners", big),
+                         ("All other owners", fig["h100_total"] - big)], columns=["group", "chips"])
+    rows["share"] = rows["chips"] / total * 100
+    rows["label"] = rows["share"].map(lambda v: f"{v:.1f}%" if v >= 4 else "")
+    rows["rank"] = range(3)
+    groups = list(rows["group"])
+    bar = alt.Chart(rows).encode(y=alt.Y("row:N", title=None, axis=None),
+                                 x=alt.X("share:Q", stack="zero", title="Share of tracked AI chips after the new capacity (%)",
+                                         scale=alt.Scale(domain=[0, 100])), order="rank:Q")
+    st.altair_chart(style((bar.mark_bar(height=44, stroke="#FFFFFF").encode(
+        color=alt.Color("group:N", title=None, sort=groups, scale=alt.Scale(domain=groups, range=["#1F4E8C", "#D9822B", "#E8B98A"])))
+        + bar.mark_text(color="white", fontWeight=700, fontSize=13).transform_stack(
+            stack="share", groupby=["row"], sort=[alt.SortField("rank")], as_=["x0", "x1"]).transform_calculate(
+            mid="(datum.x0 + datum.x1) / 2").encode(x="mid:Q", text="label:N"))
+        .transform_calculate(row="'after'").properties(height=110)), theme=None, width="stretch")
     one, two, three = st.columns(3)
     one.metric("AI chips needed (H100 equivalents)", f"{k['chips']:,.0f}")
     two.metric("Rough cost (2025 US$)", f"${k['cost_bn']:,.1f}B")
@@ -321,17 +335,13 @@ def draw_k() -> None:
 
 chart_card("K", "Calculator · what it would take", "Calculator K. Chips and rough cost for a chosen public share of "
            "today's tracked AI chips. Units: H100 equivalents; billions of 2025 US dollars.", draw_k)
-
-st.subheader("Conclusion", anchor="conclusion")
 md(page.conclusion(fig))
-st.subheader("Our recommendation", anchor="recommendation")
 with st.container(border=True, key="recommendation_box"):
     md(page.recommendation(fig))
 
-# ---------------------------------------------------------------- 6 · limits and sources
-st.header("6 · What the data cannot show", anchor="limits")
-md(page.LIMITS)
-
+# ---------------------------------------------------------------- limits and sources
+st.header("What the data cannot show", anchor="limits")
+md(page.limits(ai_systems, owners))
 st.header("Sources", anchor="sources")
 for app_file, holds, raw, publisher, licence, md5 in page.SOURCES:
     md(f"- **{app_file}** ({holds}). Raw file: `data/sources/{raw}` · {publisher} · Licence: {licence} · MD5 `{md5}`")

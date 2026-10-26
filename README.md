@@ -63,14 +63,12 @@ python3 -m venv .venv
 
 ## Chart E design decision and contribution
 
-Chart E, **AI Data-centre Scale versus Investment**, is the assigned dashboard contribution. A scatterplot was chosen
-instead of another bar chart because Chart B already ranks owners by capital cost. Scatterplot position makes the
-relationship between reported capital cost and listed power capacity visible at once, while bubble area adds the dataset's
-estimated H100-equivalent measure. It supports comparison without claiming that investment causes power or chip capacity.
-
-The dashboard includes country and owner filters, KPI cards, an owner-labelled chart, an accessible table, an empty state
-and a filtered CSV download. It cannot show utilisation, energy efficiency, university access, model-training output, or
-a causal relationship between the three measures.
+Chart E (Yifan Wu) is the owner-level dashboard: country and owner filters, KPI cards, a labelled bubble chart, an
+accessible table, an empty state and a filtered CSV download. A scatterplot was chosen instead of another bar chart
+because Chart B already ranks owners by cost. The first version plotted capital cost against power; because Epoch
+estimates cost from power (about $0.038B per MW for every owner), those axes carried the same information, so the
+y-axis now shows estimated AI chips (H100 equivalents), an independent measure, and bubble size shows the number of
+data centres. Both axes use log scales so small owners do not pile up at the origin.
 
 ## Repository layout
 
@@ -94,15 +92,15 @@ a causal relationship between the three measures.
 
 ## Data and regeneration
 
-The app reads only the three files in `data/processed/`. They are regenerated from the two raw files in `data/sources/`
+The app reads only the five files in `data/processed/`. They are regenerated from the three raw files in `data/sources/`
 with:
 
 ```bash
 python data/build_processed.py
 ```
 
-The script stops if either raw file's MD5 differs from the 11/10/2026 snapshot (TOP500 `26d72ecb9eb8fcdcefb0df3a1b215f79`,
-Epoch `ea246ddea0bf7f561f99c1639662be23`), then writes the three CSVs and `MANIFEST.csv`. Running it reproduces the committed
+The script stops if any raw file's MD5 differs from the 11/10/2026 snapshot (TOP500 `26d72ecb9eb8fcdcefb0df3a1b215f79`,
+Epoch `ea246ddea0bf7f561f99c1639662be23`, OWID `9c5bdd24852b8a3d9b06c17e7f61df98`), then writes the five CSVs and `MANIFEST.csv`. Running it reproduces the committed
 processed files byte for byte.
 
 ## Design rules

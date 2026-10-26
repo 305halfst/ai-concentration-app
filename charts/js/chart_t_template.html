@@ -24,7 +24,7 @@ const KEYS = ["Universities", "University–industry collaboration", "Industry",
 const SHORT = {"Universities":"Universities","University–industry collaboration":"Collaborations","Industry":"Industry","Other / not specified":"Other"};
 const COL = {"Universities":"var(--uni)","University–industry collaboration":"var(--collab)","Industry":"var(--ind)","Other / not specified":"var(--oth)"};
 const e = React.createElement;
-const W = 1060, H = 360, M = {top: 16, right: 230, bottom: 34, left: 70};
+const W = 1060, H = 380, M = {top: 16, right: 230, bottom: 50, left: 70};
 const years = DATA.map(d => d.year);
 const x = d3.scaleLinear().domain([years[0], years[years.length - 1]]).range([M.left, W - M.right]);
 const y = d3.scaleLinear().domain([0, 100]).range([H - M.bottom, M.top]);
@@ -57,7 +57,8 @@ function Chart() {
     [0, 25, 50, 75, 100].map(t => e("g", {key: "g" + t},
       e("line", {x1: M.left, x2: W - M.right, y1: y(t), y2: y(t), stroke: "#E4E7EA"}),
       e("text", {x: M.left - 8, y: y(t) + 4, textAnchor: "end", fontSize: 12, fill: "#555D65"}, t + "%"))),
-    years.filter(v => v % 3 === 1 || v === years[years.length - 1]).map(v => e("text", {key: "x" + v, x: x(v), y: H - 12, textAnchor: "middle", fontSize: 12, fill: "#555D65"}, v)),
+    years.filter(v => v % 3 === 1 || v === years[years.length - 1]).map(v => e("text", {key: "x" + v, x: x(v), y: H - 30, textAnchor: "middle", fontSize: 12, fill: "#555D65"}, v)),
+    e("text", {x: (M.left + W - M.right) / 2, y: H - 8, textAnchor: "middle", fontSize: 12, fill: "#555D65"}, "Year of publication"),
     e("text", {x: 14, y: H / 2, transform: `rotate(-90 14 ${H / 2})`, textAnchor: "middle", fontSize: 12, fill: "#555D65"}, "Share of that year's notable AI systems (%)"),
     // areas revealed up to the current year
     stack.map(s => e("path", {key: s.key, d: area(shown(s)), fill: COL[s.key], stroke: "#fff", strokeWidth: 0.6})),

@@ -25,7 +25,7 @@ SEGMENT_ORDER = ["Academic", "Research", "Government", "Industry", "Vendor", "Ot
 SEGMENT_NAME = {"Academic": "Universities (our audience)", "Research": "Public research labs", "Government": "Government",
                 "Industry": "Industry", "Vendor": "Vendors", "Others": "Others"}
 SEGMENT_COLOUR = {"Academic": "#0B2A55", "Research": "#5B8DC4", "Government": "#A9C1DE",
-                  "Industry": "#D9822B", "Vendor": "#EDB27A", "Others": "#C5CBD1"}
+                  "Industry": "#D9822B", "Vendor": "#EDB27A", "Others": "#8C96A0"}
 PUBLIC, PRIVATE, OTHER = "#1F4E8C", "#D9822B", "#8C96A0"
 GROUP_COLOURS = {"Public": PUBLIC, "Private": PRIVATE, "Other": OTHER}
 LIGHT_PUBLIC, INK, MUTED, TEAL = "#9DB5D6", "#15181C", "#555D65", "#1B7F6B"

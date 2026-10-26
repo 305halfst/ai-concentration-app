@@ -14,7 +14,7 @@ FILE = "datacenters_by_country.csv"
 MAP_NAMES = {"United States": "United States of America"}
 BINS = [(0, 0.5, "under 0.5%"), (0.5, 1, "0.5–1%"), (1, 2.5, "1–2.5%"), (2.5, 5, "2.5–5%"),
         (5, 10, "5–10%"), (10, 20, "10–20%"), (20, 101, "20% or more")]
-BLUES = ["#DCE8F5", "#B7CFE8", "#8AB0D8", "#5B8DC4", "#356BA8", "#1F4E8C", "#0B2A55"]
+BLUES = ["#C6D8EC", "#B7CFE8", "#8AB0D8", "#5B8DC4", "#356BA8", "#1F4E8C", "#0B2A55"]
 NO_DATA = "No tracked site with chips"
 
 

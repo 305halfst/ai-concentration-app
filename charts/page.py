@@ -3,14 +3,13 @@
 TITLE = "Is cutting-edge AI becoming something only big tech can do?"
 
 CONTENTS = [
-    ("question", "The question, and our answer"),
-    ("section-1", "1 · Frontier AI is becoming an industry game"),
-    ("section-2", "2 · Who owns the AI infrastructure today"),
-    ("section-3", "3 · Strong in the old race, absent from the new one"),
-    ("section-4", "4 · Universities and Australia"),
-    ("section-5", "5 · What it would take, and our recommendation"),
-    ("limits", "6 · What the data cannot show"),
-    ("sources", "Sources"),
+    ("question", "Our answer"),
+    ("section-1", "1 · Universities have been squeezed out of frontier AI"),
+    ("section-2", "2 · Five companies own the AI infrastructure"),
+    ("section-3", "3 · Public institutions won the last race, not this one"),
+    ("section-4", "4 · Universities and Australia barely register"),
+    ("section-5", "5 · What it would take, and our ask"),
+    ("limits", "What the data cannot show · Sources"),
 ]
 
 BIG_FIVE = ["Google", "Meta", "Amazon", "Microsoft", "SpaceXAI"]
@@ -48,30 +47,32 @@ def figures(segments, systems, owners, ai_systems) -> dict:
 
 
 QUESTION_EXPLAINED = (
-    "**What we mean.** *Cutting-edge AI* is the frontier: the most capable AI systems, and the AI-specific data centres "
-    "they are trained in. *Only big tech can do it* would mean that a handful of companies build and own almost all of "
-    "it, so that universities and public institutions cannot. The question is open: public institutions still run most of "
-    "the world's measured supercomputing, so the same data can be read both ways."
+    "*Cutting-edge AI* means the most capable AI systems and the AI-specific data centres they are trained in. "
+    "*Only big tech* means a handful of companies build and own almost all of it."
 )
+
+
+def hero(f: dict) -> list[tuple[str, str, str]]:
+    """Three numbers that cover the whole of the three datasets, for the opening screen."""
+    return [
+        (f"Universities' share of notable AI systems, {f['t_last']}", f"{f['t_uni_last']:.1f}%",
+         f"down from {f['t_uni_first']:.0f}% in {f['t_first']} (Epoch AI via Our World in Data)"),
+        ("AI chips owned by five companies", f"{f['big5_h100']:.1f}%",
+         "estimated H100 equivalents in the data centres Epoch AI tracks, October 2026"),
+        ("Universities or public labs among the owners", "0",
+         f"of {f['named']} named owners of those AI data centres"),
+    ]
 
 
 def answer(f: dict) -> str:
     return (
-        "### Big tech is building the AI factories. None of the named owners is a university or public lab.\n\n"
-        f"**Our answer: for frontier AI, largely yes.** Industry built **{f['t_ind_last']:.1f}%** of notable AI systems in "
-        f"{f['t_last']} (universities: {f['t_uni_first']:.0f}% in {f['t_first']}, {f['t_uni_last']:.1f}% in {f['t_last']}), and "
-        f"five companies hold **{f['big5_h100']:.1f}%** of the estimated AI chips in the data centres Epoch AI tracks. "
-        f"Public institutions still run **{f['public_rmax']:.1f}%** of TOP500 supercomputing, but that list measures "
-        "Linpack speed, not AI training."
+        "### Yes. Frontier AI is becoming big tech's game.\n"
+        f"The one piece of evidence against it, that public institutions run {f['public_rmax']:.1f}% of TOP500 "
+        "supercomputing, measures Linpack speed, not AI training (section 3)."
     )
 
 
-AUDIENCE = (
-    "**Who this page is for:** a policy officer in the Australian Government who funds research infrastructure and must "
-    "decide whether to invest in shared AI computing capacity for universities. The sections answer, in order: *Is AI "
-    "really becoming an industry activity?* (1) *Who owns the infrastructure?* (2, 3) *Where do universities and Australia "
-    "stand?* (4) *What should we do, and what would it cost?* (5)"
-)
+AUDIENCE = ("**For:** an Australian Government officer deciding whether to fund shared AI computing for universities.")
 
 
 def calculator(f: dict, target_pct: float) -> dict:
@@ -82,51 +83,40 @@ def calculator(f: dict, target_pct: float) -> dict:
 
 def conclusion(f: dict) -> str:
     return (
-        f"- **AI is becoming an industry activity:** universities built {f['t_uni_first']:.0f}% of notable AI systems in "
-        f"{f['t_first']} and {f['t_uni_last']:.1f}% in {f['t_last']}; industry overtook them in {f['t_cross']}.\n"
-        f"- **The infrastructure is concentrated:** five companies hold {f['big5_h100']:.1f}% of the estimated AI chips, and "
-        f"none of the {f['named']} named owners is a university or public research body ({f['unknown_sites']} sites have no "
-        "known owner).\n"
-        f"- **Public capacity exists, but it is a different kind:** the public sector runs {f['public_rmax']:.1f}% of TOP500 "
-        f"supercomputing (Linpack). Universities run {f['uni_systems']:.1f}% of those machines but hold {f['uni_rmax']:.1f}% "
-        "of the compute.\n"
-        f"- **Australia is a small player in both:** {f['au_top500']:.1f}% of TOP500 compute, and its only listed AI data "
-        f"centre ({f['au_owner']}) holds {f['au_h100']:.1f}% of the estimated AI chips.\n\n"
-        "*Our reading (an interpretation, not a finding of the data):* if nothing changes, the AI-specific computing that "
-        "Australian researchers depend on will be built and owned by a handful of overseas companies."
+        f"- Universities went from **{f['t_uni_first']:.0f}%** to **{f['t_uni_last']:.1f}%** of notable AI systems "
+        f"({f['t_first']}–{f['t_last']}).\n"
+        f"- Five companies own **{f['big5_h100']:.1f}%** of the AI chips; no named owner is a university or public lab.\n"
+        f"- Australia: **{f['au_top500']:.1f}%** of TOP500 compute, **{f['au_h100']:.1f}%** of the AI chips."
     )
 
 
 def recommendation(f: dict) -> str:
     one = calculator(f, 1.0)
     return (
-        "**Fund dedicated, shared GPU capacity for Australian university researchers, building on existing public research "
-        "facilities such as Setonix at the Pawsey Supercomputing Centre.**\n\n"
-        f"- **Why:** universities' share of notable AI systems fell to {f['t_uni_last']:.1f}%; none of the {f['named']} named "
-        f"owners of large AI data centres is a university or public research body; Australia's only listed site holds "
-        f"{f['au_h100']:.1f}% of the estimated AI chips.\n"
-        f"- **Scale:** even 1% of today's tracked AI chips would mean about {one['chips']:,.0f} H100 equivalents, roughly "
-        f"${one['cost_bn']:.1f}B at Epoch's average cost — a national, not a single-university, investment.\n"
-        "- **Alternatives we considered:** research compute credits from cloud providers (faster to start, but the capacity "
-        "stays in private hands); a larger AI share of existing national facilities (quicker, but AI work would compete with "
-        "existing users for the same machines).\n"
-        "- **What the data cannot tell us:** how much compute researchers need, which option is cheapest, or whether "
-        "commercial facilities would open to universities.\n\n"
+        "### Fund shared GPU capacity for Australian universities, built on public research facilities such as Setonix "
+        "(Pawsey).\n"
+        f"Even 1% of today's tracked AI chips means about **{one['chips']:,.0f}** H100 equivalents, roughly "
+        f"**${one['cost_bn']:.1f}B**: a national investment, not a university one. Alternatives we weighed: cloud credits "
+        "(capacity stays private) and a larger AI share of existing machines (competes with current users). "
         "*This is our recommendation, not a finding of the data.*"
     )
 
 
-LIMITS = (
-    "- **TOP500 measures Linpack (HPL) performance, not AI-training capacity.** A high TOP500 position does not mean a facility can train frontier models.\n"
-    "- **China has under-reported to TOP500 since 2023**, so non-Western public compute is undercounted.\n"
-    "- **Epoch tracks 93 large AI data centres, not every one.** Owner means the operator of a site, not the developer whose models are trained there, and 9 sites (11.8% of capex) have no known owner.\n"
-    "- **Neither dataset measures how much compute any group needs or can access.** They show what each group holds (TOP500) or the estimated cost of what it owns (Epoch), not demand or who may use the machines.\n"
-    "- **Epoch estimates capital cost from power,** so cost and power are not independent measures; 20 of the 93 sites it tracks have no current estimate yet.\n"
-    "- **The recommendation is ours.** The data shows the gap; it does not show the best way to close it.\n"
-    "- **Notable AI systems are counted, not weighted.** Each year has 10–106 systems, so one or two systems move a share by several points; the trend matters more than any single year.\n"
-    "- **The calculator is an order of magnitude, not a budget.** It assumes other owners do not grow and uses Epoch's average estimated cost per chip.\n"
-    "- **TOP500 and the Epoch data centres are snapshots** (June 2026, October 2026); only the notable-systems series shows change over time."
-)
+def limits(ai_systems, owners) -> str:
+    years = ai_systems[ai_systems["year"] >= 2010].groupby("year")["total_year"].first()
+    unknown = owners.loc[owners["owner"] == "Unknown"]
+    return (
+        "- **TOP500 measures Linpack speed, not AI training,** and only lists machines whose owners submit a result.\n"
+        f"- **Notable AI systems are counted, not weighted:** {years.min()}–{years.max()} a year, so single systems move "
+        "a share; recent years may be revised as Epoch adds systems.\n"
+        f"- **Epoch tracks large AI data centres only.** 20 of {int(owners['n_datacenters'].sum())} sites have no current "
+        f"estimate; {int(unknown['n_datacenters'].sum())} sites ({unknown['capex_share_pct'].sum():.1f}% of estimated cost) "
+        "have no known owner; owner means operator, not the model developer.\n"
+        "- **Epoch estimates cost from power,** so cost and power are not independent.\n"
+        "- **No dataset measures demand** or who may use a machine, and TOP500 and Epoch are snapshots.\n"
+        "- **The calculator is an order of magnitude** (other owners held fixed, Epoch's average cost per chip), and the "
+        "**recommendation is ours.**"
+    )
 
 
 SOURCES = [

@@ -11,6 +11,8 @@ import pandas as pd
 
 from charts.common import INK, OTHER, PRIVATE
 
+BIG_FIVE = ["Google", "Meta", "Amazon", "Microsoft", "SpaceXAI"]
+
 FILE = "datacenters_by_owner_country.csv"
 ALL_COUNTRIES = "All countries"
 
@@ -53,44 +55,33 @@ def summary(df: pd.DataFrame) -> dict[str, float | int]:
 
 
 def build(df: pd.DataFrame) -> alt.LayerChart:
-    """Build a labelled bubble chart; labels avoid requiring hover to identify owners."""
+    """Estimated capital cost against estimated AI chips (both log scale), one labelled bubble per owner."""
     shown = plottable(df)
-    shown["owner_group"] = shown["owner"].map(lambda owner: "Owner not identified" if owner == "Unknown" else "Named owner")
+    shown["owner_group"] = shown["owner"].map(lambda o: "Five largest named owners" if o in BIG_FIVE else
+                                              ("Owner not identified" if o == "Unknown" else "Other companies"))
+    groups = ["Five largest named owners", "Other companies", "Owner not identified"]
     base = alt.Chart(shown).encode(
-        x=alt.X("capital_cost_2025usd_bn:Q", title="Capital cost (billions of 2025 US dollars)", axis=alt.Axis(format="$,.0f")),
-        y=alt.Y("power_mw:Q", title="Power capacity (MW)", axis=alt.Axis(format=",.0f")),
+        x=alt.X("capital_cost_2025usd_bn:Q", title="Estimated capital cost (billions of 2025 US dollars, log scale)",
+                scale=alt.Scale(type="log", domain=[1, 200]), axis=alt.Axis(values=[1, 2, 5, 10, 20, 50, 100, 200], format="$,.0f")),
+        y=alt.Y("h100_equivalents:Q", title="Estimated AI chips (H100 equivalents, log scale)",
+                scale=alt.Scale(type="log", domain=[20_000, 5_000_000]), axis=alt.Axis(format="~s")),
     )
-    points = base.mark_circle(opacity=0.72, stroke=INK, strokeWidth=0.7).encode(
-        size=alt.Size("h100_equivalents:Q", title="Estimated H100 equivalents", scale=alt.Scale(range=[120, 2200])),
-        color=alt.Color("owner_group:N", title="Owner record", scale=alt.Scale(
-            domain=["Named owner", "Owner not identified"], range=[PRIVATE, OTHER]
-        )),
+    points = base.mark_circle(opacity=0.8, stroke=INK, strokeWidth=0.7).encode(
+        size=alt.Size("n_datacenters:Q", title="Data centres (count)", scale=alt.Scale(range=[60, 900])),
+        color=alt.Color("owner_group:N", title="Owner group", sort=groups, scale=alt.Scale(domain=groups, range=[PRIVATE, "#E8B98A", OTHER])),
     )
-    labels = base.mark_text(align="left", baseline="middle", dx=7, fontSize=11, color=INK).encode(text="owner:N")
-    return (points + labels).properties(height=460)
+    labels = base.mark_text(align="left", baseline="middle", dx=9, fontSize=11, color=INK).encode(text="owner:N")
+    return (points + labels).properties(height=440)
 
 
 def texts() -> dict[str, str]:
     return {
-        "title": "How big the AI data-centre owners are",
-        "caption": (
-            "Chart E. Each bubble is an AI data-centre owner in Epoch AI's October 2026 update. "
-            "Position compares estimated capital cost with listed power capacity; bubble area represents estimated H100 equivalents."
-        ),
-        "lead": (
-            "Chart B ranks owners by spending. This dashboard instead asks whether higher reported investment is paired with "
-            "larger reported power capacity and estimated H100-equivalent scale. Filter by listed site country or owner."
-        ),
-        "read": (
-            "**How to read this chart:** owners farther right have higher estimated capital cost; owners higher up have more listed "
-            "power capacity. Larger bubbles represent more estimated H100 equivalents. Owners with zero or missing values for any "
-            "of those three measures remain in the table and KPI totals when selected, but cannot be positioned as bubbles "
-            "(4 owners have no estimate: Cipher Mining, G42, Mistral AI and Softbank). Note: Epoch estimates capital cost from "
-            "power (about $0.038B per MW for every owner), so the two axes carry largely the same information; bubble size "
-            "(estimated AI chips) is the independent measure."
-        ),
-        "limits": (
-            "**What this cannot show:** this is an owner-level summary, not a site-by-site comparison. It cannot show utilisation, "
-            "energy efficiency, access for universities, model-training output, or a causal relationship between cost, power and chips."
-        ),
+        "title": "Bigger budgets buy more chips, and every budget on this chart is a company's",
+        "caption": ("Chart E. Each bubble is an AI data-centre owner in Epoch AI's October 2026 update: estimated capital cost "
+                    "against estimated AI chips (both log scales); bubble size is its number of data centres."),
+        "lead": "",
+        "read": ("**How to read it:** further right = more estimated capital cost; higher = more estimated AI chips; bigger "
+                 "bubble = more data centres. Both axes use a log scale, so each step is a multiple. Owners with no estimate "
+                 "(Cipher Mining, G42, Mistral AI, Softbank) cannot be placed and appear only in the table."),
+        "limits": "**What this cannot show:** utilisation, energy efficiency, or who may use the chips.",
     }

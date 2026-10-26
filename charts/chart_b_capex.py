@@ -70,7 +70,7 @@ def texts(df: pd.DataFrame, top_n: int, focus: str) -> dict[str, str]:
         "lead": (
             f"Epoch AI tracks large data centres built for AI, with each site's owner, location and estimated capital cost. "
             f"Its October 2026 update covers {int(df['n_datacenters'].sum())} sites with a combined cost of **${total:.1f}B** "
-            f"(2025 US dollars), held by {len(df)} owners. The bars rank owners by estimated capital cost. Use the slider to show more "
+            f"(2025 US dollars), held by {int((df['owner'] != 'Unknown').sum())} named owners plus sites with no known owner. The bars rank owners by estimated capital cost. Use the slider to show more "
             "owners, and pick a country to highlight; owners with a site there are always shown, in green."
         ),
         "read": (

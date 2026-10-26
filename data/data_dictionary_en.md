@@ -11,11 +11,12 @@ as 11 October 2026.
 | Source | Committed file | Source URL | Licence / attribution | Snapshot used by the app | Primary key |
 |---|---|---|---|---|---|
 | TOP500 List, June 2026 | `sources/top500/TOP500_202606.xlsx` | `https://www.top500.org/lists/top500/2026/06/` | Copyright TOP500.org; no licence grant stated, used with attribution | June 2026 | `rank` |
+| Our World in Data, from Epoch AI notable AI systems | `sources/owid/affiliation-researchers-building-artificial-intelligence-systems-all.csv` | `https://ourworldindata.org/grapher/affiliation-researchers-building-artificial-intelligence-systems-all` | CC BY 4.0 | 1950–2025 used (2026 incomplete), downloaded 11/10/2026; MD5 `9c5bdd24852b8a3d9b06c17e7f61df98` | `Entity` + `Year` |
 | Epoch AI, Data on AI Data Centers | `sources/epoch/data_centers.csv` | `https://epoch.ai/data/data-centers-documentation/downloads` | CC BY 4.0 | October 2026 update, downloaded 11/10/2026; MD5 `ea246ddea0bf7f561f99c1639662be23`; 93 rows | `Name` |
 
-Both raw files were downloaded on 11/10/2026 and are committed unedited.
+All three raw files were downloaded on 11/10/2026 and are committed unedited.
 `data/build_processed.py` checks their MD5s (TOP500 `26d72ecb9eb8fcdcefb0df3a1b215f79`,
-Epoch `ea246ddea0bf7f561f99c1639662be23`) before writing anything.  Epoch's website
+Epoch `ea246ddea0bf7f561f99c1639662be23`, OWID `9c5bdd24852b8a3d9b06c17e7f61df98`) before writing anything.  Epoch's website
 now serves a later release, so a fresh download will not match and must not replace
 the committed file.
 
@@ -24,7 +25,7 @@ the committed file.
 ### `processed/top500_systems_clean.csv`
 
 - **Grain / primary key:** one row per TOP500 system; `rank` is unique (500 rows).
-- **Time coverage / latest observation:** TOP500 June 2026 list; latest observed
+- **Time coverage / latest observation:** TOP500 June 2026 list (latest observation June 2026); latest observed
   system in this cross-sectional list is June 2026.
 - **Source:** `sources/top500/TOP500_202606.xlsx`.
 - **Transform:** select the fields below from the TOP500 list; convert Rmax and
@@ -49,7 +50,7 @@ the committed file.
 ### `processed/fig4_top500_by_segment.csv`
 
 - **Grain / primary key:** one row per organisation `segment` (six rows).
-- **Time coverage:** derived from the June 2026 TOP500 list.
+- **Time coverage / latest observation:** derived from the June 2026 TOP500 list; latest observation June 2026.
 - **Transform:** group `top500_systems_clean.csv` by `segment` and
   `sector_group`; count rows as `n_systems`; sum `rmax_tflops`; divide each
   group by the all-segment totals to calculate the two percentage columns.
@@ -108,6 +109,15 @@ the committed file.
   **Time coverage:** October 2026 snapshot.
 - **Transform:** group the 93 sites by `Country`; `n_datacenters` = sites; `n_estimated` = sites with a current H100
   estimate; `h100_equivalents` = sum (blank = 0); `h100_share_pct` = share of the total, 2 dp.
+  **Latest observation:** October 2026 snapshot.
+
+| Column | Meaning and unit |
+|---|---|
+| `country` | country of the site; text primary key |
+| `n_datacenters` | tracked sites in that country; count |
+| `n_estimated` | of those, sites with a current H100 estimate; count |
+| `h100_equivalents` | sum of current estimated H100 equivalents; count of chips |
+| `h100_share_pct` | country's share of all estimated H100 equivalents; percent |
 
 ## Values computed in the app (no extra processed file)
 
@@ -129,7 +139,7 @@ the committed file.
 ## Rebuild
 
 Run `python data/build_processed.py` from the repository root (needs pandas and
-openpyxl).  It stops on an MD5 mismatch, then writes the three processed files
+openpyxl).  It stops on an MD5 mismatch, then writes the five processed files
 and `processed/MANIFEST.csv` (rows, source, transform and MD5 of each output).
 On the committed sources it reproduces the committed processed files byte for
 byte.

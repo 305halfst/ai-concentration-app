@@ -17,7 +17,7 @@ import pandas as pd
 from charts.common import INK, OTHER, PRIVATE, PUBLIC
 
 BIG_FIVE = ["Google", "Meta", "Amazon", "Microsoft", "SpaceXAI"]
-GROUPS = ["Public sector", "Five largest named owners", "Other companies", "Other or unknown owner"]
+GROUPS = ["Public sector", "Five largest named owners", "Companies (industry, vendors, other named owners)", "Other or unknown owner"]
 COLOURS = [PUBLIC, PRIVATE, "#E8B98A", OTHER]
 BARS = ["Supercomputing (TOP500, Rmax)", "AI data centres (Epoch, est. H100 equivalents)"]
 
@@ -55,7 +55,7 @@ def build(segments: pd.DataFrame, owners: pd.DataFrame) -> alt.LayerChart:
                 scale=alt.Scale(domain=[0, 100])),
         order=alt.Order("rank:Q"),
         color=alt.Color("group:N", title="Who owns it", sort=GROUPS, scale=alt.Scale(domain=GROUPS, range=COLOURS),
-                        legend=alt.Legend(columns=2)))
+                        legend=alt.Legend(columns=2, labelLimit=320)))
     text = (alt.Chart(drawn)
             .transform_stack(stack="share", groupby=["row"], sort=[alt.SortField("rank")], as_=["x0", "x1"])
             .transform_calculate(mid="(datum.x0 + datum.x1) / 2", tc="datum.rank == 2 ? '#15181C' : 'white'")
@@ -73,8 +73,8 @@ def texts(segments: pd.DataFrame, owners: pd.DataFrame) -> dict[str, str]:
                     "(June 2026). Bottom bar: share of current estimated H100 equivalents in the AI data centres Epoch AI "
                     "tracks (October 2026 update). Each bar is 100% of its own dataset; the units are not compared."),
         "read": (f"**How to read it:** blue is the public sector. In supercomputing it holds "
-                 f"**{data[(BARS[0], GROUPS[0])]:.1f}%**. In AI data centres it holds **0%**: none of the {named} named "
-                 f"owners is a university or public research body (our classification by owner name). Grey in the bottom "
+                 f"**{data[(BARS[0], GROUPS[0])]:.1f}%**. In AI data centres it holds **0%** of the chips with a named owner: "
+                 f"none of the {named} named owners is a university or public research body (our classification by owner name). Grey in the bottom "
                  f"bar is sites whose owner Epoch does not identify; grey in the top bar is TOP500's 'Others' group "
                  f"({data[(BARS[0], GROUPS[3])]:.1f}%, too thin to label). Of the {sites} sites Epoch tracks, 20 have no current "
                  f"estimate yet (counted in the raw file; see the data dictionary), so the bottom bar covers the "
