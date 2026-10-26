@@ -314,23 +314,6 @@ def draw_k() -> None:
                        key="k_target")
     k = page.calculator(fig, target)
     st.html(HV.scenario(target, k["chips"], k["cost_bn"], k["times_au"], fig["au_h100_n"], k["gdp_pct"], fig["gdp_bn"], fig["gdp_year"]))
-    total = fig["h100_total"] + k["chips"]
-    big = fig["big5_h100"] / 100 * fig["h100_total"]
-    rows = pd.DataFrame([("New public capacity", k["chips"]), ("Five largest named owners", big),
-                         ("All other owners", fig["h100_total"] - big)], columns=["group", "chips"])
-    rows["share"] = rows["chips"] / total * 100
-    rows["label"] = rows["share"].map(lambda v: f"{v:.1f}%" if v >= 4 else "")
-    rows["rank"] = range(3)
-    groups = list(rows["group"])
-    bar = alt.Chart(rows).encode(y=alt.Y("row:N", title=None, axis=None),
-                                 x=alt.X("share:Q", stack="zero", title="Who would own the tracked AI chips after the new public capacity is built (%)",
-                                         scale=alt.Scale(domain=[0, 100])), order="rank:Q")
-    st.altair_chart(style((bar.mark_bar(height=44, stroke="#FFFFFF").encode(
-        color=alt.Color("group:N", title="Owner of tracked AI chips", sort=groups, scale=alt.Scale(domain=groups, range=["#1F4E8C", "#D9822B", "#E8B98A"])))
-        + bar.mark_text(color="white", fontWeight=700, fontSize=13).transform_stack(
-            stack="share", groupby=["row"], sort=[alt.SortField("rank")], as_=["x0", "x1"]).transform_calculate(
-            mid="(datum.x0 + datum.x1) / 2").encode(x="mid:Q", text="label:N"))
-        .transform_calculate(row="'after'").properties(height=110)), theme=None, width="stretch")
     md(f"*Assumes the other owners do not grow. Cost uses Epoch's average estimated cost of about ${fig['cost_per_h100']:,.0f} "
        f"per H100 equivalent (total estimated cost ÷ {fig['h100_total']:,.0f} chips): an order of magnitude, not a budget.*")
     source_caption(SRC_EPOCH + "; processed file `datacenters_by_owner_country.csv`.")
