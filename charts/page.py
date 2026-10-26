@@ -24,8 +24,8 @@ QUESTION_FOR_READER = (
 
 def figures(segments, systems, owners, ai_systems) -> dict:
     """Every number used in the opening, conclusion and recommendation, computed from data/processed/."""
-    from charts.chart_d_map import by_country
-    from charts.chart_t_time import facts
+    from charts.chart_i_map import by_country
+    from charts.chart_b_time import facts
     from charts.common import read
 
     gdp = read("au_gdp.csv").sort_values("year").iloc[-1]
@@ -90,7 +90,7 @@ def _collab_peak(ai_systems) -> dict:
 def answer(f: dict) -> str:
     return (
         "### Yes. Frontier AI is becoming big tech's game.\n"
-        f"The one piece of evidence against it, that public institutions run {f['public_rmax']:.1f}% of TOP500 "
+        f"The strongest evidence against it, that public institutions run {f['public_rmax']:.1f}% of TOP500 "
         "supercomputing, measures general supercomputers' Linpack speed, not the AI-specific data centres where frontier "
         "models are trained (section 3)."
     )
@@ -118,9 +118,12 @@ def recommendation(f: dict) -> str:
         "(Pawsey).\n"
         f"Even 1% of today's tracked AI chips means about **{one['sites']:.0f}** Firmus-sized sites, roughly "
         f"**US${one['cost_bn']:.1f}B**, or **{one['fed_pct']:.1f}%** of one year's federal spending; 5% would take "
-        f"**{five['sites']:.0f}** sites and **{five['fed_pct']:.1f}%**. A national investment spread over several budgets, "
+        f"**{five['sites']:.0f}** sites and **{five['fed_pct']:.1f}%** of one year's federal spending. A national investment spread over several budgets, "
         "not a university one. Alternatives we weighed: cloud credits (capacity stays private) and a larger AI share of "
-        "existing machines (competes with current users). *This is our recommendation, not a finding of the data.*"
+        "existing machines (competes with current users). **First step:** one Firmus-sized shared site for universities "
+        f"(about US${f['firmus_cost_bn']:.1f}B, {f['firmus_cost_bn'] / f['gdp_bn'] / f['fed_pct_gdp'] * 1e4 * f['fed_aud_bn'] / f['cgs_aud_bn'] / 100:.1f} "
+        "years of the Commonwealth grant scheme), staged over several budgets. *This is our recommendation, not a finding "
+        "of the data.*"
     )
 
 
@@ -150,7 +153,7 @@ def limits(ai_systems, owners, f: dict) -> str:
         "funding.\n\n"
         "**How far the calculator goes**\n\n"
         "- **An order of magnitude, not a budget:** other owners are held at today's size; new capacity "
-        f"is costed at Epoch's capital-cost estimate for Firmus (${f['firmus_cost_bn']:.2f}B per site), without running, "
+        f"is costed at Epoch's capital-cost estimate for Firmus (US${f['firmus_cost_bn']:.2f}B per site), without running, "
         "power or staff costs.\n"
         f"- **One-off cost against one year:** GDP is calendar {f['gdp_year']} and federal spending is {f['fed_year']}; costs are US$ and budgets A$, compared through % of GDP; "
         "a build spread over several years would take a smaller share each year.\n"
@@ -186,8 +189,8 @@ def summary(f: dict) -> str:
         "tracked AI chips.\n\n"
         f"**What catching up would take:** a **1%** public share means about **{one['sites']:.0f}** Firmus-sized sites, "
         f"**US${one['cost_bn']:.1f}B**, **{one['fed_pct']:.1f}%** of one year's federal spending or **{one['cgs_years']:.1f} "
-        f"years** of the Commonwealth grant scheme; **5%** means **{five['sites']:.0f}** sites and **{five['fed_pct']:.1f}%**.\n\n"
-        "**For the decision:** the data show no public route to AI-data-centre-scale compute for Australian universities. "
+        f"years** of the Commonwealth grant scheme; **5%** means **{five['sites']:.0f}** sites and **{five['fed_pct']:.1f}%** of one year's federal spending.\n\n"
+        "**For the decision:** none of the tracked AI data centres is publicly owned, and Australia's only one is commercial. "
         "Funding shared GPU capacity, starting from public facilities such as Setonix (Pawsey), is the lever the "
         "government controls. *This is our reading of the data and our recommendation.*"
     )

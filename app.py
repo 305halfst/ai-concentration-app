@@ -15,15 +15,15 @@ import os
 
 import streamlit as st
 
-from charts import chart_a_segments as A
-from charts import chart_b_capex as B
-from charts import chart_c_sizes as C
-from charts import chart_d_map as D
+from charts import chart_g_segments as A
+from charts import chart_d_capex as B
+from charts import chart_h_sizes as C
+from charts import chart_i_map as D
 from charts import chart_e_scale as E
 from charts import chart_f_two_worlds as F
-from charts import chart_p_pictogram as P
-from charts import chart_t_time as T
-from charts import chart_w_waffle as W
+from charts import chart_a_pictogram as P
+from charts import chart_b_time as T
+from charts import chart_c_waffle as W
 from charts import hero_visuals as HV
 from charts import page
 from charts.common import SEGMENT_NAME, SEGMENT_ORDER, WORLD_URL, read, style
@@ -133,7 +133,8 @@ def draw_t() -> None:
 
 chart_card("B", "Change over time · animated 100% stacked area", tt["caption"], draw_t)
 finding(f"Universities built <b>{fig['t_uni_first']:.0f}%</b> of notable AI systems in {fig['t_first']} "
-        f"({fig['t_n_first']} systems). In {fig['t_last']}: <b>{fig['t_uni_last']:.1f}%</b> ({fig['t_n_last']} systems). "
+        f"({round(fig['t_uni_first'] * fig['t_n_first'] / 100)} of {fig['t_n_first']}). In {fig['t_last']}: "
+        f"<b>{fig['t_uni_last']:.1f}%</b> ({round(fig['t_uni_last'] * fig['t_n_last'] / 100)} of {fig['t_n_last']}). "
         f"Industry took over in {fig['t_cross']}.")
 
 # ---------------------------------------------------------------- 2 · ownership (W, B, E)
@@ -168,8 +169,8 @@ def draw_b() -> None:
 
 chart_card("D", "Ranking · sorted horizontal bars", tb["caption"], draw_b)
 google = owners.set_index("owner").loc["Google", "capital_cost_2025usd_bn"]
-finding(f"Google alone: <b>${google:.1f}B</b> of estimated capital cost. Australia's only site: "
-        f"<b>${owners.set_index('owner').loc['Firmus', 'capital_cost_2025usd_bn']:.1f}B</b>.")
+finding(f"Google alone: <b>US${google:.1f}B</b> of estimated capital cost. Australia's only site: "
+        f"<b>US${owners.set_index('owner').loc['Firmus', 'capital_cost_2025usd_bn']:.1f}B</b>.")
 
 te = E.texts()
 
@@ -188,7 +189,7 @@ def draw_e() -> None:
 
     totals = E.summary(rows)
     investment, power, sites, h100 = st.columns(4)
-    investment.metric("Estimated investment", f"${totals['investment']:.1f}B")
+    investment.metric("Estimated investment", f"US${totals['investment']:.1f}B")
     power.metric("Listed power capacity", f"{totals['power']:,.0f} MW")
     sites.metric("Data centres", f"{totals['datacenters']}")
     h100.metric("Estimated H100 equivalents", f"{totals['h100']:,.0f}")

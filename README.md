@@ -56,7 +56,7 @@ python3 -m venv .venv
 
 | Chart | Visual vocabulary | Purpose and interaction |
 |---|---|---|
-| Opening | Magnitude + part-to-whole | Universities' share of notable AI systems as two area-proportional circles (80% in 2010 → 1.9% in 2025); chip-ownership bars per company (73.6% five companies); a scale card, 131 of 500 TOP500 machines run by universities → 0 of 19 named owners of AI data centres about 90× the power, with the 19 company names. Names are plain text, not logos. |
+| Opening | Magnitude + part-to-whole | Universities' share of notable AI systems as two area-proportional circles (80% in 2010 → 1.9% in 2025); chip-ownership bars per company (73.6% five companies); a scale card, 131 of 500 TOP500 machines run by universities → 0 of 19 named owners of AI data centres about 91× the power, with the 19 company names. Names are plain text, not logos. |
 | A | Part-to-whole | Pictogram, 1 square = 1 notable AI system, 2010 (10 systems) vs 2025 (106), coloured by builder sector. |
 | B | Change over time | Animated 100% stacked area (React + D3 inside Streamlit): share of notable AI systems by sector, 2010–2025; Play button and year slider; every value for the selected year is printed. |
 | C | Part-to-whole | Unit chart, 100 squares: owners of the estimated AI chips in Epoch's data centres. |
@@ -82,14 +82,14 @@ data centres. Both axes use log scales so small owners do not pile up at the ori
 | Path | Purpose |
 |---|---|
 | `app.py` | Streamlit narrative page, controls, chart cards, downloads and source captions. |
-| `charts/chart_a_segments.py` | Chart G: organisation shares of TOP500 systems and Rmax. |
-| `charts/chart_c_sizes.py` | Chart H: TOP500 machines by Rmax size band and organisation. |
-| `charts/chart_d_map.py` | Chart I: TOP500 Rmax share by country. |
-| `charts/chart_b_capex.py` | Chart D: AI data-centre capital-cost ranking by owner. |
-| `charts/chart_t_time.py`, `charts/js/chart_t_template.html` | Chart B: React + D3 animated time chart; numbers computed in Python, libraries loaded from cdnjs at exact versions. |
-| `charts/chart_w_waffle.py`, `charts/chart_f_two_worlds.py` | Charts C and F. |
+| `charts/chart_a_pictogram.py`, `charts/hero_visuals.py` | Chart A; opening chip-ownership and 0-of-19 graphics and the Calculator J scenario card (HTML + inline SVG, no external images). |
+| `charts/chart_b_time.py`, `charts/js/chart_b_template.html` | Chart B: React + D3 animated time chart; numbers computed in Python, libraries loaded from cdnjs at exact versions. |
+| `charts/chart_c_waffle.py`, `charts/chart_f_two_worlds.py` | Charts C and F. |
+| `charts/chart_d_capex.py` | Chart D: AI data-centre capital-cost ranking by owner. |
 | `charts/chart_e_scale.py` | Chart E: AI data-centre scale versus investment bubble scatterplot. |
-| `charts/chart_p_pictogram.py`, `charts/hero_visuals.py` | Chart A; opening chip-ownership and 0-of-19 graphics and the Calculator J scenario card (HTML + inline SVG, no external images). |
+| `charts/chart_g_segments.py` | Chart G: organisation shares of TOP500 systems and Rmax. |
+| `charts/chart_h_sizes.py` | Chart H: TOP500 machines by Rmax size band and organisation. |
+| `charts/chart_i_map.py` | Chart I: TOP500 Rmax share by country. |
 | `charts/common.py` | Processed-data reader, palette and shared Altair styling. |
 | `data/sources/` | The five raw files, unedited: `top500/TOP500_202606.xlsx`, `epoch/data_centers.csv`, `owid/affiliation-researchers-building-artificial-intelligence-systems-all.csv` (+ its metadata), all downloaded 11/10/2026; `worldbank/MKTGDPAUA646NWDB.csv` (+ README), copied from FRED 26/10/2026; `pbo/2025-26_Medium-Term_Budget_Outlook_-_Beyond_the_Budget_-_Data.xlsx` (+ README), downloaded from the PBO 26/10/2026. |
 | `data/build_processed.py` | Checks all five raw files' MD5s and regenerates every file in `data/processed/`. |

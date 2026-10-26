@@ -16,7 +16,7 @@ FILE = "ai_systems_by_sector.csv"
 FIRST_YEAR = 2010
 GROUPS = {"Academia": "Universities", "Academia and industry collaboration": "University–industry collaboration",
           "Industry": "Industry", "Not specified": "Other / not specified", "Other": "Other / not specified"}
-TEMPLATE = Path(__file__).resolve().parent / "js" / "chart_t_template.html"
+TEMPLATE = Path(__file__).resolve().parent / "js" / "chart_b_template.html"
 CDN = [  # exact versions, loaded by the deployed app
     "https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js",
     "https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js",

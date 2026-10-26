@@ -24,6 +24,12 @@ Epoch `ea246ddea0bf7f561f99c1639662be23`, OWID `9c5bdd24852b8a3d9b06c17e7f61df98
 now serves a later release, so a fresh download will not match and must not replace
 the committed file.
 
+## Map shapes
+
+| File | Source | Licence | Key | Transform |
+|---|---|---|---|---|
+| `static/countries-110m.json` | Natural Earth 1:110m country outlines via world-atlas 2.0.2 (TopoJSON) | ISC (world-atlas); Natural Earth is public domain | `properties.name` (country name, joined to TOP500 `country`) | None; served unedited by Streamlit static file serving for Chart I |
+
 ## Processed files used by the app
 
 ### `processed/top500_systems_clean.csv`
@@ -158,9 +164,11 @@ the committed file.
   GDP ÷ `pct_gdp` in `au_budget.csv` (27.3%), which avoids an exchange rate. Check at t = 1%: 145,440 chips ÷ 46,488 =
   3.13 sites × 1.553 = US$4.86B; ÷ 1,798.52 = 0.27% of GDP; ÷ 27.3 = 0.99% of federal spending;
   years of the Commonwealth grant scheme = 0.99% × 785.7 ÷ 8.6 = 0.90 (A$ billions from the same table).
+  Recommendation's first step, one Firmus-sized site: 1.553 ÷ 1,798.52 = 0.086% of GDP ÷ 27.3 = 0.32% of federal
+  spending × 785.7 ÷ 8.6 = 0.29 years of the grant scheme.
 - **In summary, evidence for No:** 7 of the 10 fastest machines = `sector_group == "Public"` among the top 10
   `rmax_tflops` in `top500_systems_clean.csv` (the fastest, 2,198 PFlop/s, is at NSCS Shenzhen, `Research`);
-  collaborations = `University–industry collaboration` rows of `ai_systems_by_sector.csv` (5 of 106 in 2025; peak 29 in
+  collaborations = `Academia and industry collaboration` rows of `ai_systems_by_sector.csv` (5 of 106 in 2025; peak 29 in
   2023); unknown-owner share = `Unknown` `h100_equivalents` ÷ total (12.6%).
 - **Opening scale card:** 131 of 500 = `n_systems` for `Academic` in `fig4_top500_by_segment.csv`; average TOP500
   power = mean `power_kw` of the 200 machines with power > 0 in `top500_systems_clean.csv` (2.08 MW); average AI site =

@@ -37,7 +37,7 @@ def build(df: pd.DataFrame, top_n: int, focus: str) -> alt.LayerChart:
         return "Owner not identified" if row["owner"] == "Unknown" else "Other owners"
 
     shown["group"] = shown.apply(group, axis=1)
-    shown["label"] = shown["capital_cost_2025usd_bn"].map(lambda v: f"${v:.1f}B")
+    shown["label"] = shown["capital_cost_2025usd_bn"].map(lambda v: f"US${v:.1f}B")
     shown["owner_label"] = ("#" + shown["rank"].astype(str) + " " + shown["owner"].replace({"Unknown": "Unknown owner"})
                             + " · " + shown["country"].str.replace("|", ", ", regex=False))
     groups = [f"Has a site in {focus}", "Five largest named owners", "Other owners", "Owner not identified"]
@@ -60,7 +60,7 @@ def texts(df: pd.DataFrame, top_n: int, focus: str) -> dict[str, str]:
     extra = rows[rows["rank"] > top_n]
     zero = ", ".join(df[df["capital_cost_2025usd_bn"] == 0]["owner"])
     focus_line = (f"Owners with a site in {focus} ({', '.join(rows['owner'])}) account for "
-                  f"**${rows['capital_cost_2025usd_bn'].sum():.1f}B, {rows['capital_cost_2025usd_bn'].sum() / total * 100:.1f}%** of the total"
+                  f"**US${rows['capital_cost_2025usd_bn'].sum():.1f}B, {rows['capital_cost_2025usd_bn'].sum() / total * 100:.1f}%** of the total"
                   + (f"; {', '.join(f'{r.owner} ranks {r.rank} of {len(priced)}' for r in rows.itertuples())}." if len(rows) else ".")
                   if len(rows) else f"No owner with a listed cost has a site in {focus}.")
     return {
@@ -69,7 +69,7 @@ def texts(df: pd.DataFrame, top_n: int, focus: str) -> dict[str, str]:
                     "Units: billions of 2025 US dollars."),
         "lead": (
             f"Epoch AI tracks large data centres built for AI, with each site's owner, location and estimated capital cost. "
-            f"Its October 2026 update covers {int(df['n_datacenters'].sum())} sites with a combined cost of **${total:.1f}B** "
+            f"Its October 2026 update covers {int(df['n_datacenters'].sum())} sites with a combined cost of **US${total:.1f}B** "
             f"(2025 US dollars), held by {int((df['owner'] != 'Unknown').sum())} named owners plus sites with no known owner. The bars rank owners by estimated capital cost. Use the slider to show more "
             "owners, and pick a country to highlight; owners with a site there are always shown, in green."
         ),
@@ -80,7 +80,7 @@ def texts(df: pd.DataFrame, top_n: int, focus: str) -> dict[str, str]:
             + f"Not ranked because Epoch lists no cost: {zero}."
         ),
         "after": (
-            f"Google tops the ranking at **${google:.1f}B**. The five largest named owners (Google, Meta, Amazon, Microsoft and "
+            f"Google tops the ranking at **US${google:.1f}B**. The five largest named owners (Google, Meta, Amazon, Microsoft and "
             f"SpaceXAI) account for **{big_five / total * 100:.1f}%** of the total estimated cost. All five list sites in the United States; only "
             f"Google also lists one other country (the United Kingdom). "
             f"None of the {int((df['owner'] != 'Unknown').sum())} named owners is a university or public research body. {focus_line}\n\n"
