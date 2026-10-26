@@ -2,6 +2,8 @@
 
 36104 Data Visualisation and Narratives · Assignment 3 · Group 8 · Streamlit data narrative.
 
+**Group members:** Huajin Wen and Yifan Wu. The group continues as two members, as agreed with the subject coordinator.
+
 - **Repository:** https://github.com/305halfst/ai-concentration-app
 - **Deployed app:** https://ai-concentration.streamlit.app
 - **Assessed version:** release tag `a3-final` (the commit hash is also given in the submission PDF)
@@ -11,7 +13,8 @@
 **Is cutting-edge AI becoming something only big tech can do?**
 
 The question is arguable because the same data supports both answers. Five companies (Google, Meta, Amazon, Microsoft
-and SpaceXAI) account for 72.2% of the $524.0B capital cost of the 93 largest AI data centres, which says yes. The public
+and SpaceXAI) account for 72.2% of the US$524.0B estimated capital cost of the AI data centres Epoch AI tracks (93 sites, 73 with
+estimates), which says yes. The public
 sector (universities, research labs and government) holds 71.3% of TOP500 supercomputing compute, which says no.
 
 ## Persona
@@ -19,7 +22,8 @@ sector (universities, research labs and government) holds 71.3% of TOP500 superc
 **A policy officer in the Australian Government who funds research infrastructure and must decide whether to invest
 in shared AI computing capacity for universities.** The app serves that decision. It shows who owns the infrastructure
 frontier AI runs on (Epoch AI's database of large AI data centres), what the public sector and Australia already hold
-(the TOP500 supercomputer list), and ends with a conclusion and one recommendation, labelled as ours.
+(the TOP500 supercomputer list), how the builders of notable AI systems changed since 2010 (Epoch AI via Our World in
+Data), and ends with a costed scenario, one recommendation labelled as ours, the limits of the data and a summary.
 
 ## User stories
 
@@ -34,7 +38,8 @@ frontier AI runs on (Epoch AI's database of large AI data centres), what the pub
    Chart D (all / public / private systems).
 3. **As a** research-infrastructure policy officer, **I want** to see what a meaningful public share would cost and a
    clear recommendation with its limits, **so that** I can decide whether to fund shared GPU capacity for universities.
-   *Walk-through:* section 5: Calculator K (target-share slider), conclusion and recommendation; then "What the data cannot show".
+   *Walk-through:* section 5: Calculator K (public-share slider: Firmus-sized sites, cost, share of GDP, federal
+   spending and the Commonwealth grant scheme) and the recommendation; then "What the data cannot show" and "In summary".
 
 ## Run
 
@@ -44,13 +49,14 @@ Python 3.11 or newer, from this folder:
 python3 -m venv .venv
 .venv/bin/python -m pip install -r requirements.txt
 .venv/bin/python -m streamlit run app.py
+.venv/bin/python data/build_processed.py   # optional: rebuild data/processed/ from data/sources/ (uses openpyxl)
 ```
 
 ## Charts
 
 | Chart | Visual vocabulary | Purpose and interaction |
 |---|---|---|
-| Opening | Big number + part-to-whole | 1.9% universities' share with change since 2010; chip-ownership bars per company (73.6% five companies); 19 named-owner tiles beside a highlighted 0 for universities and public labs. Company names are plain text, not logos. |
+| Opening | Magnitude + part-to-whole | Universities' share of notable AI systems as two area-proportional circles (80% in 2010 → 1.9% in 2025); chip-ownership bars per company (73.6% five companies); a scale card, 131 of 500 TOP500 machines run by universities → 0 of 19 named owners of AI data centres about 90× the power, with the 19 company names. Names are plain text, not logos. |
 | P | Part-to-whole | Pictogram, 1 square = 1 notable AI system, 2010 (10 systems) vs 2025 (106), coloured by builder sector. |
 | T | Change over time | Animated 100% stacked area (React + D3 inside Streamlit): share of notable AI systems by sector, 2010–2025; Play button and year slider; every value for the selected year is printed. |
 | W | Part-to-whole | Unit chart, 100 squares: owners of the estimated AI chips in Epoch's data centres. |

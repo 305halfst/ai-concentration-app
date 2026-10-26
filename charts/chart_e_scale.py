@@ -76,8 +76,8 @@ def build(df: pd.DataFrame) -> alt.LayerChart:
         return base.transform_filter(test).mark_text(align=align, baseline="middle", dx=dx, dy=dy, fontSize=11,
                                                      color=INK).encode(text="owner:N")
     special = ["SpaceXAI", "Unknown", "Microsoft", "Amazon"]
-    labels = (label(special, 0, "left", 9, keep=False) + label(["Microsoft"], -11, "left", 9)
-              + label(["Amazon"], 9, "left", 9) + label(["Unknown"], -10, "right", -10) + label(["SpaceXAI"], 8, "right", -10))
+    labels = (label(special, 0, "left", 9, keep=False) + label(["Microsoft"], -2, "right", -12)
+              + label(["Amazon"], 9, "left", 9) + label(["Unknown"], -17, "center", 0) + label(["SpaceXAI"], 13, "right", -8))
     return (points + labels).properties(height=440)
 
 

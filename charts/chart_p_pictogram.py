@@ -41,7 +41,7 @@ def build(df: pd.DataFrame, years: tuple[int, int]) -> alt.VConcatChart:
             x=alt.X("col:O", axis=None, scale=alt.Scale(domain=list(range(PER_ROW)))),
             y=alt.Y("row:O", axis=None),
             color=alt.Color("group:N", title="Built by (1 square = 1 notable AI system)", sort=ORDER,
-                            scale=alt.Scale(domain=ORDER, range=COLOURS), legend=alt.Legend(orient="top", columns=4, titleLimit=400)),
+                            scale=alt.Scale(domain=ORDER, range=COLOURS), legend=alt.Legend(orient="top", columns=4, titleLimit=400, labelLimit=320)),
         ).properties(width=PER_ROW * 24, height=n_rows * 24))
     return alt.vconcat(*charts, spacing=14)
 

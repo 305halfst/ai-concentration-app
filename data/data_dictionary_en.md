@@ -138,12 +138,12 @@ the committed file.
 
 ### `processed/au_budget.csv`
 
-- **Source:** `sources/pbo/2025-26_Medium-Term_Budget_Outlook_-_Beyond_the_Budget_-_Data.xlsx`. **Grain / primary key:** `measure` + `year` (1 row).
-  **Time coverage / latest observation:** 2025-26. **Transform:** read sheet `Table B-2`, row `Total expenses`, 2025-26 columns (% of GDP, $ billion). Used only by Calculator K.
+- **Source:** `sources/pbo/2025-26_Medium-Term_Budget_Outlook_-_Beyond_the_Budget_-_Data.xlsx`. **Grain / primary key:** `measure` + `year` (3 rows).
+  **Time coverage / latest observation:** 2025-26. **Transform:** read sheet `Table B-2`, rows `Total expenses` (A$785.7B, 27.3%), `Commonwealth grant scheme` (A$8.6B, 0.3%) and `Schools and higher education` (A$34.6B, 1.2%), 2025-26 columns (% of GDP, $ billion); the script asserts the headers. Used only by Calculator K.
 
 | Column | Meaning and unit |
 |---|---|
-| `measure` | Total expenses (Australian Government general government sector) |
+| `measure` | PBO expense program: Total expenses; Commonwealth grant scheme (federal teaching funding for universities); Schools and higher education |
 | `year` | financial year |
 | `aud_bn` | billions of Australian dollars |
 | `pct_gdp` | percent of GDP |
@@ -156,7 +156,11 @@ the committed file.
   `capital_cost_2025usd_bn` in `datacenters_by_owner_country.csv`; Firmus is the only Australian site Epoch tracks);
   share of GDP = cost ÷ latest `gdp_usd_bn` in `au_gdp.csv` (2025, US$1,798.52B); share of federal spending = share of
   GDP ÷ `pct_gdp` in `au_budget.csv` (27.3%), which avoids an exchange rate. Check at t = 1%: 145,440 chips ÷ 46,488 =
-  3.13 sites × 1.553 = US$4.86B; ÷ 1,798.52 = 0.27% of GDP; ÷ 27.3 = 0.99% of federal spending.
+  3.13 sites × 1.553 = US$4.86B; ÷ 1,798.52 = 0.27% of GDP; ÷ 27.3 = 0.99% of federal spending;
+  years of the Commonwealth grant scheme = 0.99% × 785.7 ÷ 8.6 = 0.90 (A$ billions from the same table).
+- **Opening scale card:** 131 of 500 = `n_systems` for `Academic` in `fig4_top500_by_segment.csv`; average TOP500
+  power = mean `power_kw` of the 200 machines with power > 0 in `top500_systems_clean.csv` (2.08 MW); average AI site =
+  sum `power_mw` ÷ 73 estimated sites (189 MW); ratio ≈ 91×.
 
 - **Chart F, owner groups (Epoch bar):** shares of `h100_equivalents` in `datacenters_by_owner_country.csv`.
   *Five largest named owners* = Google, Meta, Amazon, Microsoft, SpaceXAI (the top five named owners by estimated

@@ -4,7 +4,7 @@ TITLE = "Is cutting-edge AI becoming something only big tech can do?"
 
 CONTENTS = [
     ("question", "Our answer"),
-    ("section-1", "1 · Universities have been squeezed out of frontier AI"),
+    ("section-1", "1 · Universities' share of notable AI systems has collapsed"),
     ("section-2", "2 · Five companies own most of the tracked AI infrastructure"),
     ("section-3", "3 · Public institutions won the last race, not this one"),
     ("section-4", "4 · Universities and Australia barely register"),
@@ -29,7 +29,8 @@ def figures(segments, systems, owners, ai_systems) -> dict:
 
     gdp = read("au_gdp.csv").sort_values("year").iloc[-1]
     sites = read("datacenters_by_country.csv")
-    budget = read("au_budget.csv").iloc[0]
+    budget = read("au_budget.csv").set_index("measure")
+    total, cgs = budget.loc["Total expenses"], budget.loc["Commonwealth grant scheme"]
     firmus = owners.set_index("owner").loc["Firmus"]
 
     h100 = owners["h100_equivalents"].sum()
@@ -54,9 +55,13 @@ def figures(segments, systems, owners, ai_systems) -> dict:
         "gdp_year": int(gdp["year"]),
         "n_sites": int(sites["n_datacenters"].sum()),
         "n_estimated": int(sites["n_estimated"].sum()),
-        "fed_pct_gdp": float(budget["pct_gdp"]),
-        "fed_aud_bn": float(budget["aud_bn"]),
-        "fed_year": str(budget["year"]),
+        "fed_pct_gdp": float(total["pct_gdp"]),
+        "fed_aud_bn": float(total["aud_bn"]),
+        "fed_year": str(total["year"]),
+        "cgs_aud_bn": float(cgs["aud_bn"]),
+        "top500_avg_mw": float(systems.loc[systems["power_kw"] > 0, "power_kw"].mean() / 1000),
+        "n_top500_power": int((systems["power_kw"] > 0).sum()),
+        "dc_avg_mw": float(owners["power_mw"].sum() / int(sites["n_estimated"].sum())),
         "firmus_h100": float(firmus["h100_equivalents"]),
         "firmus_cost_bn": float(firmus["capital_cost_2025usd_bn"]),
         "firmus_mw": float(firmus["power_mw"]),
@@ -67,18 +72,6 @@ QUESTION_EXPLAINED = (
     "*Cutting-edge AI* means the most capable AI systems and the AI-specific data centres they are trained in. "
     "*Only big tech* means a handful of companies build and own almost all of it."
 )
-
-
-def hero(f: dict) -> list[tuple[str, str, str]]:
-    """Three numbers that cover the whole of the three datasets, for the opening screen."""
-    return [
-        (f"Universities' share of notable AI systems, {f['t_last']}", f"{f['t_uni_last']:.1f}%",
-         f"{f['t_uni_last'] - f['t_uni_first']:+.1f} points since {f['t_first']} ({f['t_uni_first']:.0f}%)"),
-        ("Tracked AI chips owned by five companies", f"{f['big5_h100']:.1f}%",
-         "estimated H100 equivalents, Epoch AI data centres, October 2026"),
-        ("Universities or public labs among the owners", "0",
-         f"of {f['named']} named owners of those AI data centres"),
-    ]
 
 
 def answer(f: dict) -> str:
@@ -100,16 +93,9 @@ def calculator(f: dict, target_pct: float) -> dict:
     sites = chips / f["firmus_h100"]
     cost = sites * f["firmus_cost_bn"]
     gdp_pct = cost / f["gdp_bn"] * 100
-    return {"chips": chips, "sites": sites, "cost_bn": cost, "gdp_pct": gdp_pct, "fed_pct": gdp_pct / f["fed_pct_gdp"] * 100}
-
-
-def conclusion(f: dict) -> str:
-    return (
-        f"- Universities went from **{f['t_uni_first']:.0f}%** to **{f['t_uni_last']:.1f}%** of notable AI systems "
-        f"({f['t_first']}–{f['t_last']}).\n"
-        f"- Five companies own **{f['big5_h100']:.1f}%** of the tracked AI chips; no named owner is a university or public lab.\n"
-        f"- Australia: **{f['au_top500']:.1f}%** of TOP500 compute, **{f['au_h100']:.1f}%** of the tracked AI chips."
-    )
+    fed_pct = gdp_pct / f["fed_pct_gdp"] * 100
+    return {"chips": chips, "sites": sites, "cost_bn": cost, "gdp_pct": gdp_pct, "fed_pct": fed_pct,
+            "cgs_years": fed_pct / 100 * f["fed_aud_bn"] / f["cgs_aud_bn"]}
 
 
 def recommendation(f: dict) -> str:
@@ -118,7 +104,7 @@ def recommendation(f: dict) -> str:
         "### Fund shared GPU capacity for Australian universities, built on public research facilities such as Setonix "
         "(Pawsey).\n"
         f"Even 1% of today's tracked AI chips means about **{one['sites']:.0f}** Firmus-sized sites, roughly "
-        f"**${one['cost_bn']:.1f}B**, or **{one['fed_pct']:.1f}%** of one year's federal spending; 5% would take "
+        f"**US${one['cost_bn']:.1f}B**, or **{one['fed_pct']:.1f}%** of one year's federal spending; 5% would take "
         f"**{five['sites']:.0f}** sites and **{five['fed_pct']:.1f}%**. A national investment spread over several budgets, "
         "not a university one. Alternatives we weighed: cloud credits (capacity stays private) and a larger AI share of "
         "existing machines (competes with current users). *This is our recommendation, not a finding of the data.*"
@@ -136,8 +122,9 @@ def limits(ai_systems, owners, f: dict) -> str:
         "AI-specific data, not on TOP500.\n"
         f"- **Notable AI systems are counted, not weighted:** {years.min()}–{years.max()} a year, so a few systems move a "
         "share; the sector is that of the researchers' organisations, and recent years may be revised.\n"
-        f"- **Epoch tracks only very large AI data centres.** The 0 universities among the owners is about scale: no "
-        "university or public lab runs a site that large, which does not mean universities have no AI computing. "
+        f"- **Epoch tracks only very large AI data centres.** The 0 is about scale: none of the {f['named']} named owners "
+        f"is a university or public lab ({int(unknown['n_datacenters'].sum())} more sites have no known owner), which does "
+        "not mean universities have no AI computing. "
         f"{n_sites - n_est} of {n_sites} sites have no current estimate; {int(unknown['n_datacenters'].sum())} sites "
         f"({unknown['capex_share_pct'].sum():.1f}% of estimated cost) have no known owner; owner means operator, not the "
         "model developer; and Epoch estimates cost from power, so the two are not independent.\n\n"
@@ -145,13 +132,14 @@ def limits(ai_systems, owners, f: dict) -> str:
         "- **Demand and access:** how much compute Australian researchers need, or can already rent or borrow from "
         "overseas and from companies.\n"
         "- **Trends in ownership of AI data centres:** TOP500 and Epoch are snapshots (June and October 2026).\n"
-        "- **University budgets:** the sources give no separate federal higher-education figure, so the calculator compares "
-        "the cost with GDP and total federal spending only.\n\n"
+        "- **University budgets:** the PBO table gives federal programs, not universities' own budgets; the calculator "
+        "compares the cost with the Commonwealth grant scheme (federal teaching funding), not with research or state "
+        "funding.\n\n"
         "**How far the calculator goes**\n\n"
         "- **An order of magnitude, not a budget:** other owners are held at today's size; new capacity "
         f"is costed at Epoch's capital-cost estimate for Firmus (${f['firmus_cost_bn']:.2f}B per site), without running, "
         "power or staff costs.\n"
-        f"- **One-off cost against one year:** GDP is calendar {f['gdp_year']} and federal spending is {f['fed_year']}; "
+        f"- **One-off cost against one year:** GDP is calendar {f['gdp_year']} and federal spending is {f['fed_year']}; costs are US$ and budgets A$, compared through % of GDP; "
         "a build spread over several years would take a smaller share each year.\n"
         "- **The recommendation is ours,** not a finding of the data."
     )
@@ -162,17 +150,18 @@ def summary(f: dict) -> str:
     return (
         "### Yes: cutting-edge AI is becoming something only big tech can do.\n"
         f"- **The builders changed.** Universities built **{f['t_uni_first']:.0f}%** of notable AI systems in "
-        f"{f['t_first']} and **{f['t_uni_last']:.1f}%** in {f['t_last']}; industry has led since {f['t_cross']}.\n"
+        f"{f['t_first']} and **{f['t_uni_last']:.1f}%** in {f['t_last']}; industry has led every year since {f['t_cross']}.\n"
         f"- **The infrastructure is owned by companies.** Five of them hold **{f['big5_h100']:.1f}%** of the tracked AI "
         f"chips, and none of the {f['named']} named owners is a university or public lab.\n"
         f"- **Public strength is in the old race.** Public institutions run **{f['public_rmax']:.1f}%** of TOP500 "
         f"supercomputing, but universities hold {f['uni_rmax']:.1f}% of it and Australia {f['au_top500']:.1f}%.\n"
-        f"- **Catching up is a national decision, and an affordable one.** A **1%** public share means about "
-        f"**{one['sites']:.0f}** Firmus-sized sites, **${one['cost_bn']:.1f}B** or **{one['fed_pct']:.1f}%** of one "
-        f"year's federal spending; **5%** means **{five['sites']:.0f}** sites and **{five['fed_pct']:.1f}%**.\n\n"
-        "**For the decision:** without public investment, Australian university researchers will depend on capacity that "
-        "a handful of companies own. Funding shared GPU capacity, starting from public facilities such as "
-        "Setonix (Pawsey), is the lever the government controls. *This is our reading of the data and our recommendation.*"
+        f"- **Catching up is a national decision, and its scale is known.** A **1%** public share means about "
+        f"**{one['sites']:.0f}** Firmus-sized sites, **US${one['cost_bn']:.1f}B**, **{one['fed_pct']:.1f}%** of one year's "
+        f"federal spending or **{one['cgs_years']:.1f} years** of the Commonwealth grant scheme; **5%** means "
+        f"**{five['sites']:.0f}** sites and **{five['fed_pct']:.1f}%**.\n\n"
+        "**For the decision:** the data show no public route to AI-data-centre-scale compute for Australian universities. "
+        "Funding shared GPU capacity, starting from public facilities such as Setonix (Pawsey), is the lever the "
+        "government controls. *This is our reading of the data and our recommendation.*"
     )
 
 
@@ -188,7 +177,7 @@ SOURCES = [
     ["au_gdp.csv", "66 rows, Australia's GDP 1960–2025 (US$ bn); used only for the calculator's share of GDP",
      "worldbank/MKTGDPAUA646NWDB.csv", "World Bank, GDP (current US$) NY.GDP.MKTP.CD, via FRED series MKTGDPAUA646NWDB "
      "(retrieved 26/10/2026)", "CC BY 4.0", "2b4932edc8a10823709181e37b9c95b4"],
-    ["au_budget.csv", "1 row, Australian Government total expenses 2025-26 (A$ bn and % of GDP); calculator only",
+    ["au_budget.csv", "3 rows: Australian Government total expenses, Commonwealth grant scheme, schools and higher education, 2025-26 (A$ bn, % of GDP); calculator only",
      "pbo/2025-26_Medium-Term_Budget_Outlook_-_Beyond_the_Budget_-_Data.xlsx", "Parliamentary Budget Office, 2025-26 Medium-term budget outlook, Table B-2 "
      "(retrieved 26/10/2026)", "CC BY 4.0", "16a4006e8a5b43df88610341b0b26ce6"],
     ["ai_systems_by_sector.csv", "305 rows, sector x year, 1950–2025", "owid/affiliation-researchers-building-artificial-intelligence-systems-all.csv",

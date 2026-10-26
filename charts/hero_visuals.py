@@ -119,24 +119,26 @@ def zero_owners(owners: pd.DataFrame, segments: pd.DataFrame, systems: pd.DataFr
     )
     uni = int(segments.loc[segments["segment"] == "Academic", "n_systems"].sum())
     total = int(segments["n_systems"].sum())
-    smallest = systems["rmax_tflops"].min() / 1000
     avg_chips = owners["h100_equivalents"].sum() / n_estimated
     avg_mw = owners["power_mw"].sum() / n_estimated
+    powered = systems.loc[systems["power_kw"] > 0, "power_kw"]
+    top_mw = powered.mean() / 1000
     return (
         f'{CSS}<div class="hv"><p class="hv-label"><b>Universities are on the supercomputer list, but not at AI-data-centre scale</b></p>'
         f'<div class="hv-scale">'
-        f'<div class="hv-card"><span>Supercomputers (TOP500, June 2026; smallest machine {smallest:.1f} PFlop/s)</span>'
+        f'<div class="hv-card"><span>Supercomputers (TOP500, June 2026; the {len(powered)} machines that report power average {top_mw:.1f} MW)</span>'
         f'<b style="color:{PUBLIC}">{uni} of {total}</b><span>machines run by universities</span></div>'
-        f'<div class="hv-arrow">→<small>much larger</small></div>'
+        f'<div class="hv-arrow">→<small>about {avg_mw / top_mw:.0f}× the power</small></div>'
         f'<div class="hv-card hv-dash"><span>Largest AI data centres (Epoch AI; the average site holds about '
         f'{avg_chips:,.0f} H100-equivalent chips and {avg_mw:,.0f} MW)</span>'
         f'<b style="color:{PUBLIC}">0 of {len(named)}</b><span>named owners are universities or public labs</span></div></div>'
         f'<p class="hv-label" style="margin-top:12px">The {len(named)} named owners, all companies:</p>'
         f'<div class="hv-tiles">{tiles}</div>'
-        f'<p class="hv-note">The 0 is about scale: Epoch tracks only very large AI data centres, and no university or '
-        f'public lab owns one. It does not mean universities have no AI computing. Owners ordered by estimated H100 '
-        f'equivalents; our classification by owner name; a further '
-        f'{int(owners.loc[owners["owner"] == "Unknown", "n_datacenters"].sum())} sites have no known owner.</p></div>'
+        f'<p class="hv-note">The 0 is about scale: Epoch tracks only very large AI data centres, and none of the '
+        f'{len(named)} named owners is a university or public lab; a further '
+        f'{int(owners.loc[owners["owner"] == "Unknown", "n_datacenters"].sum())} sites have no known owner. It does not '
+        f'mean universities have no AI computing. Owners ordered by estimated H100 equivalents; our classification by '
+        f'owner name.</p></div>'
     )
 
 
@@ -157,6 +159,8 @@ SCENARIO_CSS = f"""<style>
 .sc-m {{display: grid; grid-template-columns: 210px 1fr 96px; gap: 10px; align-items: center; margin: 6px 0 0;}}
 .sc-m small {{grid-column: 1 / -1; font-size: 12px; color: #555D65; margin-top: -4px;}}
 .sc-ml {{font-size: 15px; font-weight: 600;}}
+.sc-cgs {{display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; margin-top: 10px; padding-top: 8px; border-top: 1px solid #DCDFE2; font-size: 15px;}}
+.sc-cgs b {{font-size: 30px; color: #B4232A;}}
 .sc-mt {{background: #EEF0F2; height: 20px; border-radius: 3px; overflow: hidden;}}
 .sc-mt i {{display: block; height: 100%; background: {PUBLIC};}}
 .sc-m b {{font-size: 24px; color: {PUBLIC}; text-align: right;}}
@@ -208,13 +212,16 @@ def scenario(target: float, k: dict, f: dict) -> str:
         f'<div><span>University AI sites the size of Firmus, Australia\'s only tracked site ({f["firmus_h100"]:,.0f} chips, '
         f'{f["firmus_mw"]:.0f} MW)</span><b id="sc-sites">{k["sites"]:,.0f}</b></div>'
         f'<div><span>New AI chips (H100 equivalents)</span><b id="sc-chips">{k["chips"]:,.0f}</b></div>'
-        f'<div><span>Rough build cost (2025 US$; ${f["firmus_cost_bn"]:.2f}B per site)</span><b id="sc-cost">${k["cost_bn"]:,.1f}B</b></div></div>'
+        f'<div><span>Rough build cost (2025 US$; US${f["firmus_cost_bn"]:.2f}B per site)</span><b id="sc-cost">US${k["cost_bn"]:,.1f}B</b></div></div>'
         f'<div class="sc-icons" id="sc-icons" title="Each icon = one Firmus-sized site">{icons}</div>'
         f'<p style="font-size:12px;color:#555D65;margin:2px 0 0">Each blue chip icon = one Firmus-sized site.</p>'
         f'<p class="sc-need">Can Australia afford it? One-off cost as a share of one year of</p>'
         + _meter("Australia's GDP", k["gdp_pct"], 12, f'GDP {f["gdp_year"]}: US${f["gdp_bn"]:,.0f}B (World Bank)', "sc-gdp")
         + _meter("Federal government spending", k["fed_pct"], 12,
                  f'total expenses {f["fed_year"]}: A${f["fed_aud_bn"]:,.1f}B = {f["fed_pct_gdp"]:.1f}% of GDP (PBO)', "sc-fed")
+        + f'<div class="sc-cgs"><span>That is</span><b id="sc-cgs">{k["cgs_years"]:.1f}</b><span>years of the '
+          f'Commonwealth grant scheme, the federal teaching funding for universities (A${f["cgs_aud_bn"]:.1f}B in '
+          f'{f["fed_year"]}, PBO)</span></div>'
         + '<p style="font-size:12px;color:#555D65;margin:6px 0 0">Bars run from 0 to 12%. A build would be spread over '
           'several years, so the yearly share would be smaller.</p></div>'
     )

@@ -1,10 +1,10 @@
 """Is cutting-edge AI becoming something only big tech can do?
 
-36104 A3 data narrative for a university research funding body. Run:  streamlit run app.py
-Reads only the five files in data/processed/ (rebuilt from data/sources/ by data/build_processed.py).
+36104 A3 data narrative for an Australian Government research-infrastructure funding officer.
+Run:  streamlit run app.py.  Reads only the seven files in data/processed/ (rebuilt from data/sources/ by data/build_processed.py).
 
-Order follows the course session pages: one-line purpose -> contents -> numbered sections, each with
-lead text -> controls -> chart -> how to read it -> what it shows -> bridge to the next section.
+Order: question and answer first, then five numbered sections (chart cards with controls, an expandable
+"How to read this chart" and a one-line finding), the calculator and recommendation, limits, summary and sources.
 """
 
 from __future__ import annotations
@@ -65,10 +65,6 @@ def read_box(text: str) -> None:
         md(text)
 
 
-def bridge(text: str) -> None:
-    st.markdown(f'<p class="bridge">{text}</p>', unsafe_allow_html=True)
-
-
 def source_caption(text: str) -> None:
     """A concise, consistent source/date caption for a chart card."""
     st.caption(text)
@@ -119,7 +115,7 @@ st.caption("Last data refresh: 11/10/2026 · sources at the end of the page · "
 
 # ---------------------------------------------------------------- 1 · time (T)
 tt = T.texts(ai_systems)
-st.header("1 · Universities have been squeezed out of frontier AI", anchor="section-1")
+st.header("1 · Universities' share of notable AI systems has collapsed", anchor="section-1")
 
 
 def draw_t() -> None:
@@ -234,7 +230,7 @@ chart_card("F", "Part-to-whole · two 100% stacked bars", tf["caption"], draw_f)
 finding(f"Public institutions run <b>{fig['public_rmax']:.1f}%</b> of TOP500 supercomputing (June 2026), and <b>0%</b> "
         "of the tracked AI chips with a named owner (October 2026).")
 
-# ---------------------------------------------------------------- 4 · universities and Australia (A, C, D, M)
+# ---------------------------------------------------------------- 4 · universities and Australia (A, C, D)
 st.header("4 · Universities and Australia barely register", anchor="section-4")
 ta = A.texts(segments, systems)
 

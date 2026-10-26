@@ -143,11 +143,14 @@ def build_gdp() -> None:
 
 def build_budget() -> None:
     raw = pd.read_excel(SRC / "pbo/2025-26_Medium-Term_Budget_Outlook_-_Beyond_the_Budget_-_Data.xlsx", sheet_name="Table B-2", header=None)
-    row = raw[raw[0] == "Total expenses"].iloc[0]
     assert raw.iloc[3, 2] == "% of GDP" and raw.iloc[3, 6] == "$ billion" and raw.iloc[4, 1] == raw.iloc[4, 5] == "2025-26"
-    out = pd.DataFrame([{"measure": "Total expenses", "year": "2025-26", "aud_bn": float(row[5]), "pct_gdp": float(row[1])}])
+    rows = ["Total expenses", "Commonwealth grant scheme", "Schools and higher education"]
+    out = pd.DataFrame([{"measure": m, "year": "2025-26", "aud_bn": float(r[5]), "pct_gdp": float(r[1])}
+                        for m in rows for _, r in raw[raw[0].astype(str).str.strip() == m].iterrows()])
+    assert len(out) == 3
     save(out, "au_budget.csv", "pbo/2025-26_Medium-Term_Budget_Outlook_-_Beyond_the_Budget_-_Data.xlsx",
-         "Sheet 'Table B-2' (Comparison of expense programs), row 'Total expenses', 2025-26 columns: % of GDP and $ billion.")
+         "Sheet 'Table B-2' (Comparison of expense programs), rows 'Total expenses', 'Commonwealth grant scheme' and "
+         "'Schools and higher education', 2025-26 columns: % of GDP and $ billion.")
 
 
 def write_manifest() -> None:
