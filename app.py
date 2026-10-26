@@ -323,8 +323,10 @@ st.header("5 · What it would take, and our ask", anchor="section-5")
 
 
 def draw_k() -> None:
-    target = st.slider("Target public share of tracked AI chips (%)", 0.5, 10.0, 1.0, 0.5, key="k_target")
+    target = st.slider("Australian Government goal: public share of the world's tracked AI chips (%)", 0.5, 10.0, 1.0, 0.5,
+                       key="k_target")
     k = page.calculator(fig, target)
+    st.html(HV.scenario(target, k["chips"], k["cost_bn"], k["times_au"], fig["au_h100_n"]))
     total = fig["h100_total"] + k["chips"]
     big = fig["big5_h100"] / 100 * fig["h100_total"]
     rows = pd.DataFrame([("New public capacity", k["chips"]), ("Five largest named owners", big),
@@ -334,7 +336,7 @@ def draw_k() -> None:
     rows["rank"] = range(3)
     groups = list(rows["group"])
     bar = alt.Chart(rows).encode(y=alt.Y("row:N", title=None, axis=None),
-                                 x=alt.X("share:Q", stack="zero", title="Share of tracked AI chips after the new capacity (%)",
+                                 x=alt.X("share:Q", stack="zero", title="Who would own the tracked AI chips after the new public capacity is built (%)",
                                          scale=alt.Scale(domain=[0, 100])), order="rank:Q")
     st.altair_chart(style((bar.mark_bar(height=44, stroke="#FFFFFF").encode(
         color=alt.Color("group:N", title="Owner of tracked AI chips", sort=groups, scale=alt.Scale(domain=groups, range=["#1F4E8C", "#D9822B", "#E8B98A"])))
@@ -342,10 +344,6 @@ def draw_k() -> None:
             stack="share", groupby=["row"], sort=[alt.SortField("rank")], as_=["x0", "x1"]).transform_calculate(
             mid="(datum.x0 + datum.x1) / 2").encode(x="mid:Q", text="label:N"))
         .transform_calculate(row="'after'").properties(height=110)), theme=None, width="stretch")
-    one, two, three = st.columns(3)
-    one.metric("AI chips needed (H100 equivalents)", f"{k['chips']:,.0f}")
-    two.metric("Rough cost (2025 US$)", f"${k['cost_bn']:,.1f}B")
-    three.metric("Compared with Australia's only listed site", f"{k['times_au']:,.0f}×")
     md(f"*Assumes the other owners do not grow. Cost uses Epoch's average estimated cost of about ${fig['cost_per_h100']:,.0f} "
        f"per H100 equivalent (total estimated cost ÷ {fig['h100_total']:,.0f} chips): an order of magnitude, not a budget.*")
     source_caption(SRC_EPOCH + "; processed file `datacenters_by_owner_country.csv`.")

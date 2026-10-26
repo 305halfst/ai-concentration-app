@@ -116,3 +116,57 @@ def zero_owners(owners: pd.DataFrame) -> str:
         f'<p class="hv-note">Ordered by estimated H100 equivalents; our classification by owner name. A further '
         f'{int(owners.loc[owners["owner"] == "Unknown", "n_datacenters"].sum())} sites have no known owner.</p></div>'
     )
+
+
+SCENARIO_CSS = f"""<style>
+.sc {{font-family: 'Source Sans Pro', 'IBM Plex Sans', Helvetica, Arial, sans-serif; color: #15181C; background: #FFFFFF;
+      border: 1px solid #DCDFE2; border-left: 6px solid {PUBLIC}; border-radius: 8px; padding: 16px 20px; margin: 4px 0 12px;}}
+.sc-who {{display: flex; align-items: center; gap: 12px;}}
+.sc-who b {{font-size: 20px; color: {PUBLIC};}}
+.sc-who small {{display: block; font-size: 12px; color: #555D65;}}
+.sc-goal {{font-size: 22px; line-height: 1.35; margin: 12px 0 4px;}}
+.sc-goal em {{font-style: normal; font-weight: 700; color: {PUBLIC}; font-size: 30px;}}
+.sc-need {{font-size: 13px; text-transform: uppercase; letter-spacing: .05em; color: #555D65; margin: 14px 0 6px;}}
+.sc-grid {{display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;}}
+.sc-grid div {{background: #F3F5F8; border-radius: 6px; padding: 10px 12px;}}
+.sc-grid span {{display: block; font-size: 13px; color: #3A4047;}}
+.sc-grid b {{display: block; font-size: 30px; line-height: 1.15; margin-top: 2px;}}
+.sc-icons {{margin-top: 10px; line-height: 0;}}
+.sc-icons img {{margin: 0 3px 3px 0;}}
+@media (max-width: 700px) {{.sc-grid {{grid-template-columns: 1fr;}}}}
+</style>"""
+
+
+def _gov_icon() -> str:
+    """Generic public-building icon (pediment and columns). Deliberately not the Commonwealth Coat of Arms."""
+    cols = "".join(f'<rect x="{x}" y="22" width="5" height="22" fill="{PUBLIC}"/>' for x in (10, 20, 30, 40))
+    svg = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 56 56" width="44" height="44">'
+           f'<polygon points="28,4 4,18 52,18" fill="{PUBLIC}"/>{cols}<rect x="4" y="46" width="48" height="6" fill="{PUBLIC}"/></svg>')
+    return f'<img src="data:image/svg+xml;base64,{base64.b64encode(svg.encode()).decode()}" width="44" height="44" alt="">'
+
+
+def _mini_chip(fill: str) -> str:
+    svg = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="20" height="20">'
+           f'<rect x="3" y="3" width="14" height="14" rx="2" fill="{fill}"/><rect x="7" y="7" width="6" height="6" fill="#C9A227"/></svg>')
+    return base64.b64encode(svg.encode()).decode()
+
+
+MINI_PUBLIC = _mini_chip(PUBLIC)
+
+
+def scenario(target: float, chips: float, cost_bn: float, times_au: float, au_chips: float) -> str:
+    """Plain-language card for Calculator K. Element ids let the static HTML export update it with JavaScript."""
+    icons = "".join(f'<img src="data:image/svg+xml;base64,{MINI_PUBLIC}" width="20" height="20" alt="">'
+                    for _ in range(max(1, round(times_au))))
+    return (
+        f'{SCENARIO_CSS}<div class="sc"><div class="sc-who">{_gov_icon()}<div><b>Australian Government</b>'
+        f'<small>scenario for the decision-maker; not a government policy or figure</small></div></div>'
+        f'<p class="sc-goal">Goal: public institutions own <em id="sc-pct">{target:.1f}%</em> of the world\'s tracked AI chips.</p>'
+        f'<p class="sc-need">That would take</p><div class="sc-grid">'
+        f'<div><span>New AI chips to build (H100 equivalents)</span><b id="sc-chips">{chips:,.0f}</b></div>'
+        f'<div><span>Rough cost (2025 US$)</span><b id="sc-cost">${cost_bn:,.1f}B</b></div>'
+        f'<div><span>Copies of Australia\'s largest AI site today (Firmus, {au_chips:,.0f} chips)</span>'
+        f'<b><span id="sc-times" style="display:inline;font-size:30px;color:#15181C">{times_au:,.0f}</span> ×</b></div></div>'
+        f'<div class="sc-icons" id="sc-icons" title="Each icon = one Firmus-sized site">{icons}</div>'
+        f'<p style="font-size:12px;color:#555D65;margin:4px 0 0">Each blue chip icon = one site the size of Firmus.</p></div>'
+    )
