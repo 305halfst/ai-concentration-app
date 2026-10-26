@@ -88,7 +88,6 @@ def finding(text: str) -> None:
 st.markdown("""<style>
 .finding {font-size: 20px; line-height: 1.4; font-weight: 600; margin: 4px 0 26px;}
 .finding b {color: #D9822B;}
-[data-testid="stMetricValue"] {font-size: 52px; font-weight: 700;}
 </style>""", unsafe_allow_html=True)
 
 # ---------------------------------------------------------------- question and answer, first

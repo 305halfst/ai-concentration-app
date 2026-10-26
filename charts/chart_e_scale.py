@@ -70,13 +70,15 @@ def build(df: pd.DataFrame) -> alt.LayerChart:
         size=alt.Size("n_datacenters:Q", title="Data centres (count)", scale=alt.Scale(range=[60, 900])),
         color=alt.Color("owner_group:N", title="Owner group", sort=groups, scale=alt.Scale(domain=groups, range=[PRIVATE, "#E8B98A", OTHER])),
     )
-    labels_r = base.transform_filter("indexof(['SpaceXAI','Unknown'], datum.owner) < 0").transform_calculate(
-        dy="datum.owner == 'Microsoft' ? -11 : (datum.owner == 'Amazon' ? 9 : 0)").mark_text(
-        align="left", baseline="middle", dx=9, fontSize=11, color=INK).encode(text="owner:N", yOffset="dy:Q")
-    labels_l = base.transform_filter("indexof(['SpaceXAI','Unknown'], datum.owner) >= 0").transform_calculate(
-        dy="datum.owner == 'Unknown' ? -10 : 8").mark_text(
-        align="right", baseline="middle", dx=-10, fontSize=11, color=INK).encode(text="owner:N", yOffset="dy:Q")
-    return (points + labels_r + labels_l).properties(height=440)
+    # Label nudges as fixed dy per layer (a yOffset channel is ignored on a continuous y axis).
+    def label(names: list[str], dy: int, align: str, dx: int, keep: bool = True) -> alt.Chart:
+        test = f"indexof({names}, datum.owner) {'>=' if keep else '<'} 0"
+        return base.transform_filter(test).mark_text(align=align, baseline="middle", dx=dx, dy=dy, fontSize=11,
+                                                     color=INK).encode(text="owner:N")
+    special = ["SpaceXAI", "Unknown", "Microsoft", "Amazon"]
+    labels = (label(special, 0, "left", 9, keep=False) + label(["Microsoft"], -11, "left", 9)
+              + label(["Amazon"], 9, "left", 9) + label(["Unknown"], -10, "right", -10) + label(["SpaceXAI"], 8, "right", -10))
+    return (points + labels).properties(height=440)
 
 
 def texts() -> dict[str, str]:
