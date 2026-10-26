@@ -177,3 +177,38 @@ def scenario(target: float, chips: float, cost_bn: float, times_au: float, au_ch
         f'<small>one-off cost ÷ Australia\'s {gdp_year} GDP of US${gdp_bn:,.0f}B (World Bank, current US$). For scale only: the build '
         f'would be spread over several years.</small></div></div>'
     )
+
+
+def uni_drop(f: dict) -> str:
+    """Universities' share of notable AI systems, first vs last year, as two circles whose AREAS match the shares."""
+    first, last = f["t_uni_first"], f["t_uni_last"]
+    r1 = 64
+    r2 = r1 * (last / first) ** 0.5
+    navy = "#0B2A55"
+    font = "font-family='Helvetica,Arial,sans-serif'"
+    svg = (
+        f"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 360 200' width='360' height='200'>"
+        f"<defs><marker id='a' viewBox='0 0 10 10' refX='8' refY='5' markerWidth='7' markerHeight='7' orient='auto'>"
+        f"<path d='M0,0 L10,5 L0,10 z' fill='#B4232A'/></marker></defs>"
+        f"<circle cx='74' cy='84' r='{r1}' fill='{navy}'/>"
+        f"<text x='74' y='96' text-anchor='middle' {font} font-size='34' font-weight='700' fill='white'>{first:.0f}%</text>"
+        f"<text x='74' y='172' text-anchor='middle' {font} font-size='15' font-weight='700' fill='#15181C'>{f['t_first']}</text>"
+        f"<text x='74' y='190' text-anchor='middle' {font} font-size='12' fill='#555D65'>"
+        f"{round(first * f['t_n_first'] / 100)} of {f['t_n_first']} systems</text>"
+        f"<line x1='148' y1='84' x2='206' y2='84' stroke='#B4232A' stroke-width='4' marker-end='url(#a)'/>"
+        f"<text x='177' y='70' text-anchor='middle' {font} font-size='13' font-weight='700' fill='#B4232A'>"
+        f"{last - first:+.1f} pts</text>"
+        f"<circle cx='{222 + r2:.1f}' cy='84' r='{r2:.2f}' fill='{navy}'/>"
+        f"<text x='{230 + 2 * r2:.1f}' y='100' {font} font-size='44' font-weight='700' fill='{navy}'>{last:.1f}%</text>"
+        f"<text x='{222 + r2:.1f}' y='172' text-anchor='middle' {font} font-size='15' font-weight='700' fill='#15181C'>{f['t_last']}</text>"
+        f"<text x='{222 + r2:.1f}' y='190' text-anchor='middle' {font} font-size='12' fill='#555D65'>"
+        f"{round(last * f['t_n_last'] / 100)} of {f['t_n_last']} systems</text>"
+        f"</svg>"
+    )
+    data = base64.b64encode(svg.encode()).decode()
+    return (
+        f"{CSS}<div class='hv'><p class='hv-label'>Universities' share of notable AI systems, {f['t_first']} → {f['t_last']}</p>"
+        f"<img src='data:image/svg+xml;base64,{data}' style='width:100%;max-width:360px;height:auto' "
+        f"alt='Universities built {first:.0f}% of notable AI systems in {f['t_first']} and {last:.1f}% in {f['t_last']}'>"
+        f"<p class='hv-note'>Circle area = share. Source: Epoch AI notable AI systems via Our World in Data.</p></div>"
+    )

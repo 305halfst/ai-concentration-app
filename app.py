@@ -98,10 +98,9 @@ st.title(page.TITLE, anchor="question")
 st.markdown(f'<p class="bridge">{page.QUESTION_FOR_READER}</p>', unsafe_allow_html=True)
 with st.container(border=True, key="answer"):
     md(page.answer(fig))
-    label, value, note = page.hero(fig)[0]
     left, right = st.columns([1.15, 2.3], gap="large")
-    left.metric(label, value, delta=note, delta_color="normal")
-    left.caption("Epoch AI notable AI systems via Our World in Data")
+    with left:
+        st.html(HV.uni_drop(fig))
     with right:
         st.html(HV.chip_owners(owners, fig["n_estimated"]))
     st.html(HV.zero_owners(owners))
