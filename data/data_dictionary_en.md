@@ -85,6 +85,19 @@ the committed file.
 | `h100_equivalents` | Epoch's estimated H100-equivalent chips; count |
 | `capex_share_pct` | owner's share of all processed capital cost; percent |
 
+## Values computed in the app (no extra processed file)
+
+- **Chart F, owner groups (Epoch bar):** shares of `h100_equivalents` in `datacenters_by_owner_country.csv`.
+  *Five largest named owners* = Google, Meta, Amazon, Microsoft, SpaceXAI (the top five named owners by estimated
+  capital cost; also the top five by H100 equivalents). *Unknown* = sites with no owner in Epoch. *Other companies* =
+  the remaining named owners. *Public sector* = 0: the group classified each of the 19 named owners by name, and
+  none is a university or public research body (G42 is counted as a company although it has state backing).
+- **Chart F, sector groups (TOP500 bar):** sums of `rmax_share_pct` by `sector_group` in `fig4_top500_by_segment.csv`.
+- **Sites without a current estimate:** in `sources/epoch/data_centers.csv`, 20 of the 93 sites have a current H100
+  equivalent of 0 or blank (and therefore no cost or power estimate). Every Epoch share and the $524.0B total cover the
+  73 sites with estimates. Check: `(df["Current H100 equivalents"].fillna(0) == 0).sum()` → 20.
+- **Australia's TOP500 systems:** rows of `top500_systems_clean.csv` with `country == "Australia"` (4 systems).
+
 ## Rebuild
 
 Run `python data/build_processed.py` from the repository root (needs pandas and

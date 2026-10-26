@@ -72,7 +72,7 @@ def build(df: pd.DataFrame) -> alt.LayerChart:
 
 def texts() -> dict[str, str]:
     return {
-        "title": "4 · AI data-centre scale versus investment",
+        "title": "How big the AI data-centre owners are",
         "caption": (
             "Chart E. Each bubble is an AI data-centre owner in Epoch AI's October 2026 update. "
             "Position compares estimated capital cost with listed power capacity; bubble area represents estimated H100 equivalents."
@@ -84,7 +84,10 @@ def texts() -> dict[str, str]:
         "read": (
             "**How to read this chart:** owners farther right have higher estimated capital cost; owners higher up have more listed "
             "power capacity. Larger bubbles represent more estimated H100 equivalents. Owners with zero or missing values for any "
-            "of those three measures remain in the table and KPI totals when selected, but cannot be positioned as bubbles."
+            "of those three measures remain in the table and KPI totals when selected, but cannot be positioned as bubbles "
+            "(4 owners have no estimate: Cipher Mining, G42, Mistral AI and Softbank). Note: Epoch estimates capital cost from "
+            "power (about $0.038B per MW for every owner), so the two axes carry largely the same information; bubble size "
+            "(estimated AI chips) is the independent measure."
         ),
         "limits": (
             "**What this cannot show:** this is an owner-level summary, not a site-by-site comparison. It cannot show utilisation, "

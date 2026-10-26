@@ -18,6 +18,7 @@ from charts import chart_b_capex as B
 from charts import chart_c_sizes as C
 from charts import chart_d_map as D
 from charts import chart_e_scale as E
+from charts import chart_f_two_worlds as F
 from charts import page
 from charts.common import SEGMENT_NAME, SEGMENT_ORDER, WORLD_URL, read, style
 
@@ -67,97 +68,34 @@ def source_caption(text: str) -> None:
 
 segments, owners, systems = load(A.FILE), load(B.FILE), load(C.FILE)
 
-# ---------------------------------------------------------------- opening
+# ---------------------------------------------------------------- opening: question, framing, answer, chart F
 st.markdown('<p class="eyebrow">36104 · A3 · data narrative</p>', unsafe_allow_html=True)
 st.title(page.TITLE)
+st.markdown(f'<p class="bridge">{page.QUESTION_FOR_READER}</p>', unsafe_allow_html=True)
+with st.container(border=True, key="answer"):
+    md(page.opening(segments, systems, owners))
+tf = F.texts(segments, owners)
+
+
+def draw_f() -> None:
+    st.altair_chart(style(F.build(segments, owners)), theme=None, width="stretch")
+    read_box(tf["read"])
+    source_caption("Sources: TOP500 List, June 2026 (`fig4_top500_by_segment.csv`); Epoch AI, Data on AI data centers, "
+                   "October 2026 update (`datacenters_by_owner_country.csv`). Last documented refresh: 11 October 2026.")
+
+
+chart_card("F", "Part-to-whole · two 100% stacked bars", tf["caption"], draw_f)
+
+st.header("Who this page is for", anchor="audience")
+md(page.AUDIENCE)
 with st.container(border=True):
     st.markdown("**On this page**  \n" + "  \n".join(f"[{name}](#{anchor})" for anchor, name in page.CONTENTS))
-with st.container(border=True, key="answer"):
-    md(page.answer(segments, systems, owners))
 
-# ---------------------------------------------------------------- section 1: A then C
-ta = A.texts(segments, systems)
-st.header(ta["title"], anchor="section-1")
-md(ta["lead"])
-
-
-def draw_a() -> None:
-    view = st.radio("Measure", A.VIEWS, horizontal=True, key="a_measure")
-    chart = A.build_stacked(segments) if view == A.VIEWS[0] else A.build_paired(segments)
-    st.altair_chart(style(chart), theme=None, width="stretch")
-    read_box(ta["read"])
-    source_caption("Source: TOP500 List, June 2026; processed file `fig4_top500_by_segment.csv`. Last documented refresh: 11 October 2026.")
-    st.download_button("Download chart A data (CSV)", segments.to_csv(index=False), "chart_a_top500_by_segment.csv", key="a_download")
-
-
-chart_card("A", "Part-to-whole · 100% stacked bars", ta["caption"], draw_a)
-md(ta["after"])
-bridge(ta["bridge"])
-
-tc = C.texts(systems, SEGMENT_ORDER)
-st.subheader(tc["title"], anchor="why-universities")
-md(tc["lead"])
-
-
-def draw_c() -> None:
-    chosen = st.multiselect("Segments", SEGMENT_ORDER, default=SEGMENT_ORDER, format_func=SEGMENT_NAME.get, key="c_segments")
-    if not chosen:
-        st.info(C.EMPTY)
-        return
-    st.altair_chart(style(C.build(systems, chosen)), theme=None, width="stretch")
-    read_box(tc["read"])
-    source_caption("Source: TOP500 List, June 2026; processed file `top500_systems_clean.csv`. Last documented refresh: 11 October 2026.")
-    rows = systems[systems["segment"].isin(chosen)]
-    st.download_button("Download chart C data (CSV)", rows.to_csv(index=False), "chart_c_top500_systems.csv", key="c_download")
-
-
-chart_card("C", "Distribution · machines by size band", tc["caption"], draw_c)
-md(tc["after"])
-bridge(tc["bridge"])
-
-# ---------------------------------------------------------------- section 2: D
-group = st.session_state.get("d_group", D.GROUPS[0])
-td = D.texts(systems, group)
-st.header(td["title"], anchor="section-2")
-md(td["lead"])
-
-
-def draw_d() -> None:
-    chosen = st.radio("Systems included", D.GROUPS, horizontal=True, key="d_group")
-    table = D.by_country(systems, chosen)
-    st.altair_chart(style(D.build_map(table, alt.topo_feature(WORLD_URL, "countries"))), theme=None, width="stretch")
-    st.markdown("**Top 10 countries by share of Rmax** (labelled, because small countries are hard to see on the map)")
-    st.altair_chart(style(D.build_bar(table)), theme=None, width="stretch")
-    st.markdown("**All country values**")
-    country_table = table.rename(columns={
-        "country": "Country", "systems": "TOP500 systems", "rmax_tflops": "Combined Rmax (TFlop/s)",
-        "share_pct": "Share of selected Rmax (%)",
-    })[["Country", "TOP500 systems", "Combined Rmax (TFlop/s)", "Share of selected Rmax (%)"]]
-    st.dataframe(
-        country_table.style.format({
-            "Combined Rmax (TFlop/s)": "{:,.0f}",
-            "Share of selected Rmax (%)": "{:.1f}",
-        }),
-        hide_index=True,
-        width="stretch",
-    )
-    read_box(D.texts(systems, chosen)["read"])
-    source_caption("Source: TOP500 List, June 2026; processed file `top500_systems_clean.csv`. Last documented refresh: 11 October 2026.")
-    st.download_button("Download chart D data (CSV)", table.drop(columns=["map_name"]).to_csv(index=False),
-                       "chart_d_rmax_by_country.csv", key="d_download")
-
-
-chart_card("D", "Spatial · choropleth", td["caption"], draw_d)
-md(D.texts(systems, st.session_state.get("d_group", D.GROUPS[0]))["after"])
-bridge(td["bridge"])
-
-# ---------------------------------------------------------------- section 3: B
+# ---------------------------------------------------------------- section 1: who owns AI infrastructure (B, E)
 countries = B.countries(owners)
 priced = B.ranked(owners)
-top_n = st.session_state.get("b_top_n", 10)
-focus = st.session_state.get("b_country", "Australia")
-tb = B.texts(owners, top_n, focus)
-st.header(tb["title"], anchor="section-3")
+tb = B.texts(owners, st.session_state.get("b_top_n", 10), st.session_state.get("b_country", "Australia"))
+st.header(tb["title"], anchor="section-1")
 md(tb["lead"])
 
 
@@ -175,9 +113,8 @@ chart_card("B", "Ranking · sorted horizontal bars", tb["caption"], draw_b)
 md(B.texts(owners, st.session_state.get("b_top_n", 10), st.session_state.get("b_country", "Australia"))["after"])
 bridge(tb["bridge"])
 
-# ---------------------------------------------------------------- section 4: E
 te = E.texts()
-st.header(te["title"], anchor="section-4")
+st.subheader(te["title"], anchor="scale")
 md(te["lead"])
 
 
@@ -221,7 +158,89 @@ def draw_e() -> None:
 
 chart_card("E", "Relationship · bubble scatterplot", te["caption"], draw_e)
 
-# ---------------------------------------------------------------- section 5 and sources
+# ---------------------------------------------------------------- section 2: what the public sector holds (A, C, D)
+st.header("2 · What the public sector holds", anchor="section-2")
+ta = A.texts(segments, systems)
+st.subheader(ta["title"], anchor="public-share")
+md(ta["lead"])
+
+
+def draw_a() -> None:
+    view = st.radio("Measure", A.VIEWS, horizontal=True, key="a_measure")
+    chart = A.build_stacked(segments) if view == A.VIEWS[0] else A.build_paired(segments)
+    st.altair_chart(style(chart), theme=None, width="stretch")
+    read_box(ta["read"])
+    source_caption("Source: TOP500 List, June 2026; processed file `fig4_top500_by_segment.csv`. Last documented refresh: 11 October 2026.")
+    st.download_button("Download chart A data (CSV)", segments.to_csv(index=False), "chart_a_top500_by_segment.csv", key="a_download")
+
+
+chart_card("A", "Part-to-whole · 100% stacked bars", ta["caption"], draw_a)
+md(ta["after"])
+bridge(ta["bridge"])
+
+tc = C.texts(systems, SEGMENT_ORDER)
+st.subheader(tc["title"], anchor="why-universities")
+md(tc["lead"])
+
+
+def draw_c() -> None:
+    chosen = st.multiselect("Segments", SEGMENT_ORDER, default=SEGMENT_ORDER, format_func=SEGMENT_NAME.get, key="c_segments")
+    if not chosen:
+        st.info(C.EMPTY)
+        return
+    st.altair_chart(style(C.build(systems, chosen)), theme=None, width="stretch")
+    read_box(tc["read"])
+    source_caption("Source: TOP500 List, June 2026; processed file `top500_systems_clean.csv`. Last documented refresh: 11 October 2026.")
+    rows = systems[systems["segment"].isin(chosen)]
+    st.download_button("Download chart C data (CSV)", rows.to_csv(index=False), "chart_c_top500_systems.csv", key="c_download")
+
+
+chart_card("C", "Distribution · machines by size band", tc["caption"], draw_c)
+md(tc["after"])
+bridge(tc["bridge"])
+
+td = D.texts(systems, st.session_state.get("d_group", D.GROUPS[0]))
+st.subheader(td["title"], anchor="where")
+md(td["lead"])
+
+
+def draw_d() -> None:
+    chosen = st.radio("Systems included", D.GROUPS, horizontal=True, key="d_group")
+    table = D.by_country(systems, chosen)
+    st.altair_chart(style(D.build_map(table, alt.topo_feature(WORLD_URL, "countries"))), theme=None, width="stretch")
+    st.markdown("**Top 10 countries by share of Rmax** (labelled, because small countries are hard to see on the map)")
+    st.altair_chart(style(D.build_bar(table)), theme=None, width="stretch")
+    st.markdown("**All country values**")
+    country_table = table.rename(columns={
+        "country": "Country", "systems": "TOP500 systems", "rmax_tflops": "Combined Rmax (TFlop/s)",
+        "share_pct": "Share of selected Rmax (%)",
+    })[["Country", "TOP500 systems", "Combined Rmax (TFlop/s)", "Share of selected Rmax (%)"]]
+    st.dataframe(
+        country_table.style.format({
+            "Combined Rmax (TFlop/s)": "{:,.0f}",
+            "Share of selected Rmax (%)": "{:.1f}",
+        }),
+        hide_index=True,
+        width="stretch",
+    )
+    read_box(D.texts(systems, chosen)["read"])
+    source_caption("Source: TOP500 List, June 2026; processed file `top500_systems_clean.csv`. Last documented refresh: 11 October 2026.")
+    st.download_button("Download chart D data (CSV)", table.drop(columns=["map_name"]).to_csv(index=False),
+                       "chart_d_rmax_by_country.csv", key="d_download")
+
+
+chart_card("D", "Spatial · choropleth", td["caption"], draw_d)
+md(D.texts(systems, st.session_state.get("d_group", D.GROUPS[0]))["after"])
+bridge(td["bridge"])
+
+# ---------------------------------------------------------------- conclusion, recommendation, limits, sources
+st.header("3 · Conclusion", anchor="conclusion")
+md(page.conclusion(segments, systems, owners))
+
+st.header("4 · Our recommendation", anchor="recommendation")
+with st.container(border=True, key="recommendation_box"):
+    md(page.recommendation(segments, systems, owners))
+
 st.header("5 · What the data cannot show", anchor="section-5")
 md(page.LIMITS)
 

@@ -64,13 +64,13 @@ def texts(df: pd.DataFrame, top_n: int, focus: str) -> dict[str, str]:
                   + (f"; {', '.join(f'{r.owner} ranks {r.rank} of {len(priced)}' for r in rows.itertuples())}." if len(rows) else ".")
                   if len(rows) else f"No owner with a listed cost has a site in {focus}.")
     return {
-        "title": "3 · Who is paying for frontier AI data centres",
+        "title": "1 · Who owns frontier AI infrastructure",
         "caption": ("Chart B. Estimated capital cost of the AI data centres in Epoch AI's October 2026 update, summed by owner. "
                     "Units: billions of 2025 US dollars."),
         "lead": (
-            f"Epoch AI tracks the largest data centres built for AI, with each site's owner, location and estimated capital cost. "
+            f"Epoch AI tracks large data centres built for AI, with each site's owner, location and estimated capital cost. "
             f"Its October 2026 update covers {int(df['n_datacenters'].sum())} sites with a combined cost of **${total:.1f}B** "
-            f"(2025 US dollars), held by {len(df)} owners. The bars rank owners by what they have spent. Use the slider to show more "
+            f"(2025 US dollars), held by {len(df)} owners. The bars rank owners by estimated capital cost. Use the slider to show more "
             "owners, and pick a country to highlight; owners with a site there are always shown, in green."
         ),
         "read": (
@@ -81,12 +81,13 @@ def texts(df: pd.DataFrame, top_n: int, focus: str) -> dict[str, str]:
         ),
         "after": (
             f"Google tops the ranking at **${google:.1f}B**. The five largest named owners (Google, Meta, Amazon, Microsoft and "
-            f"SpaceXAI) hold **{big_five / total * 100:.1f}%** of all spending. All five list sites in the United States; only "
+            f"SpaceXAI) account for **{big_five / total * 100:.1f}%** of the total estimated cost. All five list sites in the United States; only "
             f"Google also lists one other country (the United Kingdom). "
-            f"No university or public research body appears among the named owners. {focus_line}"
+            f"None of the {int((df['owner'] != 'Unknown').sum())} named owners is a university or public research body. {focus_line}\n\n"
+            "**So what for the decision:** the infrastructure frontier AI runs on is being built and owned by companies; "
+            "no public owner appears in this dataset."
         ),
         "bridge": (
-            "The ranking shows who has spent most. The next dashboard compares that investment with listed power capacity and "
-            "estimated H100-equivalent scale, before the final section lists what the datasets cannot tell us."
+            "Chart B ranks owners by cost. Chart E looks at the same owners by size: power capacity and estimated AI chips."
         ),
     }

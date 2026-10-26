@@ -3,52 +3,105 @@
 TITLE = "Is cutting-edge AI becoming something only big tech can do?"
 
 CONTENTS = [
-    ("section-1", "1 · Who our audience could be, and how they relate"),
-    ("section-2", "2 · Where the compute sits"),
-    ("section-3", "3 · Who is paying for frontier AI data centres"),
-    ("section-4", "4 · AI data-centre scale versus investment"),
+    ("audience", "Who this page is for"),
+    ("section-1", "1 · Who owns frontier AI infrastructure"),
+    ("section-2", "2 · What the public sector holds"),
+    ("conclusion", "3 · Conclusion"),
+    ("recommendation", "4 · Our recommendation"),
     ("section-5", "5 · What the data cannot show"),
     ("sources", "Sources"),
 ]
 
+BIG_FIVE = ["Google", "Meta", "Amazon", "Microsoft", "SpaceXAI"]
 
-def answer(segments, systems, owners) -> str:
-    """On-screen answer; all displayed values are calculated from processed CSVs."""
+
+def _figures(segments, systems, owners) -> dict:
+    """Every number used in the opening, conclusion and recommendation, computed from data/processed/."""
     from charts.chart_d_map import by_country
 
-    segment_table = segments.set_index("segment")
-    public = segments[segments["sector_group"] == "Public"]["rmax_share_pct"].sum()
-    public_systems = systems[systems["sector_group"] == "Public"]
-    giant_public = public_systems[public_systems["rmax_tflops"] >= 1_000_000]
-    giant_share = giant_public["rmax_tflops"].sum() / public_systems["rmax_tflops"].sum() * 100
-    country_shares = by_country(systems, "All systems").set_index("country")["share_pct"]
-    total = owners["capital_cost_2025usd_bn"].sum()
-    big_five = owners[owners["owner"].isin(["Google", "Meta", "Amazon", "Microsoft", "SpaceXAI"])]["capital_cost_2025usd_bn"].sum()
+    h100 = owners["h100_equivalents"].sum()
+    countries = by_country(systems, "All systems").set_index("country")["share_pct"]
     australia = owners[owners["country"].str.split("|").map(lambda places: "Australia" in places)]
+    seg = segments.set_index("segment")
+    return {
+        "public_rmax": segments[segments["sector_group"] == "Public"]["rmax_share_pct"].sum(),
+        "big5_h100": owners[owners["owner"].isin(BIG_FIVE)]["h100_equivalents"].sum() / h100 * 100,
+        "named": int((owners["owner"] != "Unknown").sum()),
+        "unknown_sites": int(owners.loc[owners["owner"] == "Unknown", "n_datacenters"].sum()),
+        "sites": int(owners["n_datacenters"].sum()),
+        "uni_systems": seg.loc["Academic", "system_share_pct"],
+        "uni_rmax": seg.loc["Academic", "rmax_share_pct"],
+        "au_top500": countries.get("Australia", 0),
+        "au_owner": ", ".join(australia["owner"]),
+        "au_h100": australia["h100_equivalents"].sum() / h100 * 100,
+    }
 
+
+QUESTION_FOR_READER = (
+    "Would you accept a future in which a handful of companies control a critical technology? "
+    "This page shows how close that future already is for AI, and what Australia could do about it."
+)
+
+
+def opening(segments, systems, owners) -> str:
+    f = _figures(segments, systems, owners)
     return (
-        "**Short answer: for frontier AI, largely yes; for computing power in general, not yet.**\n\n"
-        f"- **Frontier AI is being built by big tech.** Five companies (Google, Meta, Amazon, Microsoft and SpaceXAI) account "
-        f"for **{big_five / total * 100:.1f}%** of the ${total:.1f}B spent on the {int(owners['n_datacenters'].sum())} largest AI data "
-        "centres, and no university or public research body appears among the named owners (section 3).\n"
-        f"- **Measured supercomputing is still mostly public.** Universities, research labs and government hold **{public:.1f}%** "
-        f"of TOP500 compute, but {giant_share:.0f}% of that sits in just {len(giant_public)} giant national-lab machines. Universities run "
-        f"{segment_table.loc['Academic', 'system_share_pct']:.1f}% of the machines yet hold only **{segment_table.loc['Academic', 'rmax_share_pct']:.1f}%** "
-        "of the compute (section 1).\n"
-        f"- **Both kinds of capacity lean towards the United States.** It holds {country_shares.get('United States', 0):.1f}% of TOP500 "
-        f"compute. Australia holds {country_shares.get('Australia', 0):.1f}% and has {int(australia['n_datacenters'].sum())} listed AI data centre "
-        f"({', '.join(australia['owner'])}, ${australia['capital_cost_2025usd_bn'].sum():.1f}B) (sections 2 and 3).\n\n"
-        "**For the funder:** academics are not shut out of large-scale computing, because public labs hold most of it, but they own little "
-        "of it themselves and none of the listed AI data centres. The TOP500 measures Linpack speed, not AI training, and neither dataset "
-        "shows how much compute academics need or can access."
+        "### Big tech is building the AI factories. None of the named owners is a university or public lab.\n\n"
+        f"**Short answer: for AI-specific infrastructure, largely yes.** Five companies hold **{f['big5_h100']:.1f}%** of the "
+        f"estimated AI chips in the data centres Epoch tracks; public institutions still run **{f['public_rmax']:.1f}%** of "
+        "TOP500 supercomputing, which measures Linpack speed, not AI training."
+    )
+
+
+AUDIENCE = (
+    "A policy officer in the Australian Government who funds research infrastructure and must "
+    "decide whether to invest in shared AI computing capacity for universities. The page answers the three questions they "
+    "would ask, in order:\n\n"
+    "1. **Who owns the infrastructure that frontier AI runs on?** (section 1)\n"
+    "2. **What does the public sector, including Australia, already hold?** (section 2)\n"
+    "3. **What should we do?** (sections 3 and 4)"
+)
+
+
+def conclusion(segments, systems, owners) -> str:
+    f = _figures(segments, systems, owners)
+    return (
+        f"- **AI-specific capacity is concentrated:** five companies hold {f['big5_h100']:.1f}% of the estimated AI chips, and "
+        f"none of the {f['named']} named owners is a university or public research body ({f['unknown_sites']} sites have no "
+        "known owner).\n"
+        f"- **Public capacity exists, but it is a different kind:** the public sector runs {f['public_rmax']:.1f}% of TOP500 "
+        f"supercomputing, measured by Linpack speed. Universities run {f['uni_systems']:.1f}% of those machines but hold "
+        f"{f['uni_rmax']:.1f}% of the compute.\n"
+        f"- **Australia is a small player in both:** {f['au_top500']:.1f}% of TOP500 compute, and its only listed AI data "
+        f"centre ({f['au_owner']}) holds {f['au_h100']:.1f}% of the estimated AI chips.\n\n"
+        "*Our reading (an interpretation, not a finding of the data):* if nothing changes, the AI-specific computing that "
+        "Australian researchers depend on will be owned by a handful of overseas companies."
+    )
+
+
+def recommendation(segments, systems, owners) -> str:
+    f = _figures(segments, systems, owners)
+    return (
+        "**Fund dedicated, shared GPU capacity for Australian university researchers, building on existing public research "
+        "facilities such as Setonix at the Pawsey Supercomputing Centre.**\n\n"
+        f"- **Why:** none of the {f['named']} named owners of large AI data centres is a university or public research body, "
+        f"and Australia's only listed site holds {f['au_h100']:.1f}% of the estimated AI chips.\n"
+        "- **Alternatives we considered:** negotiating research compute credits with cloud providers (faster to start, but "
+        "leaves capacity in private hands); giving AI work a larger share of existing national facilities (quicker to start, but "
+        "AI work would compete with existing users for the same machines).\n"
+        "- **What the data cannot tell us:** how much compute researchers need, which option is cheapest, or whether "
+        "commercial facilities would open to universities.\n\n"
+        "*This is our recommendation, not a finding of the data.*"
     )
 
 
 LIMITS = (
     "- **TOP500 measures Linpack (HPL) performance, not AI-training capacity.** A high TOP500 position does not mean a facility can train frontier models.\n"
     "- **China has under-reported to TOP500 since 2023**, so non-Western public compute is undercounted.\n"
-    "- **Epoch covers only 93 data centres.** Owner means the operator of a site, not the developer whose models are trained there, and 9 sites (11.8% of capex) have no known owner.\n"
-    "- **Neither dataset measures how much compute any group needs or can access.** They show what each group holds (TOP500) or has spent (Epoch), not demand or who may use the machines.\n"
+    "- **Epoch tracks 93 large AI data centres, not every one.** Owner means the operator of a site, not the developer whose models are trained there, and 9 sites (11.8% of capex) have no known owner.\n"
+    "- **Neither dataset measures how much compute any group needs or can access.** They show what each group holds (TOP500) or the estimated cost of what it owns (Epoch), not demand or who may use the machines.\n"
+    "- **Epoch estimates capital cost from power,** so cost and power are not independent measures; 20 of the 93 sites it tracks have no current estimate yet.\n"
+    "- **The recommendation is ours.** The data shows the gap; it does not show the best way to close it.\n"
     "- **Both datasets are snapshots** (TOP500 June 2026, Epoch October 2026), not trends."
 )
 

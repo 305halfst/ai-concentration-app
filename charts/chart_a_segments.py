@@ -88,20 +88,14 @@ def texts(df: pd.DataFrame, systems: pd.DataFrame | None = None) -> dict[str, st
         return out + (f"; their largest runs at {largest[seg]:,.0f} PFlop/s." if largest is not None else ".")
 
     return {
-        "title": "1 · Who our audience could be, and how they relate",
+        "title": "What universities and public labs hold",
         "caption": ("Chart A. How the 500 systems on the TOP500 list (June 2026) split by type of organisation: by number of "
                     "machines (top bar) and by combined Rmax (bottom bar). Units: % of the whole list."),
         "lead": (
-            "Who would care whether shared compute gets funded, and what do they already hold? The TOP500 (June 2026 "
-            "edition), a twice-yearly list of the 500 fastest supercomputers, tags every system with the kind of organisation "
-            "that runs it. Those six groups are the possible audiences for this page. For each one: why it may be interested, "
-            "and what it holds on the list.\n\n"
-            + "\n".join(f"- **{label}:** {why} {holds(seg)}" for seg, label, why in WHY) + "\n\n"
-            "These figures show what each group already holds. Neither dataset measures how much compute any group needs; "
-            "section 4 comes back to this.\n\n"
-            "Chart A shows how the groups relate. The top bar counts machines; the bottom bar weighs them by their speed. "
-            "Universities, research labs and government together make up the public sector (blues); industry and vendors "
-            "are the private sector (oranges)."
+            "The public sector's main computing asset is supercomputers. The TOP500 (June 2026 edition), a twice-yearly list "
+            "of the 500 fastest machines, tags each one with the kind of organisation that runs it. Chart A shows the whole "
+            "list twice: the top bar counts machines, the bottom bar weighs them by speed. Blues are the public sector "
+            "(universities, research labs, government); oranges are industry and vendors."
         ),
         "read": (
             "**How to read the two bars**\n\n"
@@ -118,7 +112,9 @@ def texts(df: pd.DataFrame, systems: pd.DataFrame | None = None) -> dict[str, st
             f"go the other way, from {a.loc['Research', 'system_share_pct']:.1f}% of machines to {a.loc['Research', 'rmax_share_pct']:.1f}% "
             f"of compute. Industry runs the most machines ({a.loc['Industry', 'system_share_pct']:.1f}%) but holds "
             f"{a.loc['Industry', 'rmax_share_pct']:.1f}% of the compute. Taken together, the public sector holds "
-            f"{public['system_share_pct']:.1f}% of the machines and {public['rmax_share_pct']:.1f}% of the compute."
+            f"{public['system_share_pct']:.1f}% of the machines and {public['rmax_share_pct']:.1f}% of the compute.\n\n"
+            f"**So what for the decision:** public supercomputing is large, but universities, the people the funding is for, "
+            f"hold only {a.loc['Academic', 'rmax_share_pct']:.1f}% of it."
         ),
         "bridge": (
             "So public compute is not scarce on this list; the gap is between public labs and universities. Why do universities "

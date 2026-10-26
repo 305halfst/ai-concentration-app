@@ -16,26 +16,24 @@ sector (universities, research labs and government) holds 71.3% of TOP500 superc
 
 ## Persona
 
-**A university research funding body deciding whether to fund shared compute for academics.** The app serves that
-decision: whether academics can reach compute that fits AI work through public facilities, or whether frontier-scale
-compute now sits only with big tech. The evidence contrasts the TOP500 supercomputer list with Epoch AI's database of
-large AI data centres.
+**A policy officer in the Australian Government who funds research infrastructure and must decide whether to invest
+in shared AI computing capacity for universities.** The app serves that decision. It shows who owns the infrastructure
+frontier AI runs on (Epoch AI's database of large AI data centres), what the public sector and Australia already hold
+(the TOP500 supercomputer list), and ends with a conclusion and one recommendation, labelled as ours.
 
 ## User stories
 
-1. **As a** research funding officer, **I want** to compare universities' share of TOP500 machines with their share of
-   compute, **so that** I can judge whether academics already have access to large-scale compute.
-   *Walk-through:* section 1. Chart A has a measure toggle; Chart C filters organisation segments.
-2. **As a** research funding officer, **I want** to see which countries hold public and private supercomputing capacity,
-   **so that** I can compare Australia with overseas capacity.
-   *Walk-through:* section 2. Chart D switches between all, public and private systems.
-3. **As a** research funding officer, **I want** to see who is paying for the largest AI data centres and whether any have
-   a site in Australia, **so that** I can assess whether capacity might be leased rather than built publicly.
-   *Walk-through:* section 3. Chart B provides a top-N slider and country highlight selector.
-4. **As a** research funding officer, **I want** to compare reported investment, power capacity and estimated H100-equivalent
-   scale for AI data-centre owners, **so that** I can distinguish a high-spend owner from one with a larger listed physical footprint.
-   *Walk-through:* section 4. Chart E filters by listed site country and owner, then presents KPI cards, a bubble chart and
-   an accessible owner table.
+1. **As a** research-infrastructure policy officer, **I want** to see who owns the chips in large AI data centres
+   compared with who owns supercomputing, **so that** I can see where public institutions stand.
+   *Walk-through:* opening Chart F, then section 1: Chart B (top-N slider and country highlight) and Chart E (country
+   and owner filters).
+2. **As a** research-infrastructure policy officer, **I want** to compare how much compute universities, public labs and
+   Australia hold, **so that** I know what public capacity already exists.
+   *Walk-through:* section 2: Chart A (measure toggle), Chart C (segment filter; an empty selection shows a message) and
+   Chart D (all / public / private systems).
+3. **As a** research-infrastructure policy officer, **I want** a clear recommendation with its limits, **so that** I can
+   decide whether to fund shared GPU capacity for universities.
+   *Walk-through:* sections 3 (conclusion), 4 (recommendation) and 5 (what the data cannot show).
 
 ## Run
 
@@ -51,6 +49,7 @@ python3 -m venv .venv
 
 | Chart | Visual vocabulary | Purpose and interaction |
 |---|---|---|
+| F | Part-to-whole | Opening chart: two 100% bars, each a share of its own dataset — TOP500 Rmax by sector, and Epoch estimated H100 equivalents by owner group. |
 | A | Part-to-whole / magnitude | 100% stacked or paired bars comparing TOP500 systems and Rmax shares by organisation segment. |
 | C | Distribution | Heatmap of TOP500 machine counts by size band and organisation; segment filter. |
 | D | Spatial / ranking | Choropleth and labelled top-10 bar chart of national Rmax shares; system-group selector. |

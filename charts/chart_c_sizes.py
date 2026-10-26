@@ -63,7 +63,9 @@ def texts(df: pd.DataFrame, segments: list[str]) -> dict[str, str]:
                  "none. Size bands are in PFlop/s (1 PFlop/s = 1,000 TFlop/s); the smallest machine on the list runs at 2.7 and "
                  "the largest at 2,198."),
         "after": (
-            f"**{uni_small} of the universities' {uni_total} machines are under 20 PFlop/s**, and none is over 1,000. All "
+            f"**{uni_small} of the universities' {uni_total} machines are under 20 PFlop/s**; their largest runs at "
+            f"{df[df['segment'] == 'Academic']['rmax_tflops'].max() / 1000:,.0f} PFlop/s, against "
+            f"{df['rmax_tflops'].max() / 1000:,.0f} for the largest machine on the list. All "
             f"{c[('Research', BAND_NAMES[4])]} giant machines belong to public research labs, which is why labs hold almost 60% of "
             f"the compute. Industry runs the most small machines ({c[('Industry', BAND_NAMES[0])]}), which is why its share of compute "
             "is smaller than its share of machines."

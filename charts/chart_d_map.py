@@ -58,7 +58,7 @@ def texts(df: pd.DataFrame, group: str) -> dict[str, str]:
     lead3 = [f"{c} (**{v:.1f}%**)" for c, v in table.head(3).items()]
     top3 = ", ".join(lead3[:-1]) + " and " + lead3[-1]
     return {
-        "title": "2 · Where the compute sits",
+        "title": "Where the public compute sits, and where Australia stands",
         "caption": ("Chart D. Share of the combined Rmax of TOP500 systems (June 2026 list) located in each country, for the "
                     "selected systems; the bar lists the ten largest shares. Units: % of the selected systems' Rmax."),
         "lead": (
@@ -73,11 +73,14 @@ def texts(df: pd.DataFrame, group: str) -> dict[str, str]:
             f"Among public systems the US share is "
             f"{pub.get('United States', 0):.1f}%; among private systems it is lower, {pri.get('United States', 0):.1f}%, because two "
             f"large Italian energy-company machines (HPC6 and HPC7) give Italy {pri.get('Italy', 0):.1f}% of private compute. "
-            f"Australia holds {table.get('Australia', 0):.1f}% of the selected compute."
+            f"Australia holds {table.get('Australia', 0):.1f}% of the selected compute.\n\n"
+            "**Australia's machines on the list:** "
+            + "; ".join(f"{r.name} ({r.segment.lower()}, {r.rmax_tflops / 1000:.1f} PFlop/s)"
+                        for r in df[df["country"] == "Australia"].sort_values("rmax_tflops", ascending=False).itertuples())
+            + ". The largest, Setonix at the Pawsey Supercomputing Centre, is a GPU system run by a public research centre."
         ),
         "bridge": (
-            "Everything so far comes from the TOP500, which only counts machines whose owners submit a Linpack result, and many of "
-            "the largest AI training clusters do not. To see where frontier AI compute is being built, and by whom, we need a "
-            "second dataset."
+            "So Australia has public supercomputing, but little of it, and no public owner holds AI-specific capacity. "
+            "The conclusion puts the two datasets together."
         ),
     }
